@@ -1,0 +1,31 @@
+GET http://localhost:8080/patients?name=Jo
+
+###
+
+GET http://localhost:8080/patient/2
+
+###
+
+DELETE http://localhost:8080/patient/3
+
+###
+
+POST http://localhost:8080/patients
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Jean",
+  "birthDate": "2020-10-07T00:00:01.084+00:00"
+}
+
+###
+
+POST http://localhost:8080/patients
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "John",
+  "birthDate": "2019-10-07T00:00:01.084+00:00"
+}
