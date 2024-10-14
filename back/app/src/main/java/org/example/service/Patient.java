@@ -30,7 +30,6 @@ public class Patient {
         this.birth_date = birth_date;
         this.phone = phone;
         this.email = email;
-
     }
 
     public Integer getId() {

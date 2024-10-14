@@ -28,7 +28,27 @@ POST http://localhost:8080/patients
 Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "John",
-  "birthDate": "2019-10-07T00:00:01.084+00:00"
+  "id": 1,
+  "name": "Léo",
+  "surname": "Gueffier",
+  "email": "bgdu51@gmail.com",
+  "phone": "9876543210",
+  "birth_date": "2002-06-15T16:35:00.000+00:00"
+}
+
+###
+
+POST http://localhost:8080/specialist
+Content-Type: application/json
+
+{
+  "id": 0,
+  "center_id": 0,
+  "name": "Alexandre",
+  "specialty": "Cardiologue",
+  "email": "bgdu88@gmail.com",
+  "phone": "6666666666",
+  "birth_date": "2003-04-23T16:35:00.000+00:00",
+  "password": "test",
+  "is_admin": true
 }
