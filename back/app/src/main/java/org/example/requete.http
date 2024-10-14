@@ -14,9 +14,12 @@ POST http://localhost:8080/patients
 Content-Type: application/json
 
 {
-  "id": 3,
-  "name": "Jean",
-  "birthDate": "2020-10-07T00:00:01.084+00:00"
+  "id": 0,
+  "name": "Alexandre",
+  "surname": "Humbert",
+  "email": "bgdu88@gmail.com",
+  "phone": "0123456789",
+  "birth_date": "2003-04-23T16:35:00.000+00:00"
 }
 
 ###
