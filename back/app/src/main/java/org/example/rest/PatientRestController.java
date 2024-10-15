@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.example.exception.PatientNotFoundException;
-import org.example.service.Patient;
+import org.example.model.Patient;
 import org.example.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriBuilder;
 
 @RestController
 public class PatientRestController {
@@ -26,14 +25,8 @@ public class PatientRestController {
     private PatientService service;
 
     @GetMapping(path = "/patients")
-    public List<Patient> findAll(@RequestParam(name = "name", required = false)String filterByName){
-        return service.findAll(filterByName);
-    }
-
-    
-    @GetMapping(path = "/patient/{id2}")
-    public Patient findAll(@PathVariable("id2") Integer id) throws PatientNotFoundException{
-        return service.findOne(id);
+    public List<Patient> findAll(){
+        return service.findAll();
     }
 
     @PostMapping(path = "/patients")
@@ -43,10 +36,9 @@ public class PatientRestController {
     }
 
     @DeleteMapping(path = "/patient/{id}")
-    public void delete(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Long id){
         service.removeOne(id);
     }
-
 
     @ExceptionHandler
     public ResponseEntity<String> handle(PatientNotFoundException ex){

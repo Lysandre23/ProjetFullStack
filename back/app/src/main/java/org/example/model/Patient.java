@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,16 +18,15 @@ public class Patient {
     private String surname;
     private String phone;
     private String email;
-    private Date birth_date;
-
+    private Date birthdate;
 
     public Patient(){}
 
-    public Patient(Integer id, String name, String surname, Date birth_date, String phone, String email) {
+    public Patient(Integer id, String name, String surname, Date birthdate, String phone, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.birth_date = birth_date;
+        this.birthdate = birthdate;
         this.phone = phone;
         this.email = email;
     }
@@ -50,6 +49,6 @@ public class Patient {
     public void setPhone(String phone) { this.phone = phone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public Date getBirth_date() { return birth_date; }
-    public void setBirth_date(Date birth_date) { this.birth_date = birth_date; }
+    public Date getBirthdate() { return birthdate; }
+    public void setBirthdate(Date birthdate) { this.birthdate = birthdate; }
 }

@@ -1,7 +1,7 @@
 package org.example.repository;
 
-import org.example.service.Patient;
+import org.example.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PatientRepository extends JpaRepository<Patient, Integer> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 }
