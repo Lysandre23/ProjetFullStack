@@ -6,10 +6,8 @@ export interface User {
   id: number;
   center_id: number;
   name: string;
-  specialty: string;
   email: string;
   phone: string;
-  password: string;
   is_admin: boolean;
 }
 
@@ -17,7 +15,7 @@ export interface User {
   providedIn: 'root'  // Provided globally
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/users';  // Base URL of your Spring API
+  private apiUrl = 'http://localhost:8080/patients';  // Base URL of your Spring API
 
   constructor(private http: HttpClient) {}
 

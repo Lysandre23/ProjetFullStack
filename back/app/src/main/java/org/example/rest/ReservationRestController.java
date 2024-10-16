@@ -1,6 +1,7 @@
 package org.example.rest;
 
 import org.example.model.Reservation;
+import org.example.model.Specialist;
 import org.example.repository.ReservationRepository;
 import org.example.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class ReservationRestController {
         return reservationService.findAll();
     }
 
-    @GetMapping("/reservations/{id}")
-    public Reservation findById(@PathVariable Long id) {
-        return reservationService.findAll().stream().filter(r -> r.getId().equals(id)).findFirst().get();
+    @GetMapping("/reservations/{specialistid}/specialist")
+    public Specialist findSpecialistByReservationId(@PathVariable Integer specialistid) {
+        return reservationService.findSpecialistByReservationId(specialistid);
     }
 
     @PostMapping("/reservations")

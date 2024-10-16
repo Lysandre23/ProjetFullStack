@@ -6,7 +6,19 @@ GET http://localhost:8080/specialists
 
 ###
 
-DELETE http://localhost:8080/patient/3
+GET http://localhost:8080/specialists/specialty/Cardiologue
+
+###
+
+GET http://localhost:8080/reservations
+
+###
+
+GET http://localhost:8080/reservations/2/specialist
+
+###
+
+GET http://localhost:8080/centers
 
 ###
 
@@ -28,9 +40,34 @@ Content-Type: application/json
 
 {
   "centerid": 1,
-  "name": "Alexandre",
+  "name": "Gaelle",
   "specialty": "Cardiologue",
   "email": "bgdu88@gmail.com",
   "phone": "6666666666",
   "isadmin": true
+}
+
+###
+
+POST http://localhost:8080/reservations
+Content-Type: application/json
+
+{
+  "centerid": 1,
+  "specialistid": 2,
+  "patientid": 1,
+  "date": "2003-04-23T16:35:00.000+00:00"
+}
+
+###
+
+POST http://localhost:8080/centers
+Content-Type: application/json
+
+{
+  "name": "Centre Emile Louis",
+  "city": "Nancy",
+  "address": "2 Rue Jean Lamour",
+  "phone": "0123456789",
+  "email": "popo@popo.io"
 }

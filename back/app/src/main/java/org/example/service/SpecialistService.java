@@ -17,7 +17,11 @@ public class SpecialistService {
         return specialistRepository.findAll();
     }
 
-    public Specialist create(Specialist specialist) { return specialistRepository.save(specialist); }
+    public List<Specialist> findBySpecialty(String specialty) {
+        return specialistRepository.findBySpecialty(specialty);
+    }
+
+    public void create(Specialist specialist) { specialistRepository.save(specialist); }
 
     public void removeOne(Integer id) { specialistRepository.deleteById(id); }
 }

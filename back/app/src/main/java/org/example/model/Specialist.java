@@ -33,8 +33,8 @@ public class Specialist {
 
     public Integer getId() { return id; }
     public String getName() { return name; }
-    public Integer getCenterId() { return centerid; }
-    public void setCenterId(Integer centerid) { this.centerid = centerid; }
+    public Integer getCenterid() { return centerid; }
+    public void setCenterid(Integer centerid) { this.centerid = centerid; }
     public void setName(String name) { this.name = name; }
     public String getSpecialty() { return specialty; }
     public void setSpecialty(String specialty) { this.specialty = specialty; }

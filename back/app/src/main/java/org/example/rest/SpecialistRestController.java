@@ -22,9 +22,14 @@ public class SpecialistRestController {
         return service.findAll();
     }
 
+    @GetMapping("specialists/specialty/{specialty}")
+    public List<Specialist> findBySpecialty(@PathVariable("specialty") String specialty) {
+        return service.findBySpecialty(specialty);
+    }
+
     @PostMapping("/specialists")
     public ResponseEntity<Specialist> createSpecialist(@RequestBody Specialist specialist) throws URISyntaxException {
-        Specialist savedSpecialist = service.create(specialist);
-        return ResponseEntity.created(new URI("specialists/" + savedSpecialist.getId())).build();
+        service.create(specialist);
+        return ResponseEntity.created(new URI("specialists/" + specialist.getId())).build();
     }
 }
