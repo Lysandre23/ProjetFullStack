@@ -1,8 +1,10 @@
 package org.example.rest;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.example.model.Center;
 import org.example.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
