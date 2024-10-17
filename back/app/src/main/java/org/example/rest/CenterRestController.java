@@ -6,10 +6,7 @@ import org.example.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +20,11 @@ public class CenterRestController {
     @GetMapping("/centers")
     public List<Center> findAll() {
         return centerService.findAll();
+    }
+
+    @GetMapping("/centers/city/{city}")
+    public List<Center> findByCity(@PathVariable String city) {
+        return centerService.findByCityLike(city);
     }
 
     @PostMapping("/centers")

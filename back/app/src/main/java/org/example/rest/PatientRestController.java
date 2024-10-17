@@ -9,33 +9,31 @@ import org.example.model.Patient;
 import org.example.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/patients")
 public class PatientRestController {
 
     @Autowired
     private PatientService service;
 
-    @GetMapping(path = "/patients")
-    public List<Patient> findAll(){
+    @GetMapping(path = "")
+    public List<Patient> findPatient(@RequestParam(required = false) String firstname, @RequestParam(required = false) String lastname) throws PatientNotFoundException {
+        if(firstname != null && lastname != null) { return service.findByLastnameAndFirstname(firstname, lastname); }
+        if(firstname != null) { return service.findByFirstname(firstname); }
+        if(lastname != null) { return service.findByLastname(lastname); }
+        System.out.println(firstname + " " + lastname);
         return service.findAll();
     }
 
-    @PostMapping(path = "/patients")
+    @PostMapping(path = "")
     public ResponseEntity<Patient> create(@RequestBody Patient p) throws URISyntaxException{
         service.create(p);
         return ResponseEntity.created(new URI("patient/"+p.getId())).build();
     }
 
-    @DeleteMapping(path = "/patient/{id}")
+    @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable("id") Long id){
         service.removeOne(id);
     }

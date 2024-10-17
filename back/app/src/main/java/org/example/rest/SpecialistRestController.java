@@ -12,22 +12,23 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/specialists")
 public class SpecialistRestController {
 
     @Autowired
     private SpecialistService service;
 
-    @GetMapping(path = "/specialists")
+    @GetMapping(path = "")
     public List<Specialist> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("specialists/specialty/{specialty}")
+    @GetMapping("specialty/{specialty}")
     public List<Specialist> findBySpecialty(@PathVariable("specialty") String specialty) {
         return service.findBySpecialty(specialty);
     }
 
-    @PostMapping("/specialists")
+    @PostMapping("")
     public ResponseEntity<Specialist> createSpecialist(@RequestBody Specialist specialist) throws URISyntaxException {
         service.create(specialist);
         return ResponseEntity.created(new URI("specialists/" + specialist.getId())).build();

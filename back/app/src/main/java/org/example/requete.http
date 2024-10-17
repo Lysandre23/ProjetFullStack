@@ -2,6 +2,10 @@ GET http://localhost:8080/patients
 
 ###
 
+GET http://localhost:8080/patients?firstname=Alexandre&lastname=Humbert
+
+###
+
 GET http://localhost:8080/specialists
 
 ###
@@ -22,12 +26,24 @@ GET http://localhost:8080/centers
 
 ###
 
+GET http://localhost:8080/centers/city/NAL
+
+###
+
+GET http://localhost:8080/admins
+
+###
+
+GET http://localhost:8080/admins/super
+
+###
+
 POST http://localhost:8080/patients
 Content-Type: application/json
 
 {
-  "name": "Alexandre",
-  "surname": "Humbert",
+  "firstname": "Leo",
+  "lastname": "Gueffier",
   "email": "bgdu88@gmail.com",
   "phone": "0123456789",
   "birthdate": "2003-04-23T16:35:00.000+00:00"
@@ -40,8 +56,8 @@ Content-Type: application/json
 
 {
   "centerid": 1,
-  "name": "Gaelle",
-  "specialty": "Cardiologue",
+  "name": "Joris",
+  "specialty": "Cuisinier",
   "email": "bgdu88@gmail.com",
   "phone": "6666666666",
   "isadmin": true
@@ -65,9 +81,20 @@ POST http://localhost:8080/centers
 Content-Type: application/json
 
 {
-  "name": "Centre Emile Louis",
-  "city": "Nancy",
-  "address": "2 Rue Jean Lamour",
+  "name": "Centre Marine Lepen",
+  "city": "Epinal",
+  "address": "2 Rue Jean Zemmour",
   "phone": "0123456789",
   "email": "popo@popo.io"
+}
+
+###
+
+POST http://localhost:8080/admins
+Content-Type: application/json
+
+{
+  "centerid": 2,
+  "isSuperAdmin": true,
+  "name": "Jacky"
 }

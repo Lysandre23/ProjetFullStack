@@ -17,18 +17,16 @@ public class Specialist {
     private String specialty;
     private String email;
     private String phone;
-    public Boolean isadmin;
 
     public Specialist() {}
 
-    public Specialist(Integer id, Integer centerid, String name, String specialty, String email, String phone, Boolean isadmin) {
+    public Specialist(Integer id, Integer centerid, String name, String specialty, String email, String phone) {
         this.id = id;
         this.centerid = centerid;
         this.name = name;
         this.specialty = specialty;
         this.email = email;
         this.phone = phone;
-        this.isadmin = isadmin;
     }
 
     public Integer getId() { return id; }
@@ -42,7 +40,5 @@ public class Specialist {
     public void setEmail(String email) { this.email = email; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
-    public Boolean getIsadmin() { return isadmin; }
-    public void setIsadmin(Boolean isadmin) { this.isadmin = isadmin; }
 
 }

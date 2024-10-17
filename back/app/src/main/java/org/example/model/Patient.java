@@ -14,18 +14,18 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
-    private String surname;
+    private String lastname;
+    private String firstname;
     private String phone;
     private String email;
     private Date birthdate;
 
     public Patient(){}
 
-    public Patient(Integer id, String name, String surname, Date birthdate, String phone, String email) {
+    public Patient(Integer id, String lastname, String firstname, Date birthdate, String phone, String email) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+        this.lastname = lastname;
+        this.firstname = firstname;
         this.birthdate = birthdate;
         this.phone = phone;
         this.email = email;
@@ -37,14 +37,10 @@ public class Patient {
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getSurname() { return surname; }
-    public void setSurname(String surname) { this.surname = surname; }
+    public String getLastname() { return lastname; }
+    public void setLastname(String lastname) { this.lastname = lastname; }
+    public String getFirstname() { return firstname; }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
     public String getEmail() { return email; }

@@ -19,4 +19,8 @@ public class CenterService {
     public void create(Center center) {
         centerRepository.save(center);
     }
+
+    public List<Center> findByCityLike(String city) {
+        return centerRepository.findByCityLike(city);
+    }
 }
