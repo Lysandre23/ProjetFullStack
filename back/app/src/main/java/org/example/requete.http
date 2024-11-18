@@ -2,7 +2,7 @@ GET http://localhost:8080/patients
 
 ###
 
-GET http://localhost:8080/patients?firstname=Alexandre&lastname=Humbert
+GET http://localhost:8080/patients?lastname=humbert
 
 ###
 
@@ -97,4 +97,21 @@ Content-Type: application/json
   "centerid": 2,
   "isSuperAdmin": true,
   "name": "Jacky"
+}
+
+###
+
+DELETE http://localhost:8080/reservations/1
+
+###
+
+PUT http://localhost:8080/patients/2
+Content-Type: application/json
+
+{
+  "firstname": "Leo",
+  "lastname": "Gueffier",
+  "email": "bgdu88@gmail.com",
+  "phone": "000000000",
+  "birthdate": "2003-04-23T16:35:00.000+00:00"
 }

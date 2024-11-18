@@ -20,7 +20,7 @@ public class PatientRestController {
 
     @GetMapping(path = "")
     public List<Patient> findPatient(@RequestParam(required = false) String firstname, @RequestParam(required = false) String lastname) throws PatientNotFoundException {
-        if(firstname != null && lastname != null) { return service.findByLastnameAndFirstname(firstname, lastname); }
+        if(firstname != null && lastname != null) { return service.findByLastnameAndFirstname(lastname, firstname); }
         if(firstname != null) { return service.findByFirstname(firstname); }
         if(lastname != null) { return service.findByLastname(lastname); }
         System.out.println(firstname + " " + lastname);
@@ -36,6 +36,17 @@ public class PatientRestController {
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable("id") Long id){
         service.removeOne(id);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable("id") Long id, @RequestBody Patient p) throws PatientNotFoundException {
+        Patient updatedPatient = service.findOne(id);
+        updatedPatient.setFirstname(p.getFirstname());
+        updatedPatient.setLastname(p.getLastname());
+        updatedPatient.setBirthdate(p.getBirthdate());
+        updatedPatient.setEmail(p.getEmail());
+        updatedPatient.setPhone(p.getPhone());
+        service.create(updatedPatient);
     }
 
     @ExceptionHandler

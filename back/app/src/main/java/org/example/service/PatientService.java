@@ -17,8 +17,8 @@ public class PatientService {
     public List<Patient> findAll(){
         return patientRepository.findAll();
     }
-    public List<Patient> findByLastnameAndFirstname(String lastname, String surname) throws PatientNotFoundException {
-        return patientRepository.findByLastnameAndFirstname(lastname, surname);
+    public List<Patient> findByLastnameAndFirstname(String lastname, String firstname) throws PatientNotFoundException {
+        return patientRepository.findByLastnameAndFirstname(lastname, firstname);
     }
     public List<Patient> findByLastname(String lastname) throws PatientNotFoundException {
         return patientRepository.findByLastname(lastname);

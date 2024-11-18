@@ -1,12 +1,40 @@
-GET http://localhost:8080/patients?name=Jo
+GET http://localhost:8080/patients
 
 ###
 
-GET http://localhost:8080/patient/2
+GET http://localhost:8080/patients?lastname=humbert
 
 ###
 
-DELETE http://localhost:8080/patient/3
+GET http://localhost:8080/specialists
+
+###
+
+GET http://localhost:8080/specialists/specialty/Cardiologue
+
+###
+
+GET http://localhost:8080/reservations
+
+###
+
+GET http://localhost:8080/reservations/2/specialist
+
+###
+
+GET http://localhost:8080/centers
+
+###
+
+GET http://localhost:8080/centers/city/NAL
+
+###
+
+GET http://localhost:8080/admins
+
+###
+
+GET http://localhost:8080/admins/super
 
 ###
 
@@ -14,18 +42,59 @@ POST http://localhost:8080/patients
 Content-Type: application/json
 
 {
-  "id": 3,
-  "name": "Jean",
-  "birthDate": "2020-10-07T00:00:01.084+00:00"
+  "firstname": "Leo",
+  "lastname": "Gueffier",
+  "email": "bgdu88@gmail.com",
+  "phone": "0123456789",
+  "birthdate": "2003-04-23T16:35:00.000+00:00"
 }
 
 ###
 
-POST http://localhost:8080/patients
+POST http://localhost:8080/specialists
 Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "John",
-  "birthDate": "2019-10-07T00:00:01.084+00:00"
+  "centerid": 1,
+  "name": "Joris",
+  "specialty": "Cuisinier",
+  "email": "bgdu88@gmail.com",
+  "phone": "6666666666",
+  "isadmin": true
+}
+
+###
+
+POST http://localhost:8080/reservations
+Content-Type: application/json
+
+{
+  "centerid": 1,
+  "specialistid": 2,
+  "patientid": 1,
+  "date": "2003-04-23T16:35:00.000+00:00"
+}
+
+###
+
+POST http://localhost:8080/centers
+Content-Type: application/json
+
+{
+  "name": "Centre Marine Lepen",
+  "city": "Epinal",
+  "address": "2 Rue Jean Zemmour",
+  "phone": "0123456789",
+  "email": "popo@popo.io"
+}
+
+###
+
+POST http://localhost:8080/admins
+Content-Type: application/json
+
+{
+  "centerid": 2,
+  "isSuperAdmin": true,
+  "name": "Jacky"
 }

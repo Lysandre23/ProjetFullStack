@@ -27,6 +27,8 @@ public class CenterRestController {
         return centerService.findByCityLike(city);
     }
 
+    @GetMapping("/centers")
+
     @PostMapping("/centers")
     public ResponseEntity<Center> save(@RequestBody Center center) throws URISyntaxException {
         centerService.create(center);

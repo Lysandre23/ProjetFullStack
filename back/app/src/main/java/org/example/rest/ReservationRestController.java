@@ -33,4 +33,9 @@ public class ReservationRestController {
         reservationService.create(reservation);
         return ResponseEntity.created(new URI("reservations/"+reservation.getId())).build();
     }
+
+    @DeleteMapping("/reservations/{id}")
+    public void delete(@PathVariable Integer id) {
+        reservationService.removeOne(id);
+    }
 }

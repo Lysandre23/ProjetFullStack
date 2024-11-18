@@ -23,4 +23,8 @@ public class CenterService {
     public List<Center> findByCityLike(String city) {
         return centerRepository.findByCityLike(city);
     }
+
+    public Center findById(int id) {
+        return centerRepository.findById(id);
+    }
 }

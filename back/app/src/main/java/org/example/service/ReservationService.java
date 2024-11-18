@@ -22,4 +22,8 @@ public class ReservationService {
     }
 
     public void create(Reservation reservation) { reservationRepository.save(reservation); }
+
+    public void removeOne(Integer id) {
+        reservationRepository.deleteById(id);
+    }
 }
