@@ -1,37 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-nav {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    display: flex;
-    justify-content: space-around;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav ul li {
-    display: inline;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  nav ul li a:hover {
-    text-decoration: underline;
-  }
-  
-  footer {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f3f3f3;
-    color: #555;
-  }
-  
+body {
+  background-color: #f8f9fa;
+  color: #212529;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
