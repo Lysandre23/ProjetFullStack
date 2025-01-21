@@ -1,0 +1,9 @@
+<ul>
+    <li *ngFor="let aCenter of centers">
+        <button (click)="select(aCenter)" [ngClass]="aCenter == selectedCenter ? 'selected' : ''">{{aCenter.name}}</button>
+    </li>
+</ul>
+
+<div *ngIf="selectedCenter">
+    Centre sélectionné: {{selectedCenter.name}}
+</div>
