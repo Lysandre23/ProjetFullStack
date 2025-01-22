@@ -27,9 +27,9 @@ export class VaccinationCenterListComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.filteredCenters = this.centers;
-    this.fetchVaccinationCenters();
+    this.filteredCenters = []; // Initialement, aucune liste n'est affichée
   }
+  
 
   fetchVaccinationCenters(): void {
     this.isLoading = true;
@@ -59,15 +59,15 @@ export class VaccinationCenterListComponent implements OnInit {
   }
 
   filterCenters(): void {
-  this.selectedCenter = undefined; // Réinitialiser la sélection
-  if (this.searchTerm.trim() === '') {
-    this.filteredCenters = [];
-  } else {
-    this.filteredCenters = this.centers.filter(center =>
-      center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      center.address.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      center.city.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    if (this.searchTerm.trim() === '') {
+      this.filteredCenters = []; // Vide la liste si aucun texte n'est saisi
+    } else {
+      this.filteredCenters = this.centers.filter(center =>
+        center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        center.address.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        center.city.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
     }
   }
+  
 }

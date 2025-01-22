@@ -18,8 +18,3 @@
   </div>
 </div>
 <p *ngIf="searchTerm && filteredCenters.length === 0">Aucun centre trouvé.</p>
-
-<div *ngIf="selectedCenter">
-  <p>Centre sélectionné : {{ selectedCenter.name }}</p>
-  <p>Adresse : {{ selectedCenter.address }}, {{ selectedCenter.postalCode }} {{ selectedCenter.city }}</p>
-</div>
