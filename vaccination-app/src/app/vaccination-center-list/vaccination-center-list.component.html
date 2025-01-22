@@ -1,9 +1,25 @@
-<ul>
-    <li *ngFor="let aCenter of centers">
-        <button (click)="select(aCenter)" [ngClass]="aCenter == selectedCenter ? 'selected' : ''">{{aCenter.name}}</button>
-    </li>
-</ul>
+<h1>app-vaccination-center</h1>
+
+<input
+  type="text"
+  placeholder="Rechercher un centre..."
+  [(ngModel)]="searchTerm"
+  (input)="filterCenters()"
+/>
+
+<div *ngIf="filteredCenters.length > 0">
+  <div *ngFor="let center of filteredCenters">
+    <button
+      [ngClass]="{ 'selected': selectedCenter?.id === center.id }"
+      (click)="select(center)"
+    >
+      {{ center.name }} - {{ center.address }}, {{ center.postalCode }} {{ center.city }}
+    </button>
+  </div>
+</div>
+<p *ngIf="searchTerm && filteredCenters.length === 0">Aucun centre trouvé.</p>
 
 <div *ngIf="selectedCenter">
-    Centre sélectionné: {{selectedCenter.name}}
+  <p>Centre sélectionné : {{ selectedCenter.name }}</p>
+  <p>Adresse : {{ selectedCenter.address }}, {{ selectedCenter.postalCode }} {{ selectedCenter.city }}</p>
 </div>

@@ -8,6 +8,15 @@ li {
     margin: 1rem;
 }
 
-.selected {
-    background-color: #0FF;
+button.selected {
+    background-color: lightblue;
 }
+  
+input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
