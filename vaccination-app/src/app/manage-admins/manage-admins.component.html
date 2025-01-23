@@ -1,0 +1,30 @@
+<div class="manage-admins-container">
+    <h1>Gestion des Administrateurs des Centres</h1>
+  
+    <button class="create-button" (click)="onCreate()">Ajouter un nouvel administrateur</button>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Centre</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.id }}</td>
+          <td>{{ admin.name }}</td>
+          <td>{{ admin.email }}</td>
+          <td>{{ admin.centerName }}</td>
+          <td>
+            <button class="edit-button" (click)="onEdit(admin)">Modifier</button>
+            <button class="delete-button" (click)="onDelete(admin.id)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

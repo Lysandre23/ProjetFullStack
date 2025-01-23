@@ -1,20 +1,33 @@
-<h1>app-vaccination-center</h1>
+<div class="container">
+  <!-- Barre de recherche -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Rechercher un centre par nom, adresse ou ville..."
+      [(ngModel)]="searchTerm"
+      (input)="filterCenters()"
+    />
+  </div>
 
-<input
-  type="text"
-  placeholder="Rechercher un centre..."
-  [(ngModel)]="searchTerm"
-  (input)="filterCenters()"
-/>
-
-<div *ngIf="filteredCenters.length > 0">
-  <div *ngFor="let center of filteredCenters">
-    <button
-      [ngClass]="{ 'selected': selectedCenter?.id === center.id }"
-      (click)="select(center)"
-    >
+  <!-- Résultats de la recherche -->
+  <div class="results" *ngIf="filteredCenters.length > 0">
+    <button *ngFor="let center of filteredCenters" (click)="select(center)">
       {{ center.name }} - {{ center.address }}, {{ center.postalCode }} {{ center.city }}
     </button>
   </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isLoading" class="loading">Chargement des centres...</div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Centre sélectionné -->
+  <div *ngIf="selectedCenter" class="selected-center">
+    <h3>Centre sélectionné :</h3>
+    <p><strong>Nom :</strong> {{ selectedCenter.name }}</p>
+    <p><strong>Adresse :</strong> {{ selectedCenter.address }}</p>
+    <p><strong>Code Postal :</strong> {{ selectedCenter.postalCode }}</p>
+    <p><strong>Ville :</strong> {{ selectedCenter.city }}</p>
+  </div>
 </div>
-<p *ngIf="searchTerm && filteredCenters.length === 0">Aucun centre trouvé.</p>

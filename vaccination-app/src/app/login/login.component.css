@@ -1,40 +1,108 @@
+/* Styles généraux */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f3f4f6; /* Couleur douce et moderne pour le fond */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;     /* Centre verticalement */
+  height: 100vh;
+}
+
+/* Conteneur de connexion */
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
+  background: linear-gradient(135deg, #ffffff, #f7f8fa);
+  padding: 2.5rem;
+  border-radius: 12px; /* Bords plus arrondis pour un look moderne */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); /* Ombre douce */
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement le contenu */
+  justify-content: center; /* Centre verticalement le contenu */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Titre */
+.login-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase; /* Rendre le texte tout en majuscules */
+  letter-spacing: 1px;
+}
+
+/* Formulaire */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Plus d'espace entre les champs */
+  width: 100%;
+}
+
+/* Groupes de formulaire */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-input {
+  padding: 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.form-input:focus {
+  border-color: #0056b3; /* Couleur d'accentuation */
+  box-shadow: 0px 0px 5px rgba(0, 86, 179, 0.3);
+  outline: none;
+}
+
+/* Bouton de connexion */
+.login-button {
+  padding: 0.9rem;
+  background-color: black;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%; /* S'adapte à la largeur des champs */
+}
+
+.login-button:hover {
+  background-color: blueviolet; /* Couleur légèrement plus foncée au survol */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ajout d'ombre au survol */
+}
+
+/* Responsivité pour écrans plus petits */
+@media (max-width: 600px) {
+  .login-container {
     padding: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
   }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
+
+  .login-title {
+    font-size: 1.8rem;
   }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+
+  .login-button {
+    font-size: 1rem;
   }
-  
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 0.7rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+}

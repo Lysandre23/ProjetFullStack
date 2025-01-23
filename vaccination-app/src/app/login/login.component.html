@@ -1,11 +1,12 @@
-<h1>Connexion</h1>
+<h1 class="login-title">Connexion</h1>
 <div class="login-container">
-  <form (submit)="onSubmit()">
+  <form class="login-form" (submit)="onSubmit()">
     <div class="form-group">
-      <label for="email">Email :</label>
+      <label for="email" class="form-label">Email :</label>
       <input
         type="email"
         id="email"
+        class="form-input"
         [(ngModel)]="email"
         name="email"
         required
@@ -13,16 +14,17 @@
       />
     </div>
     <div class="form-group">
-      <label for="password">Mot de passe :</label>
+      <label for="password" class="form-label">Mot de passe :</label>
       <input
         type="password"
         id="password"
+        class="form-input"
         [(ngModel)]="password"
         name="password"
         required
         placeholder="Entrez votre mot de passe"
       />
     </div>
-    <button type="submit">Se connecter</button>
+    <button type="submit" class="login-button">Se connecter</button>
   </form>
 </div>

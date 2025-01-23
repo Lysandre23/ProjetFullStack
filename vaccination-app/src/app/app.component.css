@@ -1,0 +1,8 @@
+.app-title {
+    text-align: center; /* Centre le titre horizontalement */
+    font-size: 4rem; /* Agrandit le titre */
+    font-weight: bold; /* Met le titre en gras */
+    margin: 2rem 0; /* Ajoute de l'espace au-dessus et en dessous */
+    color: black /* Change la couleur du texte (facultatif) */
+  }
+  

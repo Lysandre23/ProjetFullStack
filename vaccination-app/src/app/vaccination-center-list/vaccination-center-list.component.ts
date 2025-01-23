@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-vaccination-center-list',
   standalone: true,
-  imports: [NgFor, NgIf, NgClass, HttpClientModule, FormsModule],
+  imports: [NgFor, NgIf, HttpClientModule, FormsModule],
   templateUrl: './vaccination-center-list.component.html',
   styleUrls: ['./vaccination-center-list.component.css']
 })
@@ -28,8 +28,8 @@ export class VaccinationCenterListComponent implements OnInit {
 
   ngOnInit(): void {
     this.filteredCenters = []; // Initialement, aucune liste n'est affichée
+    this.fetchVaccinationCenters();
   }
-  
 
   fetchVaccinationCenters(): void {
     this.isLoading = true;
@@ -58,6 +58,10 @@ export class VaccinationCenterListComponent implements OnInit {
     }
   }
 
+  getButtonClass(center: VaccinationCenter): string {
+    return this.selectedCenter?.id === center.id ? 'selected' : '';
+  }
+
   filterCenters(): void {
     if (this.searchTerm.trim() === '') {
       this.filteredCenters = []; // Vide la liste si aucun texte n'est saisi
@@ -69,5 +73,4 @@ export class VaccinationCenterListComponent implements OnInit {
       );
     }
   }
-  
 }
