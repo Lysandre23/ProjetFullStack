@@ -1,25 +1,40 @@
 .navbar {
-  display: flex;                 /* Active Flexbox */
-  justify-content: space-around; /* Ajoute un espace uniforme autour des boutons */
-  align-items: center;           /* Aligne verticalement les éléments au centre */
-  padding: 0 2rem;               /* Ajoute un padding horizontal */
-  background-color: black;        /* Définit une couleur de fond pour la barre */
+  display: flex;
+  flex-wrap: wrap; /* Les éléments passent à la ligne si nécessaire */
+  justify-content: space-between; /* Espacement entre les groupes d'éléments */
+  padding: 0.5rem 1rem; /* Espacement interne */
+  background-color: #000; /* Couleur de fond noire */
+  color: #fff; /* Couleur du texte */
+  align-items: center; /* Alignement vertical des boutons */
 }
 
 .navbar-item {
-  text-align: center;            /* Centre le texte dans chaque bouton */
+  margin: 0.5rem; /* Espacement autour des boutons */
+  white-space: nowrap; /* Empêche la coupure des boutons sur plusieurs lignes */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Les boutons passent en colonne pour les petits écrans */
+    align-items: flex-start; /* Alignement à gauche des boutons */
+  }
 }
 
 button {
   font-size: 1rem;
   font-weight: bold;
   color: white;
-  background: transparent;       /* Boutons avec un fond transparent */
+  background: black; /* Fond noir pour les boutons */
   border: none;
   cursor: pointer;
-  margin: 0 1rem;                /* Ajoute un espace entre les boutons */
+  margin: 0.5rem; /* Espacement autour des boutons */
 }
 
 button:hover {
   background-color: blueviolet; /* Effet visuel au survol */
+}
+
+.navbar {
+  height: auto; /* La hauteur s'ajuste automatiquement au contenu */
+  min-height: 3rem; /* Hauteur minimale pour une apparence propre */
 }
