@@ -25,6 +25,18 @@ export class AuthService {
     return this.role !== null;
   }
 
+  isSuperAdmin(): boolean {
+    return this.role === 'superadmin';
+  }
+
+  isAdmin(): boolean {
+    return this.role === 'admin';
+  }
+
+  isMedecin(): boolean {
+    return this.role === 'medecin';
+  }
+
   logout(): void {
     this.clearRole();
     // Redirection vers la page de connexion après déconnexion

@@ -1,9 +1,23 @@
 <mat-toolbar color="primary" class="navbar">
-  <!-- Boutons répartis uniformément -->
+  <!-- Boutons communs -->
   <button mat-button routerLink="/home" class="navbar-item">Accueil</button>
   <button mat-button routerLink="/vaccination-center" class="navbar-item">Centres de Vaccination</button>
 
-  <!-- Bouton conditionnel : Connexion ou Déconnexion -->
+  <!-- Boutons spécifiques aux rôles -->
+  <!-- Super Admin -->
+  <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-centers" class="navbar-item">Gestion des Centres</button>
+  <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-admins" class="navbar-item">Gestion des Administrateurs</button>
+  <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-superadmins" class="navbar-item">Gestion des Super Admins</button>
+
+  <!-- Administrateur -->
+  <button mat-button *ngIf="authService.isAdmin()" routerLink="/manage-doctors" class="navbar-item">Gestion des Médecins</button>
+  <button mat-button *ngIf="authService.isAdmin()" routerLink="/manage-reservations" class="navbar-item">Gestion des Réservations</button>
+
+  <!-- Médecin -->
+  <button mat-button *ngIf="authService.isMedecin()" routerLink="/search-person" class="navbar-item">Recherche d'une Personne</button>
+  <button mat-button *ngIf="authService.isMedecin()" routerLink="/validate-vaccination" class="navbar-item">Validation de la Vaccination</button>
+
+  <!-- Connexion/Déconnexion -->
   <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login" class="navbar-item">Connexion</button>
   <button mat-button *ngIf="authService.isLoggedIn()" (click)="logout()" class="navbar-item">Déconnexion</button>
 </mat-toolbar>
