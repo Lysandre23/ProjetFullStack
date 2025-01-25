@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   isMedecin(): boolean {
-    return this.role === 'medecin';
+    return this.role === 'doctor';
   }
 
   logout(): void {
