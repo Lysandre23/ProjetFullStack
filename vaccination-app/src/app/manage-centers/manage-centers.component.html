@@ -1,0 +1,32 @@
+<div class="manage-centers-container">
+    <h1>Gestion des Centres de Vaccination</h1>
+  
+    <button class="create-button" (click)="onCreate()">Créer un nouveau centre</button>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Adresse</th>
+          <th>Code Postal</th>
+          <th>Ville</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let center of centers">
+          <td>{{ center.id }}</td>
+          <td>{{ center.name }}</td>
+          <td>{{ center.address }}</td>
+          <td>{{ center.postalCode }}</td>
+          <td>{{ center.city }}</td>
+          <td>
+            <button class="edit-button" (click)="onEdit(center)">Modifier</button>
+            <button class="delete-button" (click)="onDelete(center.id)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { VaccinationCenter } from '../vaccination-center';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-vaccination-center-list',
   standalone: true,
-  imports: [NgFor, NgIf, NgClass, HttpClientModule],
+  imports: [NgFor, NgIf, HttpClientModule, FormsModule],
   templateUrl: './vaccination-center-list.component.html',
   styleUrls: ['./vaccination-center-list.component.css']
 })
@@ -17,6 +18,8 @@ export class VaccinationCenterListComponent implements OnInit {
     { id: 2, name: "Hopital Central 2", address: "Rue du pont", postalCode: "75000", city: "Paris" },
     { id: 3, name: "Hopital Central 3", address: "Rue du pont", postalCode: "21000", city: "Dijon" }
   ];
+  filteredCenters: VaccinationCenter[] = [];
+  searchTerm: string = '';
   selectedCenter?: VaccinationCenter;
   isLoading = false;
   errorMessage: string | null = null;
@@ -24,6 +27,7 @@ export class VaccinationCenterListComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.filteredCenters = []; // Initialement, aucune liste n'est affichée
     this.fetchVaccinationCenters();
   }
 
@@ -34,8 +38,8 @@ export class VaccinationCenterListComponent implements OnInit {
     this.http.get<VaccinationCenter[]>('http://localhost:8080/centers')
       .subscribe({
         next: (data) => {
-          // Ajoute les données récupérées à la liste existante
           this.centers = [...this.centers, ...data];
+          this.filteredCenters = this.centers;
           this.isLoading = false;
         },
         error: (error) => {
@@ -47,6 +51,26 @@ export class VaccinationCenterListComponent implements OnInit {
   }
 
   select(center: VaccinationCenter): void {
-    this.selectedCenter = center;
+    if (this.selectedCenter?.id === center.id) {
+      this.selectedCenter = undefined; // Désélectionner si c'est déjà le centre sélectionné
+    } else {
+      this.selectedCenter = center; // Sélectionner le centre cliqué
+    }
+  }
+
+  getButtonClass(center: VaccinationCenter): string {
+    return this.selectedCenter?.id === center.id ? 'selected' : '';
+  }
+
+  filterCenters(): void {
+    if (this.searchTerm.trim() === '') {
+      this.filteredCenters = []; // Vide la liste si aucun texte n'est saisi
+    } else {
+      this.filteredCenters = this.centers.filter(center =>
+        center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        center.address.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        center.city.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 }

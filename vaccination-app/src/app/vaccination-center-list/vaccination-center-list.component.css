@@ -1,13 +1,122 @@
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
+/* Conteneur principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
+  }
+  
+  /* Barre de recherche */
+  .search-bar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Liste des résultats */
+  .results {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+  }
+  
+  .results button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .results button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Centre sélectionné */
+  .selected-center {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .selected-center h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .selected-center p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* Indicateur de chargement */
+  .loading {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #007bff;
+  }
+  
+  /* Message d'erreur */
+  .error-message {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
 
-li {
-    margin: 1rem;
-}
-
-.selected {
-    background-color: #0FF;
-}
+  /* Style pour les boutons des résultats */
+.results button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 5px;
+  }
+  
+  /* Survol */
+  .results button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* État sélectionné */
+  .results button.selected {
+    background-color: blueviolet;
+    color: white;
+    font-weight: bold;
+  }
+  
+  
