@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatTableModule} from '@angular/material/table';
 
 @Component({
   selector: 'app-manage-centers',
   standalone: true,
-  imports: [CommonModule], // Ajout de CommonModule
+  imports: [CommonModule, MatTableModule], // Ajout de CommonModule
   templateUrl: './manage-centers.component.html',
   styleUrls: ['./manage-centers.component.css'],
 })

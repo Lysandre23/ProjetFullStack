@@ -21,6 +21,6 @@ export const routes: Routes = [
   { path: 'manage-reservations', component: ManageReservationsComponent },
   { path: 'search-person', component: SearchPersonComponent },
   { path: 'validate-vaccination', component: ValidateVaccinationComponent },
-  { path: '**', redirectTo: '/home' } // Redirection en cas de chemin non reconnu
+  { path: '**', redirectTo: '/home' }, // Redirection en cas de chemin non reconnu
   { path: 'manage-doctors/edit/:id', component: EditDoctorComponent }
 ];
