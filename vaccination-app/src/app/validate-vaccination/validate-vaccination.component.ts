@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-validate-vaccination',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Combinaison des modules nécessaires
+  imports: [CommonModule, FormsModule, MatButtonModule, MatTableModule], // Combinaison des modules nécessaires
   templateUrl: './validate-vaccination.component.html',
   styleUrls: ['./validate-vaccination.component.css'],
 })
 export class ValidateVaccinationComponent {
+  displayedColumns: string[] = ['id', 'name', 'email', 'age', 'status', 'actions'];
   persons = [
     { id: 1, name: 'John Doe', email: 'john@example.com', age: 30, status: 'Non Vaccinée' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', age: 25, status: 'Non Vaccinée' },
