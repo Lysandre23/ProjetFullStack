@@ -35,10 +35,17 @@
           <td>
             <button
               class="validate-button"
-              [disabled]="person.status === 'Vaccinée'"
+              *ngIf="person.status !== 'Vaccinée'"
               (click)="onValidate(person.id)"
             >
               Valider
+            </button>
+            <button
+              class="cancel-button"
+              *ngIf="person.status === 'Vaccinée'"
+              (click)="onCancel(person.id)"
+            >
+              Annuler
             </button>
           </td>
         </tr>

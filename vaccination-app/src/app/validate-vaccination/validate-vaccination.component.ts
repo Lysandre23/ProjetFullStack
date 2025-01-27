@@ -25,10 +25,18 @@ export class ValidateVaccinationComponent {
   }
 
   onValidate(id: number): void {
-    const person = this.persons.find(p => p.id === id);
+    const person = this.filteredPersons.find(p => p.id === id);
     if (person) {
-      person.status = 'Vaccinée';
-      alert(`La vaccination de ${person.name} a été validée.`);
+      person.status = 'Vaccinée'; // Change le statut en "Vaccinée"
+      alert(`${person.name} a été marqué(e) comme Vaccinée.`);
+    }
+  }
+  
+  onCancel(id: number): void {
+    const person = this.filteredPersons.find(p => p.id === id);
+    if (person) {
+      person.status = 'Non Vaccinée'; // Change le statut en "Non Vaccinée"
+      alert(`La vaccination de ${person.name} a été annulée.`);
     }
   }
 }

@@ -8,6 +8,7 @@ import { ManageDoctorsComponent } from './manage-doctors/manage-doctors.componen
 import { ManageReservationsComponent } from './manage-reservations/manage-reservations.component';
 import { SearchPersonComponent } from './search-person/search-person.component';
 import { ValidateVaccinationComponent } from './validate-vaccination/validate-vaccination.component';
+import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
@@ -21,4 +22,5 @@ export const routes: Routes = [
   { path: 'search-person', component: SearchPersonComponent },
   { path: 'validate-vaccination', component: ValidateVaccinationComponent },
   { path: '**', redirectTo: '/home' } // Redirection en cas de chemin non reconnu
+  { path: 'manage-doctors/edit/:id', component: EditDoctorComponent }
 ];
