@@ -11,21 +11,22 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/centers")
 public class CenterRestController {
     @Autowired
     private CenterService centerService;
 
-    @GetMapping("/centers")
+    @GetMapping("")
     public List<Center> findAll() {
         return centerService.findAll();
     }
 
-    @GetMapping("/centers/city/{city}")
+    @GetMapping("/city/{city}")
     public List<Center> findByCity(@PathVariable String city) {
         return centerService.findByCityLike(city);
     }
 
-    @PostMapping("/centers")
+    @PostMapping("")
     public ResponseEntity<Center> save(@RequestBody Center center) throws URISyntaxException {
         centerService.create(center);
         return ResponseEntity.created(new URI("centers/" + center.getId())).build();

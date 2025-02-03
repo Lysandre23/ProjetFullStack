@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/specialists")
+@RequestMapping("/api/specialists")
 public class SpecialistRestController {
 
     @Autowired

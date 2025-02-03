@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admins")
+@RequestMapping("/api/admins")
 public class AdminRestController {
     @Autowired
     private AdminService adminService;
