@@ -35,7 +35,7 @@ export class VaccinationCenterListComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.http.get<VaccinationCenter[]>('http://localhost:8080/centers')
+    this.http.get<VaccinationCenter[]>('http://localhost:8080/api/centers')
       .subscribe({
         next: (data) => {
           this.centers = [...this.centers, ...data];
