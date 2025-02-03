@@ -2,15 +2,17 @@ package org.example.service;
 
 import org.example.model.Center;
 import org.example.repository.CenterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CenterService {
-    @Autowired
-    private CenterRepository centerRepository;
+    private final CenterRepository centerRepository;
+
+    public CenterService(CenterRepository centerRepository) {
+        this.centerRepository = centerRepository;
+    }
 
     public List<Center> findAll() {
         return centerRepository.findAll();
