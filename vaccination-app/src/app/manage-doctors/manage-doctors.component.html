@@ -1,30 +1,52 @@
 <div class="manage-doctors-container">
-    <h1>Gestion des Médecins</h1>
-  
-    <button class="create-button" (click)="onCreate()">Ajouter un nouveau médecin</button>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Spécialité</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let doctor of doctors">
-          <td>{{ doctor.id }}</td>
-          <td>{{ doctor.name }}</td>
-          <td>{{ doctor.email }}</td>
-          <td>{{ doctor.specialty }}</td>
-          <td>
-            <button class="edit-button" (click)="onEdit(doctor)">Modifier</button>
-            <button class="delete-button" (click)="onDelete(doctor.id)">Supprimer</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h1>Gestion des Médecins</h1>
+
+  <button mat-raised-button color="primary" class="create-button" (click)="onCreate()">
+    Ajouter un nouveau médecin
+  </button>
+
+  <table mat-table [dataSource]="doctors" class="mat-elevation-z8" *ngIf="doctors.length > 0">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let doctor">{{ doctor.id }}</td>
+    </ng-container>
+
+    <!-- Nom Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let doctor">{{ doctor.name }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let doctor">{{ doctor.email }}</td>
+    </ng-container>
+
+    <!-- Spécialité Column -->
+    <ng-container matColumnDef="specialty">
+      <th mat-header-cell *matHeaderCellDef>Spécialité</th>
+      <td mat-cell *matCellDef="let doctor">{{ doctor.specialty }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let doctor">
+        <button mat-raised-button color="accent" class="edit-button" (click)="onEdit(doctor)">
+          Modifier
+        </button>
+        <button mat-raised-button color="warn" class="delete-button" (click)="onDelete(doctor.id)">
+          Supprimer
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p *ngIf="doctors.length === 0">Aucun médecin trouvé.</p>
+</div>

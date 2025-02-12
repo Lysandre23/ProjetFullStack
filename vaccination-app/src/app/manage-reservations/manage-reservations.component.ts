@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import du FormsModule
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-manage-reservations',
@@ -9,16 +10,24 @@ import { FormsModule } from '@angular/forms'; // Import du FormsModule
   templateUrl: './manage-reservations.component.html',
   styleUrls: ['./manage-reservations.component.css'],
 })
-export class ManageReservationsComponent {
-  reservations = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', date: '2025-01-25', status: 'en attente' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', date: '2025-01-26', status: 'validée' },
-    { id: 3, name: 'Sam Brown', email: 'sam@example.com', date: '2025-01-27', status: 'annulée' },
-  ];
-
-  filteredReservations = [...this.reservations];
+export class ManageReservationsComponent implements OnInit {
+  reservations: any[] = [];
+  filteredReservations: any[] = [];
   filterDate: string = '';
   filterStatus: string = '';
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.fetchReservations();
+  }
+
+  fetchReservations(): void {
+    this.apiService.getReservations().subscribe((data) => {
+      this.reservations = data;
+      this.filteredReservations = [...this.reservations]; // Initialisation du filtrage
+    });
+  }
 
   applyFilters(): void {
     this.filteredReservations = this.reservations.filter(reservation => {
@@ -32,7 +41,10 @@ export class ManageReservationsComponent {
     const reservation = this.reservations.find(r => r.id === id);
     if (reservation) {
       reservation.status = 'validée';
-      this.applyFilters();
+      this.apiService.createReservation(reservation).subscribe(() => {
+        alert('Réservation validée');
+        this.fetchReservations(); // Rafraîchissement des données
+      });
     }
   }
 
@@ -40,7 +52,10 @@ export class ManageReservationsComponent {
     const reservation = this.reservations.find(r => r.id === id);
     if (reservation) {
       reservation.status = 'annulée';
-      this.applyFilters();
+      this.apiService.createReservation(reservation).subscribe(() => {
+        alert('Réservation annulée');
+        this.fetchReservations(); // Rafraîchissement des données
+      });
     }
   }
 }

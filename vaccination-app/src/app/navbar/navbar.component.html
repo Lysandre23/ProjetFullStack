@@ -7,7 +7,7 @@
   <!-- Super Admin -->
   <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-centers" class="navbar-item">Gestion des Centres</button>
   <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-admins" class="navbar-item">Gestion des Administrateurs</button>
-  <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-superadmins" class="navbar-item">Gestion des Super Admins</button>
+  <button mat-button *ngIf="authService.isSuperAdmin()" routerLink="/manage-super-admins" class="navbar-item">Gestion des Super Admins</button>
 
   <!-- Administrateur -->
   <button mat-button *ngIf="authService.isAdmin()" routerLink="/manage-doctors" class="navbar-item">Gestion des Médecins</button>

@@ -1,0 +1,51 @@
+<div class="edit-doctor-container">
+    <h1>Modifier le Médecin</h1>
+    
+    <form (ngSubmit)="onSubmit()" #editDoctorForm="ngForm">
+      <div class="form-group">
+        <label for="name">Nom</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="doctor.name"
+          name="name"
+          required
+          placeholder="Entrez le nom"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="doctor.email"
+          name="email"
+          required
+          placeholder="Entrez l'email"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="specialty">Spécialité</label>
+        <input
+          type="text"
+          id="specialty"
+          [(ngModel)]="doctor.specialty"
+          name="specialty"
+          required
+          placeholder="Entrez la spécialité"
+        />
+      </div>
+  
+      <div class="form-buttons">
+        <button type="submit" class="save-button" [disabled]="!editDoctorForm.valid">
+          Sauvegarder
+        </button>
+        <button type="button" class="cancel-button" (click)="onCancel()">
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
+  

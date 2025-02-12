@@ -1,45 +1,58 @@
 .search-person-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    text-align: center;
-  }
-  
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: black;
-  }
-  
-  .search-bar {
-    margin-bottom: 1.5rem;
-  }
-  
-  .search-bar label {
-    font-weight: bold;
-    margin-right: 0.5rem;
-  }
-  
-  .search-bar input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 300px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  
-  table th,
-  table td {
-    border: 1px solid #ddd;
-    padding: 0.8rem;
-    text-align: left;
-  }
-  
-  table th {
-    background-color: #f4f4f4;
-  }
-  
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: black;
+}
+
+.search-bar {
+  margin-bottom: 1.5rem;
+}
+
+.search-bar label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.search-bar input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+}
+
+/* Style pour la table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+/* En-tête de tableau */
+table thead tr {
+  background-color: black;
+  color: white;
+}
+
+table th {
+  text-align: left;
+  padding: 0.8rem;
+}
+
+/* Lignes de tableau */
+table td {
+  background-color: white;
+  color: black;
+  padding: 0.8rem;
+}
+
+/* Bordure */
+table th,
+table td {
+  border: 1px solid #ddd;
+}
