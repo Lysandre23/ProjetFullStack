@@ -10,6 +10,7 @@ import { SearchPersonComponent } from './search-person/search-person.component';
 import { ValidateVaccinationComponent } from './validate-vaccination/validate-vaccination.component';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { ManageCentersComponent } from './manage-centers/manage-centers.component';
+import { HttpClientModule } from '@angular/common/http';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
