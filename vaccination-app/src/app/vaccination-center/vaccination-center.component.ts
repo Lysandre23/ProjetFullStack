@@ -1,25 +1,41 @@
-import { Component } from '@angular/core';
-import { VaccinationCenter } from '../vaccination-center';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../services/api.service';
+import { CommonModule } from '@angular/common';
+
+interface VaccinationCenter {
+  id: number;
+  name: string;
+  address: string;
+  postalCode: string;
+  city: string;
+}
 
 @Component({
   selector: 'app-vaccination-center',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './vaccination-center.component.html',
-  styleUrl: './vaccination-center.component.css'
+  styleUrls: ['./vaccination-center.component.css']
 })
-export class VaccinationCenterComponent {
-  center: VaccinationCenter = {
-    id: 2,
-    name: "Hopital Central",
-    address: "Rue du pont",
-    postalCode: "54000",
-    city: "Nancy"
+export class VaccinationCenterComponent implements OnInit {
+  center: VaccinationCenter | null = null;
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.fetchCenter(2); // Charge le centre par défaut (id = 2)
   }
 
-  clearName() {
-    this.center.name = "";
+  fetchCenter(id: number): void {
+    this.apiService.getCenters().subscribe((centers) => {
+      this.center = centers.find((c: VaccinationCenter) => c.id === id) || null;
+    });
   }
-  
+
+  clearName(): void {
+    if (this.center) {
+      this.center.name = '';
+    }
+  }
 }
