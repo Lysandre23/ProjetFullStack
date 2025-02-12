@@ -71,6 +71,7 @@ button {
 
 .validate-button:hover {
   background-color: #218838;
+  color: white;
 }
 
 .cancel-button {
@@ -80,4 +81,5 @@ button {
 
 .cancel-button:hover {
   background-color: #c82333;
+  color: white;
 }
