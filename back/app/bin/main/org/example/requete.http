@@ -1,44 +1,44 @@
-GET http://localhost:8080/patients
+GET http://localhost:8080/api/patients
 
 ###
 
-GET http://localhost:8080/patients?lastname=humbert
+GET http://localhost:8080/api/patients?lastname=humbert
 
 ###
 
-GET http://localhost:8080/specialists
+GET http://localhost:8080/api/specialists
 
 ###
 
-GET http://localhost:8080/specialists/specialty/Cardiologue
+GET http://localhost:8080/api/specialists/specialty/Cardiologue
 
 ###
 
-GET http://localhost:8080/reservations
+GET http://localhost:8080/api/reservations
 
 ###
 
-GET http://localhost:8080/reservations/2/specialist
+GET http://localhost:8080/api/reservations/2/specialist
 
 ###
 
-GET http://localhost:8080/centers
+GET http://localhost:8080/api/centers
 
 ###
 
-GET http://localhost:8080/centers/city/NAL
+GET http://localhost:8080/api/centers/city/NAL
 
 ###
 
-GET http://localhost:8080/admins
+GET http://localhost:8080/api/admins
 
 ###
 
-GET http://localhost:8080/admins/super
+GET http://localhost:8080/api/admins/super
 
 ###
 
-POST http://localhost:8080/patients
+POST http://localhost:8080/api/patients
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/specialists
+POST http://localhost:8080/api/specialists
 Content-Type: application/json
 
 {
@@ -65,7 +65,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/reservations
+POST http://localhost:8080/api/reservations
 Content-Type: application/json
 
 {
@@ -77,7 +77,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/centers
+POST http://localhost:8080/api/centers
 Content-Type: application/json
 
 {
@@ -90,7 +90,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/admins
+POST http://localhost:8080/api/admins
 Content-Type: application/json
 
 {
@@ -101,11 +101,11 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/reservations/1
+DELETE http://localhost:8080/api/reservations/1
 
 ###
 
-PUT http://localhost:8080/patients/2
+PUT http://localhost:8080/api/patients/2
 Content-Type: application/json
 
 {
