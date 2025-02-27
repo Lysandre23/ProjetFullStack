@@ -1,34 +1,36 @@
 package org.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import org.springframework.context.annotation.Role;
+
+import java.util.List;
 
 @Entity
 public class Center {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private String city;
     private String address;
     private String phone;
     private String email;
-    private Integer adminid;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL)
+    private List<Specialist> specialists;
 
     public Center() {}
 
-    public Center(Integer id, String name, String city, String address, String phone, String email, Integer adminid) {
+    public Center(Integer id, String name, String city, String address, String phone, String email, List<Specialist> specialists) {
         this.id = id;
         this.name = name;
         this.city = city;
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.adminid = adminid;
+        this.specialists = specialists;
     }
 
     public Integer getId() { return id; }
@@ -43,6 +45,6 @@ public class Center {
     public void setPhone(String phone) { this.phone = phone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public Integer getAdminid() { return adminid; }
-    public void setAdminid(Integer adminid) { this.adminid = adminid; }
+    public List<Specialist> getSpecialists() { return specialists; }
+    public void setSpecialists(List<Specialist> Specialists) { this.specialists = Specialists; }
 }

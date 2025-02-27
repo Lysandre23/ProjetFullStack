@@ -6,7 +6,7 @@ GET http://localhost:8080/api/patients?lastname=humbert
 
 ###
 
-GET http://localhost:8080/api/specialists
+GET http://localhost:8080/api/centers/1/specialists
 
 ###
 
@@ -81,9 +81,9 @@ POST http://localhost:8080/api/centers
 Content-Type: application/json
 
 {
-  "name": "Centre Marine Lepen",
+  "name": "Centre Zidane",
   "city": "Epinal",
-  "address": "2 Rue Jean Zemmour",
+  "address": "2 Rue Jean Lamour",
   "phone": "0123456789",
   "email": "popo@popo.io"
 }
@@ -97,6 +97,18 @@ Content-Type: application/json
   "centerid": 2,
   "isSuperAdmin": true,
   "name": "Jacky"
+}
+
+###
+
+POST http://localhost:8080/api/centers/1/specialist
+Content-Type: application/json
+
+{
+  "name": "Vincent",
+  "specialty": "Boucher",
+  "email": "bgdu88@gmail.com",
+  "phone": "6666666666"
 }
 
 ###

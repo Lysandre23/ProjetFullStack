@@ -10,10 +10,4 @@ public class CenterServiceTest {
     CenterService centerService;
     CenterRepository centerRepository;
 
-    @BeforeEach
-    void setUp() {
-        centerRepository = Mockito.mock(CenterRepository.class);
-        centerService = new CenterService(centerRepository);
-    }
-
 }

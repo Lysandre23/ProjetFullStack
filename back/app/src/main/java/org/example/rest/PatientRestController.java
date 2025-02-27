@@ -27,12 +27,6 @@ public class PatientRestController {
         return service.findAll();
     }
 
-    @PostMapping(path = "")
-    public ResponseEntity<Patient> create(@RequestBody Patient p) throws URISyntaxException{
-        service.create(p);
-        return ResponseEntity.created(new URI("patient/"+p.getId())).build();
-    }
-
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable("id") Long id){
         service.removeOne(id);
