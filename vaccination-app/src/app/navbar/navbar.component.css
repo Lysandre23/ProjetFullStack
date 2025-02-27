@@ -31,7 +31,7 @@ button {
 }
 
 button:hover {
-  background-color: blueviolet; /* Effet visuel au survol */
+  background-color: #6c5ce7; /* Effet visuel au survol */
 }
 
 .navbar {

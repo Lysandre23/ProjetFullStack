@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-search-person',
@@ -9,18 +10,28 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './search-person.component.html',
   styleUrls: ['./search-person.component.css'],
 })
-export class SearchPersonComponent {
-  persons = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', age: 30, status: 'Présent' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', age: 25, status: 'Présent' },
-    { id: 3, name: 'Alice Brown', email: 'alice@example.com', age: 40, status: 'Absente' },
-  ];
-
+export class SearchPersonComponent implements OnInit {
+  persons: any[] = [];
+  filteredPersons: any[] = [];
   searchTerm: string = '';
-  filteredPersons = [...this.persons];
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.fetchPersons();
+  }
+
+  fetchPersons(): void {
+    this.apiService.getPatients().subscribe((data) => {
+      this.persons = data;
+      this.filteredPersons = [...this.persons];
+    });
+  }
 
   onSearch(): void {
     const term = this.searchTerm.toLowerCase();
-    this.filteredPersons = this.persons.filter(person => person.name.toLowerCase().includes(term));
+    this.filteredPersons = this.persons.filter(person =>
+      person.name.toLowerCase().includes(term)
+    );
   }
 }

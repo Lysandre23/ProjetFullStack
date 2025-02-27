@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-manage-super-admins',
@@ -8,26 +9,50 @@ import { CommonModule } from '@angular/common';
   templateUrl: './manage-super-admins.component.html',
   styleUrls: ['./manage-super-admins.component.css'],
 })
-export class ManageSuperAdminsComponent {
-  superAdmins = [
-    { id: 1, name: 'Super Admin 1', email: 'superadmin1@example.com' },
-    { id: 2, name: 'Super Admin 2', email: 'superadmin2@example.com' },
-    { id: 3, name: 'Super Admin 3', email: 'superadmin3@example.com' },
-  ];
+export class ManageSuperAdminsComponent implements OnInit {
+  superAdmins: any[] = [];
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.fetchSuperAdmins();
+  }
+
+  fetchSuperAdmins(): void {
+    this.apiService.getSuperAdmins().subscribe((data) => {
+      this.superAdmins = data;
+    });
+  }
 
   onCreate(): void {
-    alert('Ajouter un nouveau super administrateur');
-    // Implémentez la logique pour ajouter un super admin
+    const newAdmin = {
+      centerid: null, // Super admin n'a pas forcément de centre
+      isSuperAdmin: true,
+      name: 'Nouveau Super Admin',
+      email: 'newsuperadmin@example.com'
+    };
+
+    this.apiService.createAdmin(newAdmin).subscribe(() => {
+      alert('Super administrateur ajouté avec succès');
+      this.fetchSuperAdmins(); // Rafraîchit la liste après ajout
+    });
   }
 
   onEdit(admin: any): void {
-    alert(`Modifier le super administrateur : ${admin.name}`);
-    // Implémentez la logique pour modifier un super admin
+    const updatedAdmin = { ...admin, name: 'Nom modifié' };
+
+    this.apiService.createAdmin(updatedAdmin).subscribe(() => {
+      alert(`Super administrateur modifié : ${admin.name}`);
+      this.fetchSuperAdmins(); // Rafraîchit la liste après modification
+    });
   }
 
   onDelete(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce super administrateur ?')) {
-      this.superAdmins = this.superAdmins.filter(admin => admin.id !== id);
+      this.apiService.deleteReservation(id).subscribe(() => {
+        alert('Super administrateur supprimé');
+        this.fetchSuperAdmins(); // Rafraîchit la liste après suppression
+      });
     }
   }
 }

@@ -30,4 +30,31 @@
     <p><strong>Code Postal :</strong> {{ selectedCenter.postalCode }}</p>
     <p><strong>Ville :</strong> {{ selectedCenter.city }}</p>
   </div>
+
+  <!-- Sélection de la date -->
+  <mat-form-field>
+    <mat-label>Choisir une date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [(ngModel)]="selectedDate"
+      (keyup.enter)="onDateSelected()"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- Affichage de la date sélectionnée -->
+  <p *ngIf="selectedDate">
+    Vous avez choisi la date suivante : <strong>{{ selectedDate | date: 'longDate' }}</strong>
+  </p>
+
+  <!-- Bouton de validation -->
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="validateDate()"
+  >
+    Valider
+  </button>
 </div>
