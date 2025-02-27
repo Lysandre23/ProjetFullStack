@@ -12,7 +12,7 @@
   <!-- Liste des résultats -->
   <div class="results" *ngIf="filteredCenters.length > 0">
     <button *ngFor="let center of filteredCenters" (click)="select(center)">
-      {{ center.name }} - {{ center.address }}, {{ center.postalCode }} {{ center.city }}
+      {{ center.name }} - {{ center.address }}, {{ center.city }}
     </button>
   </div>
 
@@ -22,6 +22,8 @@
     <p><strong>Nom :</strong> {{ selectedCenter.name }}</p>
     <p><strong>Adresse :</strong> {{ selectedCenter.address }}</p>
     <p><strong>Ville :</strong> {{ selectedCenter.city }}</p>
+    <p><strong>Email :</strong> {{ selectedCenter.email }}</p>
+    <p><strong>Téléphone :</strong> {{ selectedCenter.phone }}</p>
 
     <!-- Sélection du médecin -->
     <mat-form-field appearance="fill" *ngIf="selectedDoctors.length > 0">

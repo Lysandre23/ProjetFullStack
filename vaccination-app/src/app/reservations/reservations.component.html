@@ -1,18 +1,24 @@
-<h2>Mes Réservations</h2>
-<table>
-  <tr>
-    <th>Nom</th>
-    <th>Prénom</th>
-    <th>Date</th>
-    <th>Lieu</th>
-    <th>Médecin</th>
-    <th>Action</th>
-  </tr>
-  <tr *ngFor="let res of reservations">
-    <td>{{ res.nom }}</td>
-    <td>{{ res.prenom }}</td>
-    <td>{{ res.date }}</td>
-    <td>{{ res.lieu }}</td>
-    <td>{{ res.medecin }}</td>
-  </tr>
-</table>
+<div class="manage-doctors-container">
+  <h2>Mes Réservations</h2>
+  <table> 
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Date</th>
+        <th>Lieu</th>
+        <th>Médecin</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr *ngFor="let res of reservations">
+        <td>{{ res.nom }}</td>
+        <td>{{ res.prenom }}</td>
+        <td>{{ res.date }}</td>
+        <td>{{ res.lieu }}</td>
+        <td>{{ res.medecin }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -12,10 +12,11 @@ import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material
 // Définition des interfaces
 export interface VaccinationCenter {
   id: number;
-  name: string;
   address: string;
-  postalCode: string;
   city: string;
+  email: string;
+  name: string;
+  phone: string;
 }
 
 export interface Doctor {
@@ -40,9 +41,9 @@ export interface Doctor {
 export class VaccinationCenterListComponent implements OnInit {
   // Liste des centres de vaccination
   centers: VaccinationCenter[] = [
-    { id: 1, name: "Hopital Central 1", address: "Rue du pont", postalCode: "54000", city: "Nancy" },
-    { id: 2, name: "Hopital Central 2", address: "Rue du pont", postalCode: "75000", city: "Paris" },
-    { id: 3, name: "Hopital Central 3", address: "Rue du pont", postalCode: "21000", city: "Dijon" }
+    { id: 1, address: "Rue du pont",  city: "Nancy" , email: "email@popo.io", name: "Hopital Central 1", phone: "0123456789"},
+    { id: 2, address: "Rue du pont", city: "Paris", email: "email@popo.io", name: "Hopital Central 2", phone: "0123456789"},
+    { id: 3, address: "Rue du pont", city: "Dijon" , email: "email@popo.io", name: "Hopital Central 3", phone: "0123456789"}
   ];
 
   // Liste des médecins associés aux centres
@@ -76,7 +77,9 @@ export class VaccinationCenterListComponent implements OnInit {
       this.filteredCenters = this.centers.filter(center =>
         center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         center.address.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        center.city.toLowerCase().includes(this.searchTerm.toLowerCase())
+        center.city.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        center.email.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        center.phone.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
