@@ -105,4 +105,21 @@ body {
   .login-button {
     font-size: 1rem;
   }
+
+  mat-tab-group {
+    width: 100%;
+  }
+  
+  .mat-tab-label {
+    color: #333 !important;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .mat-tab-label-active {
+    color: #000 !important; 
+    font-weight: bold;
+    border-bottom: 2px solid #6c5ce7 !important;
+  }
+  
 }

@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MatTabsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -24,9 +25,9 @@ export class LoginComponent {
 
   constructor(private router: Router, private authService: AuthService) {}
 
-  onSubmit(): void {
+  onSubmitPatient(): void {
     const user = this.users.find(
-      u => u.email === this.email && u.password === this.password
+      u => u.email === this.email && u.password === this.password && u.role === 'patient'
     );
 
     if (user) {
@@ -37,4 +38,21 @@ export class LoginComponent {
       alert('Email ou mot de passe incorrect.');
     }
   }
+  onSubmitMedecin(): void {
+    const user = this.users.find(
+      u => u.email === this.email &&
+           u.password === this.password &&
+           (u.role === 'doctor' || u.role === 'admin' || u.role === 'superadmin') // Vérifie les 3 types de rôles
+    );
+  
+    if (user) {
+      alert(`Connexion réussie en tant que ${user.role} !`);
+      this.authService.setRole(user.role);
+      this.router.navigate([user.redirectTo]);
+    } else {
+      alert('Email ou mot de passe incorrect.');
+    }
+  }
+  
+  
 }
