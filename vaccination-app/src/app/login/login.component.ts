@@ -19,6 +19,7 @@ export class LoginComponent {
     { email: 'superadmin@example.com', password: 'superadmin123', role: 'superadmin', redirectTo: '/manage-super-admins' },
     { email: 'admin@example.com', password: 'admin123', role: 'admin', redirectTo: '/manage-doctors' },
     { email: 'doctor@example.com', password: 'doctor123', role: 'doctor', redirectTo: '/search-person' },
+    { email: 'patient@example.com', password: 'patient123', role: 'patient', redirectTo: '/reservations' },
   ];
 
   constructor(private router: Router, private authService: AuthService) {}

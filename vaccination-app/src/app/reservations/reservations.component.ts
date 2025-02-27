@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { CommonModule } from '@angular/common'; // Nécessaire pour *ngIf et autres directives Angular
 
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
+  imports: [MatToolbarModule, MatButtonModule, RouterModule, CommonModule], // Ajout des modules nécessaires
   styleUrls: ['./reservations.component.css']
 })
 export class ReservationsComponent {

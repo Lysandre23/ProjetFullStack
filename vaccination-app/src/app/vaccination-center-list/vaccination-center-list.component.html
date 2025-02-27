@@ -3,58 +3,57 @@
   <div class="search-bar">
     <input
       type="text"
-      placeholder="Rechercher un centre par nom, adresse ou ville..."
+      placeholder="Rechercher un centre..."
       [(ngModel)]="searchTerm"
       (input)="filterCenters()"
     />
   </div>
 
-  <!-- Résultats de la recherche -->
+  <!-- Liste des résultats -->
   <div class="results" *ngIf="filteredCenters.length > 0">
     <button *ngFor="let center of filteredCenters" (click)="select(center)">
       {{ center.name }} - {{ center.address }}, {{ center.postalCode }} {{ center.city }}
     </button>
   </div>
 
-  <!-- Indicateur de chargement -->
-  <div *ngIf="isLoading" class="loading">Chargement des centres...</div>
-
-  <!-- Message d'erreur -->
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
   <!-- Centre sélectionné -->
   <div *ngIf="selectedCenter" class="selected-center">
     <h3>Centre sélectionné :</h3>
     <p><strong>Nom :</strong> {{ selectedCenter.name }}</p>
     <p><strong>Adresse :</strong> {{ selectedCenter.address }}</p>
-    <p><strong>Code Postal :</strong> {{ selectedCenter.postalCode }}</p>
     <p><strong>Ville :</strong> {{ selectedCenter.city }}</p>
+
+    <!-- Sélection du médecin -->
+    <mat-form-field appearance="fill" *ngIf="selectedDoctors.length > 0">
+      <mat-label>Choisissez un médecin</mat-label>
+      <mat-select [(ngModel)]="selectedDoctor">
+        <mat-option *ngFor="let doctor of selectedDoctors" [value]="doctor">
+          {{ doctor.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Sélection de la date -->
+    <mat-form-field>
+      <mat-label>Choisir une date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Résumé du choix -->
+    <p *ngIf="selectedCenter && selectedDoctor && selectedDate">
+      Vous avez choisi le centre <strong>{{ selectedCenter.name }}</strong> avec le médecin 
+      <strong>{{ selectedDoctor.name }}</strong> à la date du 
+      <strong>{{ selectedDate | date: 'longDate' }}</strong>.
+    </p>
+
+    <!-- Bouton de validation -->
+    <button mat-raised-button color="primary" (click)="validateAppointment()">Valider</button>
+
+    <!-- Affichage du message après validation -->
+    <p *ngIf="appointmentConfirmed" style="color: green; font-weight: bold; margin-top: 10px;">
+      Rendez-vous pris !
+    </p>
   </div>
-
-  <!-- Sélection de la date -->
-  <mat-form-field>
-    <mat-label>Choisir une date</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      [(ngModel)]="selectedDate"
-      (keyup.enter)="onDateSelected()"
-    />
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-
-  <!-- Affichage de la date sélectionnée -->
-  <p *ngIf="selectedDate">
-    Vous avez choisi la date suivante : <strong>{{ selectedDate | date: 'longDate' }}</strong>
-  </p>
-
-  <!-- Bouton de validation -->
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="validateDate()"
-  >
-    Valider
-  </button>
 </div>

@@ -1,79 +1,77 @@
 import { Component, OnInit } from '@angular/core';
-import {ChangeDetectionStrategy} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { VaccinationCenter } from '../vaccination-center';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+
+// Définition des interfaces
+export interface VaccinationCenter {
+  id: number;
+  name: string;
+  address: string;
+  postalCode: string;
+  city: string;
+}
+
+export interface Doctor {
+  id: number;
+  name: string;
+  centerId: number; // Clé étrangère vers le centre
+}
 
 @Component({
   selector: 'app-vaccination-center-list',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [NgFor,CommonModule, NgIf, HttpClientModule, FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule],
+  imports: [
+    NgFor, CommonModule, NgIf, FormsModule, 
+    MatFormFieldModule, MatInputModule, MatDatepickerModule, 
+    MatNativeDateModule, MatSelectModule, MatOptionModule
+  ],
   templateUrl: './vaccination-center-list.component.html',
   styleUrls: ['./vaccination-center-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VaccinationCenterListComponent implements OnInit {
+  // Liste des centres de vaccination
   centers: VaccinationCenter[] = [
     { id: 1, name: "Hopital Central 1", address: "Rue du pont", postalCode: "54000", city: "Nancy" },
     { id: 2, name: "Hopital Central 2", address: "Rue du pont", postalCode: "75000", city: "Paris" },
-    { id: 3, name: "Hopital Central 3", address: "Rue du pont", postalCode: "21000", city: "Dijon" },
-    { id: 4, name: "Hopital Central 4", address: "Rue du pont", postalCode: "88500", city: "Mirecourt" }
+    { id: 3, name: "Hopital Central 3", address: "Rue du pont", postalCode: "21000", city: "Dijon" }
   ];
+
+  // Liste des médecins associés aux centres
+  doctors: Doctor[] = [
+    { id: 1, name: "Dr. Dupont", centerId: 1 },
+    { id: 2, name: "Dr. Martin", centerId: 1 },
+    { id: 3, name: "Dr. Morel", centerId: 2 },
+    { id: 4, name: "Dr. Durand", centerId: 2 },
+    { id: 5, name: "Dr. Bernard", centerId: 3 },
+    { id: 6, name: "Dr. Leclerc", centerId: 3 }
+  ];
+
+  // Variables de sélection
   filteredCenters: VaccinationCenter[] = [];
   searchTerm: string = '';
   selectedCenter?: VaccinationCenter;
-  isLoading = false;
-  errorMessage: string | null = null;
-  selectedDate: Date | null = null; // Propriété pour la date sélectionnée
-
-  constructor(private http: HttpClient) {}
+  selectedDoctors: Doctor[] = [];
+  selectedDoctor?: Doctor;
+  selectedDate: Date | null = null;
+  appointmentConfirmed = false; // ✅ Pour afficher "Rendez-vous pris"
 
   ngOnInit(): void {
-    this.filteredCenters = []; // Initialement, aucune liste n'est affichée
-    this.fetchVaccinationCenters();
+    this.filteredCenters = []; // Aucun centre affiché au début
   }
 
-  fetchVaccinationCenters(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    this.http.get<VaccinationCenter[]>('http://localhost:8080/api/centers')
-      .subscribe({
-        next: (data) => {
-          this.centers = [...this.centers, ...data];
-          this.filteredCenters = this.centers;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          this.errorMessage = 'Une erreur est survenue lors de la récupération des centres de vaccination dans la base de donnée.';
-          console.error(error);
-          this.isLoading = false;
-        }
-      });
-  }
-
-  select(center: VaccinationCenter): void {
-    if (this.selectedCenter?.id === center.id) {
-      this.selectedCenter = undefined; // Désélectionner si c'est déjà le centre sélectionné
-    } else {
-      this.selectedCenter = center; // Sélectionner le centre cliqué
-    }
-  }
-
-  getButtonClass(center: VaccinationCenter): string {
-    return this.selectedCenter?.id === center.id ? 'selected' : '';
-  }
-
+  // Filtrer les centres en fonction de la recherche
   filterCenters(): void {
     if (this.searchTerm.trim() === '') {
-      this.filteredCenters = []; // Vide la liste si aucun texte n'est saisi
+      this.filteredCenters = [];
     } else {
       this.filteredCenters = this.centers.filter(center =>
         center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -83,22 +81,26 @@ export class VaccinationCenterListComponent implements OnInit {
     }
   }
 
-  onDateSelected(): void {
-    if (this.selectedDate) {
-      console.log('Date sélectionnée avec Entrée : ', this.selectedDate);
-      // Ajoutez ici une logique supplémentaire si nécessaire
+  // Sélectionner un centre et récupérer ses médecins
+  select(center: VaccinationCenter): void {
+    if (this.selectedCenter?.id === center.id) {
+      this.selectedCenter = undefined;
+      this.selectedDoctors = [];
+      this.selectedDoctor = undefined;
     } else {
-      console.error('Aucune date sélectionnée');
+      this.selectedCenter = center;
+      this.selectedDoctors = this.doctors.filter(doc => doc.centerId === center.id);
+      this.selectedDoctor = undefined;
+    }
+    this.appointmentConfirmed = false; // Réinitialiser la confirmation
+  }
+
+  // Valider le rendez-vous
+  validateAppointment(): void {
+    if (this.selectedCenter && this.selectedDoctor && this.selectedDate) {
+      this.appointmentConfirmed = true;
+    } else {
+      alert("Veuillez sélectionner un centre, un médecin et une date avant de valider.");
     }
   }
-  
-  validateDate(): void {
-    if (this.selectedDate) {
-      console.log('Date validée : ', this.selectedDate);
-      // Logique pour la validation
-    } else {
-      console.error('Aucune date sélectionnée pour validation');
-    }
-  }
-  
 }
