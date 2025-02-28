@@ -3,8 +3,6 @@
   <table> 
     <thead>
       <tr>
-        <th>Nom</th>
-        <th>Prénom</th>
         <th>Date</th>
         <th>Lieu</th>
         <th>Médecin</th>
@@ -13,8 +11,6 @@
     
     <tbody>
       <tr *ngFor="let res of reservations">
-        <td>{{ res.nom }}</td>
-        <td>{{ res.prenom }}</td>
         <td>{{ res.date }}</td>
         <td>{{ res.lieu }}</td>
         <td>{{ res.medecin }}</td>
