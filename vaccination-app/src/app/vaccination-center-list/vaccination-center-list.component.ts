@@ -10,6 +10,7 @@ import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material
 import { MatButtonModule } from '@angular/material/button';
 import { VaccinationService } from '../services/vaccination.service';
 import { VaccinationCenter } from '../model/vaccination-center.model';
+import { ApiService } from '../services/api.service';
 
 // Définition de l'interface Doctor
 export interface Doctor {
@@ -35,25 +36,21 @@ export class VaccinationCenterListComponent implements OnInit {
   centers: VaccinationCenter[] = [];
   filteredCenters: VaccinationCenter[] = [];
   isLoading = false;
+  isDoctorsLoading = false;
   error: string | null = null;
-  doctors: Doctor[] = [
-    { id: 1, name: "Dr. Dupont", centerId: 1 },
-    { id: 2, name: "Dr. Martin", centerId: 1 },
-    { id: 3, name: "Dr. Morel", centerId: 2 },
-    { id: 4, name: "Dr. Durand", centerId: 2 },
-    { id: 5, name: "Dr. Bernard", centerId: 3 },
-    { id: 6, name: "Dr. Leclerc", centerId: 3 }
-  ];
-
+  doctorsError: string | null = null;
+  selectedDoctors: Doctor[] = [];
+  isCreatingReservation = false;
+  
   searchTerm: string = '';
   selectedCenter?: VaccinationCenter;
-  selectedDoctors: Doctor[] = [];
   selectedDoctor?: Doctor;
   selectedDate: Date | null = null;
   appointmentConfirmed = false;
 
   constructor(
     private vaccinationService: VaccinationService,
+    private apiService: ApiService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -72,13 +69,36 @@ export class VaccinationCenterListComponent implements OnInit {
         this.centers = data;
         this.filteredCenters = this.centers;
         this.isLoading = false;
-        console.log('Centers loaded:', this.centers); // Debug log
+        console.log('Centers loaded:', this.centers);
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Erreur lors du chargement des centres:', err);
         this.error = 'Erreur lors du chargement des centres';
         this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // Charger les médecins d'un centre
+  loadDoctors(centerId: number): void {
+    this.isDoctorsLoading = true;
+    this.doctorsError = null;
+    this.selectedDoctors = [];
+    this.cdr.detectChanges();
+
+    this.vaccinationService.getDoctorsByCenter(centerId).subscribe({
+      next: (doctors) => {
+        this.selectedDoctors = doctors;
+        this.isDoctorsLoading = false;
+        console.log('Doctors loaded:', doctors);
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des médecins:', err);
+        this.doctorsError = 'Erreur lors du chargement des médecins';
+        this.isDoctorsLoading = false;
         this.cdr.detectChanges();
       }
     });
@@ -107,7 +127,7 @@ export class VaccinationCenterListComponent implements OnInit {
       this.selectedDoctor = undefined;
     } else {
       this.selectedCenter = center;
-      this.selectedDoctors = this.doctors.filter(doc => doc.centerId === center.id);
+      this.loadDoctors(center.id);
       this.selectedDoctor = undefined;
     }
     this.appointmentConfirmed = false;
@@ -116,7 +136,34 @@ export class VaccinationCenterListComponent implements OnInit {
   // Valider le rendez-vous
   validateAppointment(): void {
     if (this.selectedCenter && this.selectedDoctor && this.selectedDate) {
-      this.appointmentConfirmed = true;
+      this.isCreatingReservation = true;
+      const patientId = this.apiService.getUserId(); // Récupère l'ID du patient connecté
+
+      const reservation = {
+        date: this.selectedDate,
+        specialist: {
+          id: this.selectedDoctor.id
+        },
+        patient: {
+          id: patientId
+        }
+      };
+
+      this.vaccinationService.createReservation(reservation).subscribe({
+        next: (response) => {
+          console.log('Réservation créée:', response);
+          this.appointmentConfirmed = true;
+          this.isCreatingReservation = false;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création de la réservation:', error);
+          this.error = 'Erreur lors de la création de la réservation';
+          this.isCreatingReservation = false;
+          this.appointmentConfirmed = false;
+          this.cdr.detectChanges();
+        }
+      });
     } else {
       alert("Veuillez sélectionner un centre, un médecin et une date avant de valider.");
     }

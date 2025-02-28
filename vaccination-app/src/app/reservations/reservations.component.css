@@ -85,3 +85,74 @@ button {
   margin-bottom: 1rem;
 }
 
+.loading-state,
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 8px;
+}
+
+.loading-state {
+  background-color: #f5f5f5;
+}
+
+.error-state {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.empty-state {
+  background-color: #e8f5e9;
+}
+
+.reservations-list {
+  padding: 2rem;
+}
+
+.reservation-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+}
+
+.reservation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.reservation-header h3 {
+  margin: 0;
+  color: #2196f3;
+}
+
+.status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.status.done {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.reservation-details {
+  margin: 1rem 0;
+}
+
+.reservation-details p {
+  margin: 0.5rem 0;
+}
+
+.reservation-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+

@@ -7,38 +7,71 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SignupService } from '../services/signup.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-inscription',
-  standalone: true, // ✅ Si standalone est utilisé
+  standalone: true,
   templateUrl: './inscription.component.html',
   styleUrls: ['./inscription.component.css'],
   imports: [
     ReactiveFormsModule, CommonModule, NgIf, FormsModule, 
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
-    MatNativeDateModule, MatSelectModule, MatOptionModule
+    MatNativeDateModule, MatSelectModule, MatOptionModule,
+    HttpClientModule
   ],
 })
 export class InscriptionComponent {
   inscriptionForm: FormGroup;
+  isLoading = false;
+  error: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private signupService: SignupService,
+    private router: Router
+  ) {
     this.inscriptionForm = this.fb.group({
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      dateNaissance: ['', Validators.required]
+      birthdate: ['', Validators.required],
+      phone: ['']
     });
   }
 
   onSubmit() {
     if (this.inscriptionForm.valid) {
-      console.log("Inscription réussie :", this.inscriptionForm.value);
-      alert("Inscription réussie !");
-      this.inscriptionForm.reset(); // Réinitialise le formulaire
+      this.isLoading = true;
+      this.error = null;
+
+      const formValue = this.inscriptionForm.value;
+      const signupData = {
+        ...formValue,
+        birthdate: formValue.birthdate // Send the Date object directly
+      };
+
+      this.signupService.signupPatient(signupData).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          if (error.status === 409) {
+            this.error = 'Cette adresse email est déjà utilisée.';
+          } else {
+            this.error = 'Une erreur est survenue lors de l\'inscription.';
+            console.error('Erreur d\'inscription:', error);
+          }
+        }
+      });
     } else {
-      alert("Veuillez remplir correctement tous les champs.");
+      this.error = 'Veuillez remplir correctement tous les champs.';
     }
   }
 }

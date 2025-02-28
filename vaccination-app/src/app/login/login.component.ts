@@ -3,56 +3,60 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, MatTabsModule],
+  imports: [FormsModule, MatTabsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   email: string = '';
   password: string = '';
-
-  users = [
-    { email: 'superadmin@example.com', password: 'superadmin123', role: 'superadmin', redirectTo: '/manage-super-admins' },
-    { email: 'admin@example.com', password: 'admin123', role: 'admin', redirectTo: '/manage-doctors' },
-    { email: 'doctor@example.com', password: 'doctor123', role: 'doctor', redirectTo: '/search-person' },
-    { email: 'patient@example.com', password: 'patient123', role: 'patient', redirectTo: '/reservations' },
-  ];
+  error: string = '';
+  isLoading: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   onSubmitPatient(): void {
-    const user = this.users.find(
-      u => u.email === this.email && u.password === this.password && u.role === 'patient'
-    );
+    this.isLoading = true;
+    this.error = '';
+    
+    this.authService.signInPatient(this.email, this.password).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.router.navigate(['/reservations']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.error = 'Email ou mot de passe incorrect';
+        console.error('Erreur de connexion:', error);
+      }
+    });
+  }
 
-    if (user) {
-      alert(`Connexion réussie en tant que ${user.role} !`);
-      this.authService.setRole(user.role);
-      this.router.navigate([user.redirectTo]);
-    } else {
-      alert('Email ou mot de passe incorrect.');
-    }
-  }
   onSubmitMedecin(): void {
-    const user = this.users.find(
-      u => u.email === this.email &&
-           u.password === this.password &&
-           (u.role === 'doctor' || u.role === 'admin' || u.role === 'superadmin') // Vérifie les 3 types de rôles
-    );
-  
-    if (user) {
-      alert(`Connexion réussie en tant que ${user.role} !`);
-      this.authService.setRole(user.role);
-      this.router.navigate([user.redirectTo]);
-    } else {
-      alert('Email ou mot de passe incorrect.');
-    }
+    this.isLoading = true;
+    this.error = '';
+    
+    this.authService.signInSpecialist(this.email, this.password).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        if (this.authService.isSuperAdmin()) {
+          this.router.navigate(['/manage-super-admins']);
+        } else if (this.authService.isAdmin()) {
+          this.router.navigate(['/manage-doctors']);
+        } else {
+          this.router.navigate(['/search-person']);
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.error = 'Email ou mot de passe incorrect';
+        console.error('Erreur de connexion:', error);
+      }
+    });
   }
-  
-  
 }

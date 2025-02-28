@@ -42,8 +42,18 @@
       <p><strong>Email :</strong> {{ selectedCenter.email }}</p>
       <p><strong>Téléphone :</strong> {{ selectedCenter.phone }}</p>
 
+      <!-- Loading state for doctors -->
+      <div *ngIf="isDoctorsLoading" class="loading">
+        Chargement des médecins...
+      </div>
+
+      <!-- Error state for doctors -->
+      <div *ngIf="doctorsError" class="error">
+        {{ doctorsError }}
+      </div>
+
       <!-- Sélection du médecin -->
-      <mat-form-field appearance="fill" *ngIf="selectedDoctors.length > 0">
+      <mat-form-field appearance="fill" *ngIf="!isDoctorsLoading && !doctorsError && selectedDoctors.length > 0">
         <mat-label>Choisissez un médecin</mat-label>
         <mat-select [(ngModel)]="selectedDoctor">
           <mat-option *ngFor="let doctor of selectedDoctors" [value]="doctor">
@@ -51,6 +61,11 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <!-- Message if no doctors available -->
+      <p *ngIf="!isDoctorsLoading && !doctorsError && selectedDoctors.length === 0" class="no-results">
+        Aucun médecin disponible pour ce centre
+      </p>
 
       <!-- Sélection de la date -->
       <mat-form-field>
@@ -67,8 +82,18 @@
         <strong>{{ selectedDate | date: 'longDate' }}</strong>.
       </p>
 
+      <!-- État de création de la réservation -->
+      <div *ngIf="isCreatingReservation" class="loading">
+        Création de la réservation en cours...
+      </div>
+
       <!-- Bouton de validation -->
-      <button mat-raised-button color="primary" (click)="validateAppointment()">Valider</button>
+      <button mat-raised-button 
+              color="primary" 
+              (click)="validateAppointment()"
+              [disabled]="isCreatingReservation">
+        Valider
+      </button>
 
       <!-- Affichage du message après validation -->
       <p *ngIf="appointmentConfirmed" style="color: green; font-weight: bold; margin-top: 10px;">

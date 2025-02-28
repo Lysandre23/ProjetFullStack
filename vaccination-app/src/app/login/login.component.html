@@ -3,7 +3,7 @@
   <mat-tab-group>
     <!-- Onglet Patient -->
     <mat-tab label="Patient">
-      <form class="login-form"(ngSubmit)="onSubmitPatient()">
+      <form class="login-form" (ngSubmit)="onSubmitPatient()">
         <div class="form-group">
           <label for="emailPatient" class="form-label">Email :</label>
           <input
@@ -14,6 +14,7 @@
             name="emailPatient"
             required
             placeholder="Entrez votre email"
+            [disabled]="isLoading"
           />
         </div>
         <div class="form-group">
@@ -26,9 +27,16 @@
             name="passwordPatient"
             required
             placeholder="Entrez votre mot de passe"
+            [disabled]="isLoading"
           />
         </div>
-        <button type="submit" class="login-button">Se connecter</button>
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+        <button type="submit" class="login-button" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Se connecter</span>
+          <span *ngIf="isLoading">Connexion en cours...</span>
+        </button>
       </form>
     </mat-tab>
 
@@ -45,6 +53,7 @@
             name="emailMedecin"
             required
             placeholder="Entrez votre email"
+            [disabled]="isLoading"
           />
         </div>
         <div class="form-group">
@@ -57,9 +66,16 @@
             name="passwordMedecin"
             required
             placeholder="Entrez votre mot de passe"
+            [disabled]="isLoading"
           />
         </div>
-        <button type="submit" class="login-button">Se connecter</button>
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+        <button type="submit" class="login-button" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Se connecter</span>
+          <span *ngIf="isLoading">Connexion en cours...</span>
+        </button>
       </form>
     </mat-tab>
   </mat-tab-group>

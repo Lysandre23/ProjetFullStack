@@ -2,37 +2,94 @@
     <h2>Inscription</h2>
   
     <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
-      <label for="nom">Nom</label>
-      <input id="nom" type="text" formControlName="nom">
-      <div *ngIf="inscriptionForm.get('nom')?.invalid && inscriptionForm.get('nom')?.touched" class="error">
-        Nom requis
+      <div class="form-group">
+        <label for="lastname">Nom</label>
+        <input 
+          id="lastname" 
+          type="text" 
+          formControlName="lastname"
+          [class.invalid]="inscriptionForm.get('lastname')?.invalid && inscriptionForm.get('lastname')?.touched"
+          [disabled]="isLoading"
+        >
+        <div class="error-hint" *ngIf="inscriptionForm.get('lastname')?.invalid && inscriptionForm.get('lastname')?.touched">
+          Nom requis
+        </div>
       </div>
   
-      <label for="prenom">Prénom</label>
-      <input id="prenom" type="text" formControlName="prenom">
-      <div *ngIf="inscriptionForm.get('prenom')?.invalid && inscriptionForm.get('prenom')?.touched" class="error">
-        Prénom requis
+      <div class="form-group">
+        <label for="firstname">Prénom</label>
+        <input 
+          id="firstname" 
+          type="text" 
+          formControlName="firstname"
+          [class.invalid]="inscriptionForm.get('firstname')?.invalid && inscriptionForm.get('firstname')?.touched"
+          [disabled]="isLoading"
+        >
+        <div class="error-hint" *ngIf="inscriptionForm.get('firstname')?.invalid && inscriptionForm.get('firstname')?.touched">
+          Prénom requis
+        </div>
       </div>
   
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email">
-      <div *ngIf="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched" class="error">
-        Email invalide
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email"
+          [class.invalid]="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched"
+          [disabled]="isLoading"
+        >
+        <div class="error-hint" *ngIf="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched">
+          Email invalide
+        </div>
       </div>
   
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" formControlName="password">
-      <div *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched" class="error">
-        Mot de passe requis (6 caractères minimum)
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password"
+          [class.invalid]="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched"
+          [disabled]="isLoading"
+        >
+        <div class="error-hint" *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched">
+          Mot de passe requis (6 caractères minimum)
+        </div>
       </div>
   
-      <label for="dateNaissance">Date de naissance</label>
-      <input id="dateNaissance" type="date" formControlName="dateNaissance">
-      <div *ngIf="inscriptionForm.get('dateNaissance')?.invalid && inscriptionForm.get('dateNaissance')?.touched" class="error">
-        Date de naissance requise
+      <div class="form-group">
+        <label for="birthdate">Date de naissance</label>
+        <input 
+          id="birthdate" 
+          type="date" 
+          formControlName="birthdate"
+          [class.invalid]="inscriptionForm.get('birthdate')?.invalid && inscriptionForm.get('birthdate')?.touched"
+          [disabled]="isLoading"
+        >
+        <div class="error-hint" *ngIf="inscriptionForm.get('birthdate')?.invalid && inscriptionForm.get('birthdate')?.touched">
+          Date de naissance requise
+        </div>
       </div>
   
-      <button type="submit" [disabled]="inscriptionForm.invalid">S'inscrire</button>
+      <div class="form-group">
+        <label for="phone">Téléphone (optionnel)</label>
+        <input 
+          id="phone" 
+          type="tel" 
+          formControlName="phone"
+          [disabled]="isLoading"
+        >
+      </div>
+  
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+  
+      <button type="submit" [disabled]="inscriptionForm.invalid || isLoading">
+        <span *ngIf="!isLoading">S'inscrire</span>
+        <span *ngIf="isLoading">Inscription en cours...</span>
+      </button>
     </form>
   </div>
   

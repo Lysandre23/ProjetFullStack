@@ -1,21 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { CommonModule } from '@angular/common'; // Nécessaire pour *ngIf et autres directives Angular
+import { CommonModule } from '@angular/common';
+import { ReservationService, Reservation } from '../services/reservation.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
-  imports: [MatToolbarModule, MatButtonModule, RouterModule, CommonModule], // Ajout des modules nécessaires
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    RouterModule,
+    CommonModule,
+    HttpClientModule
+  ],
   styleUrls: ['./reservations.component.css']
 })
-export class ReservationsComponent {
-  reservations = [
-    { id: 1, nom: 'Dupont', prenom: 'Jean', date: '2025-03-10', lieu: 'Centre Paris', medecin: 'Dr. Lefebvre' },
-    { id: 2, nom: 'Martin', prenom: 'Sophie', date: '2025-03-12', lieu: 'Centre Lyon', medecin: 'Dr. Moreau' },
-    { id: 3, nom: 'Durand', prenom: 'Paul', date: '2025-03-15', lieu: 'Centre Marseille', medecin: 'Dr. Dubois' }
-  ];
+export class ReservationsComponent implements OnInit {
+  reservations: Reservation[] = [];
+  isLoading = false;
+  error: string | null = null;
 
+  constructor(
+    private authService: AuthService,
+    private reservationService: ReservationService
+  ) {}
+
+  ngOnInit() {
+    this.loadReservations();
+  }
+
+  loadReservations() {
+    const userId = this.authService.getUserId();
+    if (!userId) {
+      this.error = 'Utilisateur non connecté';
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+
+    this.reservationService.getReservationsByPatient(userId).subscribe({
+      next: (reservations) => {
+        this.reservations = reservations;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des réservations:', error);
+        this.error = 'Erreur lors du chargement des réservations';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  deleteReservation(id: number) {
+    if (confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+      this.reservationService.deleteReservation(id).subscribe({
+        next: () => {
+          this.loadReservations(); // Reload the list after deletion
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression:', error);
+          this.error = 'Erreur lors de la suppression de la réservation';
+        }
+      });
+    }
+  }
 }
