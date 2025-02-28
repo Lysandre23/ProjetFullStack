@@ -1,44 +1,64 @@
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inscription',
-  standalone: true, // ✅ Si standalone est utilisé
   templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.css'],
   imports: [
-    ReactiveFormsModule, CommonModule, NgIf, FormsModule, 
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, 
-    MatNativeDateModule, MatSelectModule, MatOptionModule
+    MatTabsModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
+  styleUrls: ['./inscription.component.css']
 })
-export class InscriptionComponent {
-  inscriptionForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.inscriptionForm = this.fb.group({
+export class InscriptionComponent implements OnInit {
+  inscriptionPatientForm!: FormGroup;
+  inscriptionMedecinForm!: FormGroup;
+  centres = [
+    { id: 1, nom: 'Centre Médical Paris' },
+    { id: 2, nom: 'Clinique Lyon Sud' },
+    { id: 3, nom: 'Hôpital de Marseille' }
+  ];
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.inscriptionPatientForm = this.fb.group({
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       dateNaissance: ['', Validators.required]
     });
+
+    this.inscriptionMedecinForm = this.fb.group({
+      nom: ['', Validators.required],
+      centre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phone: ['', [Validators.required, Validators.pattern('^\\+?[0-9]{10,15}$')]],
+      specialite: ['', Validators.required]
+    });
   }
 
-  onSubmit() {
-    if (this.inscriptionForm.valid) {
-      console.log("Inscription réussie :", this.inscriptionForm.value);
-      alert("Inscription réussie !");
-      this.inscriptionForm.reset(); // Réinitialise le formulaire
-    } else {
-      alert("Veuillez remplir correctement tous les champs.");
+  onSubmitPatient() {
+    if (this.inscriptionPatientForm.valid) {
+      console.log('Inscription patient:', this.inscriptionPatientForm.value);
+      // Ajouter la logique pour envoyer les données au backend
+    }
+  }
+
+  onSubmitMedecin() {
+    if (this.inscriptionMedecinForm.valid) {
+      console.log('Inscription médecin:', this.inscriptionMedecinForm.value);
+      // Ajouter la logique pour envoyer les données au backend
     }
   }
 }

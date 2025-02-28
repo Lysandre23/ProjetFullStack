@@ -1,38 +1,87 @@
 <div class="inscription-container">
-    <h2>Inscription</h2>
-  
-    <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
-      <label for="nom">Nom</label>
-      <input id="nom" type="text" formControlName="nom">
-      <div *ngIf="inscriptionForm.get('nom')?.invalid && inscriptionForm.get('nom')?.touched" class="error">
-        Nom requis
-      </div>
-  
-      <label for="prenom">Prénom</label>
-      <input id="prenom" type="text" formControlName="prenom">
-      <div *ngIf="inscriptionForm.get('prenom')?.invalid && inscriptionForm.get('prenom')?.touched" class="error">
-        Prénom requis
-      </div>
-  
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email">
-      <div *ngIf="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched" class="error">
-        Email invalide
-      </div>
-  
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" formControlName="password">
-      <div *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched" class="error">
-        Mot de passe requis (6 caractères minimum)
-      </div>
-  
-      <label for="dateNaissance">Date de naissance</label>
-      <input id="dateNaissance" type="date" formControlName="dateNaissance">
-      <div *ngIf="inscriptionForm.get('dateNaissance')?.invalid && inscriptionForm.get('dateNaissance')?.touched" class="error">
-        Date de naissance requise
-      </div>
-  
-      <button type="submit" [disabled]="inscriptionForm.invalid">S'inscrire</button>
-    </form>
-  </div>
-  
+  <h2>Inscription</h2>
+
+  <mat-tab-group>
+    <!-- Inscription Patient -->
+    <mat-tab label="Patient">
+      <form [formGroup]="inscriptionPatientForm" (ngSubmit)="onSubmitPatient()">
+        <label for="nom">Nom</label>
+        <input id="nom" type="text" formControlName="nom">
+        <div *ngIf="inscriptionPatientForm.get('nom')?.invalid && inscriptionPatientForm.get('nom')?.touched" class="error">
+          Nom requis
+        </div>
+
+        <label for="prenom">Prénom</label>
+        <input id="prenom" type="text" formControlName="prenom">
+        <div *ngIf="inscriptionPatientForm.get('prenom')?.invalid && inscriptionPatientForm.get('prenom')?.touched" class="error">
+          Prénom requis
+        </div>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+        <div *ngIf="inscriptionPatientForm.get('email')?.invalid && inscriptionPatientForm.get('email')?.touched" class="error">
+          Email invalide
+        </div>
+
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password">
+        <div *ngIf="inscriptionPatientForm.get('password')?.invalid && inscriptionPatientForm.get('password')?.touched" class="error">
+          Mot de passe requis (6 caractères minimum)
+        </div>
+
+        <label for="dateNaissance">Date de naissance</label>
+        <input id="dateNaissance" type="date" formControlName="dateNaissance">
+        <div *ngIf="inscriptionPatientForm.get('dateNaissance')?.invalid && inscriptionPatientForm.get('dateNaissance')?.touched" class="error">
+          Date de naissance requise
+        </div>
+
+        <button type="submit" [disabled]="inscriptionPatientForm.invalid">S'inscrire</button>
+      </form>
+    </mat-tab>
+
+    <!-- Inscription Médecin -->
+    <mat-tab label="Médecin">
+      <form [formGroup]="inscriptionMedecinForm" (ngSubmit)="onSubmitMedecin()">
+        <label for="nom">Nom</label>
+        <input id="nom" type="text" formControlName="nom">
+        <div *ngIf="inscriptionMedecinForm.get('nom')?.invalid && inscriptionMedecinForm.get('nom')?.touched" class="error">
+          Nom requis
+        </div>
+
+        <label for="centre">Centre</label>
+        <select id="centre" formControlName="centre">
+          <option *ngFor="let centre of centres" [value]="centre.id">{{ centre.nom }}</option>
+        </select>
+        <div *ngIf="inscriptionMedecinForm.get('centre')?.invalid && inscriptionMedecinForm.get('centre')?.touched" class="error">
+          Centre requis
+        </div>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+        <div *ngIf="inscriptionMedecinForm.get('email')?.invalid && inscriptionMedecinForm.get('email')?.touched" class="error">
+          Email invalide
+        </div>
+
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password">
+        <div *ngIf="inscriptionMedecinForm.get('password')?.invalid && inscriptionMedecinForm.get('password')?.touched" class="error">
+          Mot de passe requis (6 caractères minimum)
+        </div>
+
+        <label for="phone">Téléphone</label>
+        <input id="phone" type="tel" formControlName="phone">
+        <div *ngIf="inscriptionMedecinForm.get('phone')?.invalid && inscriptionMedecinForm.get('phone')?.touched" class="error">
+          Téléphone requis
+        </div>
+
+        <label for="specialite">Spécialité</label>
+        <input id="specialite" type="text" formControlName="specialite">
+        <div *ngIf="inscriptionMedecinForm.get('specialite')?.invalid && inscriptionMedecinForm.get('specialite')?.touched" class="error">
+          Spécialité requise
+        </div>
+
+        <button type="submit" [disabled]="inscriptionMedecinForm.invalid">S'inscrire</button>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</div>
