@@ -44,7 +44,7 @@ class CenterRestControllerTest {
         specialistRepository.deleteAll();
         centerRepository.deleteAll();
 
-        // Create test center
+        // Create and save test center first
         testCenter = new Center();
         testCenter.setName("Test Medical Center");
         testCenter.setCity("Test City");
@@ -52,15 +52,16 @@ class CenterRestControllerTest {
         testCenter.setPhone("0123456789");
         testCenter.setEmail("test@medicalcenter.com");
         
+        // Save the center and update the reference
         testCenter = centerRepository.save(testCenter);
 
-        // Create test specialist associated with the center
+        // Now create and save the specialist with the saved center
         testSpecialist = new Specialist();
         testSpecialist.setName("Dr. Test");
         testSpecialist.setSpecialty("Cardiology");
         testSpecialist.setEmail("doctor@test.com");
         testSpecialist.setPhone("9876543210");
-        testSpecialist.setCenter(testCenter);
+        testSpecialist.setCenter(testCenter); // This now has a valid center with ID
         
         testSpecialist = specialistRepository.save(testSpecialist);
     }

@@ -1,42 +1,60 @@
 package org.example.service;
 
-import java.util.List;
-
 import org.example.exception.PatientNotFoundException;
 import org.example.model.Patient;
 import org.example.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class PatientService {
 
-    @Autowired
-    public PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
-    public List<Patient> findAll(){
+    @Autowired
+    public PatientService(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    public List<Patient> findAll() {
         return patientRepository.findAll();
     }
-    public List<Patient> findByLastnameAndFirstname(String lastname, String firstname) throws PatientNotFoundException {
-        return patientRepository.findByLastnameAndFirstname(lastname, firstname);
+
+    public Optional<Patient> findById(Long id) {
+        return patientRepository.findById(id);
     }
-    public List<Patient> findByLastname(String lastname) throws PatientNotFoundException {
+
+    public Patient findOne(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new PatientNotFoundException(id));
+    }
+
+    public Patient save(Patient patient) {
+        return patientRepository.save(patient);
+    }
+
+    public void deleteById(Long id) {
+        patientRepository.deleteById(id);
+    }
+
+    public List<Patient> findByLastname(String lastname) {
         return patientRepository.findByLastname(lastname);
     }
-    public List<Patient> findByFirstname(String firstname) throws PatientNotFoundException {
+
+    public List<Patient> findByFirstname(String firstname) {
         return patientRepository.findByFirstname(firstname);
     }
 
-    public Patient findOne(Long id) throws PatientNotFoundException {
-        return patientRepository.findById(Long.valueOf(id))
-                .orElseThrow(PatientNotFoundException::new);
+    public List<Patient> findByLastnameAndFirstname(String lastname, String firstname) {
+        return patientRepository.findByLastnameAndFirstname(lastname, firstname);
     }
 
-    public void create(Patient p) {
-        patientRepository.save(p);
-    }
-
-    public void removeOne(Long id) {
-        patientRepository.deleteById(id);
+    public boolean existsById(Long id) {
+        return patientRepository.existsById(id);
     }
 }

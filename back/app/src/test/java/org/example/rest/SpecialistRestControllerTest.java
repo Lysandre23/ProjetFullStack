@@ -3,6 +3,7 @@ package org.example.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Center;
 import org.example.model.Specialist;
+import org.example.repository.CenterRepository;
 import org.example.repository.SpecialistRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ class SpecialistRestControllerTest {
     private SpecialistRepository specialistRepository;
 
     @Autowired
+    private CenterRepository centerRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     private Center testCenter;
@@ -34,25 +38,31 @@ class SpecialistRestControllerTest {
 
     @BeforeEach
     void setUp() {
+        // Clean up the repositories in correct order (due to foreign key constraints)
         specialistRepository.deleteAll();
+        centerRepository.deleteAll();
 
+        // Create and save test center first
         testCenter = new Center();
-        testCenter.setId(1);
         testCenter.setName("Test Center");
         testCenter.setCity("Test City");
         testCenter.setAddress("Test Address");
         testCenter.setPhone("0123456789");
         testCenter.setEmail("test@center.com");
+        
+        // Save the center and update the reference
+        testCenter = centerRepository.save(testCenter);
 
+        // Now create and save the specialist with the saved center
         testSpecialist = new Specialist();
         testSpecialist.setName("Dr. Test");
         testSpecialist.setSpecialty("Cardiology");
         testSpecialist.setEmail("doctor@test.com");
         testSpecialist.setPhone("9876543210");
         testSpecialist.setPassword("password123");
-        testSpecialist.setCenter(testCenter);
+        testSpecialist.setCenter(testCenter); // This now has a valid center with ID
         
-        specialistRepository.save(testSpecialist);
+        testSpecialist = specialistRepository.save(testSpecialist);
     }
 
     @Test
@@ -72,7 +82,7 @@ class SpecialistRestControllerTest {
         newSpecialist.setEmail("new@doctor.com");
         newSpecialist.setPhone("1122334455");
         newSpecialist.setPassword("newpass123");
-        newSpecialist.setCenter(testCenter);
+        newSpecialist.setCenter(testCenter); // Use the saved center
 
         mockMvc.perform(post("/api/specialists")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +107,7 @@ class SpecialistRestControllerTest {
         mockMvc.perform(get("/api/specialists/admins"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$[0].id", is(testSpecialist.getId())));
+                .andExpect(jsonPath("$[0].id", is(testSpecialist.getId().intValue())));
     }
 
     @Test
@@ -108,7 +118,7 @@ class SpecialistRestControllerTest {
         mockMvc.perform(get("/api/specialists/superadmins"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
-                .andExpect(jsonPath("$[0].id", is(testSpecialist.getId())));
+                .andExpect(jsonPath("$[0].id", is(testSpecialist.getId().intValue())));
     }
 
     @Test

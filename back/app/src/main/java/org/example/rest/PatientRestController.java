@@ -1,75 +1,89 @@
 package org.example.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import org.example.exception.PatientNotFoundException;
 import org.example.model.Patient;
 import org.example.model.Reservation;
+import org.example.repository.PatientRepository;
 import org.example.service.PatientService;
-import org.example.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
 public class PatientRestController {
 
-    @Autowired
-    private PatientService service;
+    private final PatientService patientService;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    private ReservationService reservationService;
-
-    @GetMapping(path = "")
-    public List<Patient> findPatient(@RequestParam(required = false) String firstname, @RequestParam(required = false) String lastname) throws PatientNotFoundException {
-        if(firstname != null && lastname != null) { return service.findByLastnameAndFirstname(lastname, firstname); }
-        if(firstname != null) { return service.findByFirstname(firstname); }
-        if(lastname != null) { return service.findByLastname(lastname); }
-        System.out.println(firstname + " " + lastname);
-        return service.findAll();
+    public PatientRestController(PatientService patientService, PatientRepository patientRepository) {
+        this.patientService = patientService;
+        this.patientRepository = patientRepository;
     }
 
-    @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable("id") Long id){
-        service.removeOne(id);
+    @GetMapping
+    public List<Patient> getAllPatients() {
+        return patientService.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
+        Patient savedPatient = patientService.save(patient);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPatient.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedPatient);
+    }
+
+    @GetMapping("/{id}")
+    public Patient findOne(@PathVariable Long id) {
+        return patientService.findOne(id);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody Patient p) throws PatientNotFoundException {
-        Patient updatedPatient = service.findOne(id);
-        updatedPatient.setFirstname(p.getFirstname());
-        updatedPatient.setLastname(p.getLastname());
-        updatedPatient.setBirthdate(p.getBirthdate());
-        updatedPatient.setEmail(p.getEmail());
-        updatedPatient.setPhone(p.getPhone());
-        service.create(updatedPatient);
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
+        if (!patientService.existsById(id)) {
+            throw new PatientNotFoundException(id);
+        }
+        patient.setId(id);
+        Patient updatedPatient = patientService.save(patient);
+        return ResponseEntity.ok(updatedPatient);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<String> handle(PatientNotFoundException ex){
-        return ResponseEntity.badRequest().body("Le patient n'existe pas");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
+        if (!patientService.existsById(id)) {
+            throw new PatientNotFoundException(id);
+        }
+        patientService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search/lastname/{lastname}")
+    public List<Patient> findPatientsByLastName(@PathVariable String lastname) {
+        return patientService.findByLastname(lastname);
+    }
+
+    @GetMapping("/search/firstname/{firstname}")
+    public List<Patient> findPatientsByFirstName(@PathVariable String firstname) {
+        return patientService.findByFirstname(firstname);
     }
 
     @GetMapping("/{id}/reservations")
-    public List<Reservation> getPatientReservations(@PathVariable("id") Long id) throws PatientNotFoundException {
-        Patient patient = service.findOne(id);
+    public List<Reservation> getPatientReservations(@PathVariable Long id) {
+        Patient patient = patientService.findOne(id);
         return patient.getReservations();
     }
 
-    @PostMapping("/{id}/reservations")
-    public Reservation createReservation(@PathVariable("id") Long id, @RequestBody Reservation reservation) throws PatientNotFoundException {
-        Patient patient = service.findOne(id);
-        reservation.setPatient(patient);
-        return reservationService.create(reservation);
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<String> handlePatientNotFound(PatientNotFoundException ex) {
+        return ResponseEntity.notFound().build();
     }
-
-    @PostMapping("")
-    public ResponseEntity<Patient> save(@RequestBody Patient patient) throws URISyntaxException {
-        service.create(patient);
-        return ResponseEntity.created(new URI("patients/" + patient.getId())).body(patient);
-    }
-
 }
