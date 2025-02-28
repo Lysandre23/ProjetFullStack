@@ -65,7 +65,7 @@ Afin d'être lancé, il faut exécuter la commande `gradle run` dans ce dossier
 
 ## <u>Visualisation de la base de données</u>
 
-![](/readme/bdd.png "Base de données").
+![](/readme/bdd.png?raw=true "Base de données").
 
 ## <u>Tests</u>
 
