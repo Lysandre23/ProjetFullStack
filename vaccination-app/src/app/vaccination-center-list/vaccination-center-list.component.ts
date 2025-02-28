@@ -63,7 +63,7 @@ export class VaccinationCenterListComponent implements OnInit {
   selectedDoctors: Doctor[] = [];
   selectedDoctor?: Doctor;
   selectedDate: Date | null = null;
-  appointmentConfirmed = false; // ✅ Pour afficher "Rendez-vous pris"
+  appointmentConfirmed = false;
 
   ngOnInit(): void {
     this.filteredCenters = []; // Aucun centre affiché au début

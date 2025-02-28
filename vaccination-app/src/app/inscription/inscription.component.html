@@ -1,0 +1,38 @@
+<div class="inscription-container">
+    <h2>Inscription</h2>
+  
+    <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+      <label for="nom">Nom</label>
+      <input id="nom" type="text" formControlName="nom">
+      <div *ngIf="inscriptionForm.get('nom')?.invalid && inscriptionForm.get('nom')?.touched" class="error">
+        Nom requis
+      </div>
+  
+      <label for="prenom">Prénom</label>
+      <input id="prenom" type="text" formControlName="prenom">
+      <div *ngIf="inscriptionForm.get('prenom')?.invalid && inscriptionForm.get('prenom')?.touched" class="error">
+        Prénom requis
+      </div>
+  
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      <div *ngIf="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched" class="error">
+        Email invalide
+      </div>
+  
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" formControlName="password">
+      <div *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched" class="error">
+        Mot de passe requis (6 caractères minimum)
+      </div>
+  
+      <label for="dateNaissance">Date de naissance</label>
+      <input id="dateNaissance" type="date" formControlName="dateNaissance">
+      <div *ngIf="inscriptionForm.get('dateNaissance')?.invalid && inscriptionForm.get('dateNaissance')?.touched" class="error">
+        Date de naissance requise
+      </div>
+  
+      <button type="submit" [disabled]="inscriptionForm.invalid">S'inscrire</button>
+    </form>
+  </div>
+  

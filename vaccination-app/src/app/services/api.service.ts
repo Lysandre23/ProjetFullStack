@@ -89,4 +89,10 @@ export class ApiService {
   getSuperAdmins(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/admins/super`);
   }
+
+  // Simule la récupération de l'ID du patient connecté (normalement via JWT ou API)
+  getUserId(): number {
+    return Number(localStorage.getItem('patientId')) || 1; // Valeur par défaut si l'ID n'est pas trouvé
+  }
+
 }
