@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-manage-admins',
@@ -9,49 +8,21 @@ import { ApiService } from '../services/api.service';
   templateUrl: './manage-admins.component.html',
   styleUrls: ['./manage-admins.component.css'],
 })
-export class ManageAdminsComponent implements OnInit {
-  admins: any[] = [];
-
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit(): void {
-    this.fetchAdmins();
-  }
-
-  fetchAdmins(): void {
-    this.apiService.getAdmins().subscribe((data) => {
-      this.admins = data;
-    });
-  }
+export class ManageAdminsComponent {
+  admins = [
+    { id: 1, name: 'Admin 1', email: 'admin1@example.com', centerName: 'Centre 1' },
+    { id: 2, name: 'Admin 2', email: 'admin2@example.com', centerName: 'Centre 2' },
+    { id: 3, name: 'Admin 3', email: 'admin3@example.com', centerName: 'Centre 3' },
+  ];
 
   onCreate(): void {
-    const newAdmin = {
-      centerid: 2,
-      isSuperAdmin: false,
-      name: 'Nouvel Admin',
-    };
-
-    this.apiService.createAdmin(newAdmin).subscribe(() => {
-      alert('Administrateur ajouté avec succès');
-      this.fetchAdmins(); // Rafraîchit la liste
-    });
+    alert('Ajouter un nouvel administrateur');
+    // Implémentez la logique pour ajouter un administrateur
   }
 
   onEdit(admin: any): void {
-    const updatedAdmin = { ...admin, name: 'Admin Modifié' };
-
-    this.apiService.createAdmin(updatedAdmin).subscribe(() => {
-      alert(`Administrateur modifié : ${admin.name}`);
-      this.fetchAdmins(); // Rafraîchit la liste
-    });
+    alert(`Modifier l'administrateur : ${admin.name}`);
+    // Implémentez la logique pour modifier un administrateur
   }
 
-  onDelete(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet administrateur ?')) {
-      this.apiService.deleteReservation(id).subscribe(() => {
-        alert('Administrateur supprimé');
-        this.fetchAdmins(); // Rafraîchit la liste
-      });
-    }
-  }
 }

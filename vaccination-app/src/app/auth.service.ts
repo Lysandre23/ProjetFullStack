@@ -37,6 +37,10 @@ export class AuthService {
     return this.role === 'doctor';
   }
 
+  isPatient(): boolean {
+    return this.role === 'patient';
+  }
+
   logout(): void {
     this.clearRole();
     // Redirection vers la page de connexion après déconnexion

@@ -1,30 +1,66 @@
 <h1 class="login-title">Connexion</h1>
 <div class="login-container">
-  <form class="login-form" (submit)="onSubmit()">
-    <div class="form-group">
-      <label for="email" class="form-label">Email :</label>
-      <input
-        type="email"
-        id="email"
-        class="form-input"
-        [(ngModel)]="email"
-        name="email"
-        required
-        placeholder="Entrez votre email"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password" class="form-label">Mot de passe :</label>
-      <input
-        type="password"
-        id="password"
-        class="form-input"
-        [(ngModel)]="password"
-        name="password"
-        required
-        placeholder="Entrez votre mot de passe"
-      />
-    </div>
-    <button type="submit" class="login-button">Se connecter</button>
-  </form>
+  <mat-tab-group>
+    <!-- Onglet Patient -->
+    <mat-tab label="Patient">
+      <form class="login-form"(ngSubmit)="onSubmitPatient()">
+        <div class="form-group">
+          <label for="emailPatient" class="form-label">Email :</label>
+          <input
+            type="email"
+            id="emailPatient"
+            class="form-input"
+            [(ngModel)]="email"
+            name="emailPatient"
+            required
+            placeholder="Entrez votre email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="passwordPatient" class="form-label">Mot de passe :</label>
+          <input
+            type="password"
+            id="passwordPatient"
+            class="form-input"
+            [(ngModel)]="password"
+            name="passwordPatient"
+            required
+            placeholder="Entrez votre mot de passe"
+          />
+        </div>
+        <button type="submit" class="login-button">Se connecter</button>
+      </form>
+    </mat-tab>
+
+    <!-- Onglet Médecin -->
+    <mat-tab label="Médecin">
+      <form class="login-form" (ngSubmit)="onSubmitMedecin()">
+        <div class="form-group">
+          <label for="emailMedecin" class="form-label">Email :</label>
+          <input
+            type="email"
+            id="emailMedecin"
+            class="form-input"
+            [(ngModel)]="email"
+            name="emailMedecin"
+            required
+            placeholder="Entrez votre email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="passwordMedecin" class="form-label">Mot de passe :</label>
+          <input
+            type="password"
+            id="passwordMedecin"
+            class="form-input"
+            [(ngModel)]="password"
+            name="passwordMedecin"
+            required
+            placeholder="Entrez votre mot de passe"
+          />
+        </div>
+        <button type="submit" class="login-button">Se connecter</button>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
 </div>

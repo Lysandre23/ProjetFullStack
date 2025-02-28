@@ -11,6 +11,7 @@ import { ValidateVaccinationComponent } from './validate-vaccination/validate-va
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { ManageCentersComponent } from './manage-centers/manage-centers.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'manage-reservations', component: ManageReservationsComponent },
   { path: 'search-person', component: SearchPersonComponent },
   { path: 'validate-vaccination', component: ValidateVaccinationComponent },
-  { path: '**', redirectTo: '/home' }, // Redirection en cas de chemin non reconnu
-  { path: 'manage-doctors/edit/:id', component: EditDoctorComponent }
+  { path: 'reservations', component: ReservationsComponent },
+  { path: 'manage-doctors/edit/:id', component: EditDoctorComponent },
+  { path: '**', redirectTo: '/home' } // Redirection en cas de chemin non reconnu
 ];

@@ -1,0 +1,20 @@
+<div class="manage-doctors-container">
+  <h2>Mes Réservations</h2>
+  <table> 
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Lieu</th>
+        <th>Médecin</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr *ngFor="let res of reservations">
+        <td>{{ res.date }}</td>
+        <td>{{ res.lieu }}</td>
+        <td>{{ res.medecin }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
