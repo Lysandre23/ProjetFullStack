@@ -53,6 +53,15 @@ public class ReservationService {
         return reservationRepository.findBySpecialistId(specialistId);
     }
 
+    public Reservation markAsDone(Integer id) {
+        return reservationRepository.findById(id)
+                .map(reservation -> {
+                    reservation.setDone(true);
+                    return reservationRepository.save(reservation);
+                })
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+    }
+
     public Reservation update(Integer id, Reservation reservation) {
         return reservationRepository.findById(id)
                 .map(existingReservation -> {

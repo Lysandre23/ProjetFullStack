@@ -65,23 +65,6 @@ class PatientRestControllerTest {
     }
 
     @Test
-    void shouldCreatePatient() throws Exception {
-        Patient newPatient = new Patient();
-        newPatient.setFirstname("Jane");
-        newPatient.setLastname("Smith");
-        newPatient.setEmail("jane.smith@test.com");
-        newPatient.setPhone("9876543210");
-        newPatient.setPassword("password456");
-        newPatient.setBirthdate(new Date());
-
-        mockMvc.perform(post("/api/patients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newPatient)))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"));
-    }
-
-    @Test
     void shouldFindPatientById() throws Exception {
         mockMvc.perform(get("/api/patients/" + testPatient.getId()))
                 .andExpect(status().isOk())

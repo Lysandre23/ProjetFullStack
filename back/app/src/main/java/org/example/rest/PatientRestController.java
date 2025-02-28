@@ -31,17 +31,6 @@ public class PatientRestController {
         return patientService.findAll();
     }
 
-    @PostMapping
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
-        Patient savedPatient = patientService.save(patient);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedPatient.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(savedPatient);
-    }
-
     @GetMapping("/{id}")
     public Patient findOne(@PathVariable Long id) {
         return patientService.findOne(id);

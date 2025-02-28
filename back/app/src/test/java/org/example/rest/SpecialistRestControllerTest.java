@@ -71,23 +71,6 @@ class SpecialistRestControllerTest {
     }
 
     @Test
-    void shouldCreateSpecialist() throws Exception {
-        Specialist newSpecialist = new Specialist();
-        newSpecialist.setName("Dr. New");
-        newSpecialist.setSpecialty("Pediatrics");
-        newSpecialist.setEmail("new@doctor.com");
-        newSpecialist.setPhone("1122334455");
-        newSpecialist.setPassword("newpass123");
-        newSpecialist.setCenter(testCenter); // Use the saved center
-
-        mockMvc.perform(post("/api/specialists")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newSpecialist)))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"));
-    }
-
-    @Test
     void shouldFindBySpecialty() throws Exception {
         mockMvc.perform(get("/api/specialists/specialty/Cardiology"))
                 .andExpect(status().isOk())

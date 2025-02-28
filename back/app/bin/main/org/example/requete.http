@@ -42,21 +42,6 @@ GET http://localhost:8080/api/specialists/1/reservations
 
 ###
 
-PUT http://localhost:8080/api/patients/2
-Content-Type: application/json
-
-{
-  "firstname": "Leo",
-  "lastname": "Gueffier",
-  "email": "bgdu88@gmail.com",
-  "phone": "000000000",
-  "birthdate": "2003-04-23T16:35:00.000+00:00"
-}
-
-###
-
-###
-
 POST http://localhost:8080/api/centers
 Content-Type: application/json
 
@@ -84,15 +69,36 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/api/patients
+POST http://localhost:8080/api/auth/patient/signup
 Content-Type: application/json
 
 {
   "firstname": "John",
   "lastname": "Doe",
-  "email": "john.doe@example.com",
-  "phone": "0123456789",
-  "birthdate": "1990-01-01T00:00:00.000+00:00"
+  "email": "john@example.com",
+  "password": "securepassword",
+  "phone": "1234567890",
+  "birthdate": "2003-04-23"
+}
+
+###
+
+POST http://localhost:8080/api/auth/patient/signin
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "securepassword"
+}
+
+###
+
+POST http://localhost:8080/api/auth/specialist/signin
+Content-Type: application/json
+
+{
+  "email": "dr.smith@example.com",
+  "password": "securepassword"
 }
 
 ###

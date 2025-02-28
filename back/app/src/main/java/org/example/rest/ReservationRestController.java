@@ -50,4 +50,10 @@ public class ReservationRestController {
         reservationService.removeOne(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}/done")
+    public ResponseEntity<Reservation> markAsDone(@PathVariable Integer id) {
+        Reservation updatedReservation = reservationService.markAsDone(id);
+        return ResponseEntity.ok(updatedReservation);
+    }
 }
