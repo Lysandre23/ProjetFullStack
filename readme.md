@@ -63,6 +63,10 @@ Afin d'être lancé, il faut exécuter la commande `ng serve` dans ce dossier
 Le back se trouve dans le dossier `./back`
 Afin d'être lancé, il faut exécuter la commande `gradle run` dans ce dossier
 
+## <u>Visualisation de la base de données</u>
+
+![](/readme/bdd.png "Base de données").
+
 ## <u>Tests</u>
 
 Les fichiers `rest` et `service` dans le back-end ont été testés dans différents fichiers correspondants.
