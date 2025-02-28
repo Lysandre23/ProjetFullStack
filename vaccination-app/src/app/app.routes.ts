@@ -12,11 +12,14 @@ import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { ManageCentersComponent } from './manage-centers/manage-centers.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReservationsComponent } from './reservations/reservations.component';
+import { InscriptionComponent } from './inscription/inscription.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'inscription', component: InscriptionComponent },
   { path: 'vaccination-center', component: VaccinationCenterListComponent }, // Chemin vers le composant des centres de vaccination
   { path: 'manage-super-admins', component: ManageSuperAdminsComponent },
   { path: 'manage-admins', component: ManageAdminsComponent },
