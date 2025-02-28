@@ -15,6 +15,7 @@ import { ReservationsComponent } from './reservations/reservations.component';
 import { InscriptionComponent } from './inscription/inscription.component';
 import { CenterCreationComponent } from './center-creation/center-creation.component';
 import { CenterEditComponent } from './center-edit/center-edit.component';
+import { PatientEditComponent } from './patient-edit/patient-edit.component';
 import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
@@ -34,5 +35,6 @@ export const routes: Routes = [
   { path: 'manage-doctors/edit/:id', component: EditDoctorComponent },
   { path: 'create-center', component: CenterCreationComponent, canActivate: [authGuard] },
   { path: 'edit-center/:id', component: CenterEditComponent, canActivate: [authGuard] },
+  { path: 'edit-patient/:id', component: PatientEditComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' } // Redirection en cas de chemin non reconnu
 ];

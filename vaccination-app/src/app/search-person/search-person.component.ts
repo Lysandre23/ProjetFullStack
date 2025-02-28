@@ -1,37 +1,109 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../services/api.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { Patient, PatientService } from '../services/patient.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-search-person',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatDialogModule
+  ],
   templateUrl: './search-person.component.html',
   styleUrls: ['./search-person.component.css'],
 })
 export class SearchPersonComponent implements OnInit {
-  persons: any[] = [];
-  filteredPersons: any[] = [];
+  patients: Patient[] = [];
+  filteredPatients: Patient[] = [];
   searchTerm: string = '';
+  isLoading = false;
+  error: string | null = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private patientService: PatientService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.fetchPersons();
+    this.loadPatients();
   }
 
-  fetchPersons(): void {
-    this.apiService.getPatients().subscribe((data) => {
-      this.persons = data;
-      this.filteredPersons = [...this.persons];
+  loadPatients(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.patientService.getAllPatients().subscribe({
+      next: (patients) => {
+        this.patients = patients;
+        this.filteredPatients = patients;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading patients:', error);
+        this.error = 'Erreur lors du chargement des patients';
+        this.isLoading = false;
+      }
     });
   }
 
   onSearch(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredPersons = this.persons.filter(person =>
-      person.name.toLowerCase().includes(term)
-    );
+    if (!this.searchTerm.trim()) {
+      this.filteredPatients = this.patients;
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+
+    this.patientService.searchPatients(this.searchTerm).subscribe({
+      next: (patients) => {
+        this.filteredPatients = patients;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error searching patients:', error);
+        this.error = 'Erreur lors de la recherche';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onEdit(patient: Patient): void {
+    this.router.navigate(['/edit-patient', patient.id]);
+  }
+
+  onDelete(patient: Patient): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmer la suppression',
+        message: `Êtes-vous sûr de vouloir supprimer le patient "${patient.firstname} ${patient.lastname}" ?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isLoading = true;
+        this.patientService.deletePatient(patient.id).subscribe({
+          next: () => {
+            this.loadPatients();
+          },
+          error: (error) => {
+            console.error('Error deleting patient:', error);
+            this.error = 'Erreur lors de la suppression du patient';
+            this.isLoading = false;
+          }
+        });
+      }
+    });
   }
 }

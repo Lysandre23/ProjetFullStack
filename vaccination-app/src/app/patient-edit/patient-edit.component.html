@@ -1,0 +1,45 @@
+<div class="edit-container">
+  <h2>Modifier le Patient</h2>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <form *ngIf="!isLoading && patientForm" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstname" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastname" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required type="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de naissance</mat-label>
+      <input matInput formControlName="birthdate" required type="date">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!patientForm.valid">
+        Enregistrer
+      </button>
+      <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    </div>
+  </form>
+</div> 

@@ -3,38 +3,61 @@
   
     <!-- Barre de recherche -->
     <div class="search-bar">
-      <label for="search-name">Nom :</label>
+      <label for="search-name">Rechercher :</label>
       <input
         type="text"
         id="search-name"
-        placeholder="Entrez un nom"
+        placeholder="Entrez un nom ou un email"
         [(ngModel)]="searchTerm"
         (input)="onSearch()"
       />
     </div>
   
+    <!-- Loading spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+  
     <!-- Liste des résultats -->
-    <table *ngIf="filteredPersons.length > 0">
+    <table *ngIf="!isLoading && !error && filteredPatients.length > 0">
       <thead>
         <tr>
           <th>ID</th>
+          <th>Prénom</th>
           <th>Nom</th>
           <th>Email</th>
-          <th>Âge</th>
-          <th>Statut</th>
+          <th>Date de naissance</th>
+          <th>Téléphone</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let person of filteredPersons">
-          <td>{{ person.id }}</td>
-          <td>{{ person.name }}</td>
-          <td>{{ person.email }}</td>
-          <td>{{ person.age }}</td>
-          <td>{{ person.status }}</td>
+        <tr *ngFor="let patient of filteredPatients">
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.firstname }}</td>
+          <td>{{ patient.lastname }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.birthdate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ patient.phone || 'Non renseigné' }}</td>
+          <td class="action-buttons">
+            <button mat-raised-button color="primary" (click)="onEdit(patient)">
+              Modifier
+            </button>
+            <button mat-raised-button color="warn" (click)="onDelete(patient)">
+              Supprimer
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   
-    <p *ngIf="filteredPersons.length === 0 && searchTerm">Aucun résultat trouvé.</p>
+    <p *ngIf="!isLoading && !error && filteredPatients.length === 0" class="no-results">
+      Aucun patient trouvé.
+    </p>
   </div>
   

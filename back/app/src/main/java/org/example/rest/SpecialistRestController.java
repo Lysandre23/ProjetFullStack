@@ -5,6 +5,7 @@ import org.example.exception.PatientNotFoundException;
 import org.example.model.Patient;
 import org.example.model.Reservation;
 import org.example.model.Specialist;
+import org.example.model.Center;
 import org.example.service.PatientService;
 import org.example.service.ReservationService;
 import org.example.service.SpecialistService;
@@ -133,6 +134,15 @@ public class SpecialistRestController {
         Optional<Specialist> specialist = service.findById(id);
         if (specialist.isPresent()) {
             return ResponseEntity.ok(specialist.get().isSuperAdmin());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/center")
+    public ResponseEntity<Center> getSpecialistCenter(@PathVariable("id") Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent() && specialist.get().getCenter() != null) {
+            return ResponseEntity.ok(specialist.get().getCenter());
         }
         return ResponseEntity.notFound().build();
     }
