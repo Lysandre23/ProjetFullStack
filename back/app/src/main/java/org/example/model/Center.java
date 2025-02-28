@@ -1,9 +1,12 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.context.annotation.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,11 +20,13 @@ public class Center {
     private String phone;
     private String email;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Specialist> specialists;
 
-    public Center() {}
+    public Center() {
+        this.specialists = new ArrayList<>();
+    }
 
     public Center(Integer id, String name, String city, String address, String phone, String email, List<Specialist> specialists) {
         this.id = id;

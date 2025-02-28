@@ -3,7 +3,6 @@ package org.example.rest;
 import jakarta.transaction.Transactional;
 import org.example.model.Center;
 import org.example.model.Specialist;
-import org.example.repository.CenterRepository;
 import org.example.repository.SpecialistRepository;
 import org.example.service.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,14 +21,18 @@ public class CenterRestController {
     private CenterService centerService;
 
     @Autowired
-    private CenterRepository centerRepository;
-
-    @Autowired
     private SpecialistRepository specialistRepository;
 
     @GetMapping("")
     public List<Center> findAll() {
         return centerService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Center> findById(@PathVariable Integer id) {
+        return centerService.findById(id)
+                .map(center -> ResponseEntity.ok().body(center))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/city/{city}")
@@ -38,23 +42,44 @@ public class CenterRestController {
 
     @PostMapping("")
     public ResponseEntity<Center> save(@RequestBody Center center) throws URISyntaxException {
-        centerService.create(center);
-        return ResponseEntity.created(new URI("centers/" + center.getId())).build();
+        if (center.getSpecialists() == null) {
+            center.setSpecialists(new ArrayList<>());
+        }
+        Center savedCenter = centerService.create(center);
+        return ResponseEntity
+            .created(new URI("/api/centers/" + savedCenter.getId()))
+            .body(savedCenter);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Center> update(@PathVariable Integer id, @RequestBody Center center) {
+        return centerService.update(id, center)
+                .map(updatedCenter -> ResponseEntity.ok().body(updatedCenter))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        return centerService.delete(id)
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}/specialists")
-    public List<Specialist> findSpecialistsByCenterId(@PathVariable int id) {
-        Center center = centerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Centre introuvable"));
-        return center.getSpecialists();
+    public List<Specialist> findSpecialistsByCenterId(@PathVariable Integer id) {
+        return centerService.findSpecialistsByCenterId(id);
     }
 
-    @PostMapping("/{id}/specialist")
-    public Specialist createSpecialist(@PathVariable int id, @RequestBody Specialist specialist) {
-        Center center = centerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Centre introuvable"));
-
-        specialist.setCenter(center);
-        return specialistRepository.save(specialist);
+    @PostMapping("/{id}/specialists")
+    public ResponseEntity<Specialist> addSpecialist(@PathVariable Integer id, @RequestBody Specialist specialist) throws URISyntaxException {
+        return centerService.findById(id)
+                .map(center -> {
+                    specialist.setCenter(center);
+                    Specialist savedSpecialist = specialistRepository.save(specialist);
+                    return ResponseEntity
+                            .created(URI.create("/api/specialists/" + savedSpecialist.getId()))
+                            .body(savedSpecialist);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

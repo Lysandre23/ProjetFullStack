@@ -21,7 +21,7 @@ public class ReservationService {
         return reservationRepository.findSpecialist(specialistid);
     }
 
-    public void create(Reservation reservation) { reservationRepository.save(reservation); }
+    public Reservation create(Reservation reservation) { return reservationRepository.save(reservation); }
 
     public void removeOne(Integer id) {
         reservationRepository.deleteById(id);

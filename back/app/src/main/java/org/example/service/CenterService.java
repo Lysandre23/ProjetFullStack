@@ -7,6 +7,7 @@ import org.example.repository.SpecialistRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CenterService {
@@ -22,27 +23,36 @@ public class CenterService {
         return centerRepository.findAll();
     }
 
-    public void create(Center center) {
-        centerRepository.save(center);
+    public Center create(Center center) {
+        return centerRepository.save(center);
     }
 
     public List<Center> findByCityLike(String city) {
         return centerRepository.findByCityLike(city);
     }
 
-    public Specialist addSpecialistToCenter(int centerId, Specialist specialist) {
-        Center center = centerRepository.findById(centerId)
-                .orElseThrow(() -> new RuntimeException(""));
-        specialist.setCenter(center);
-        return specialistRepository.save(specialist);
+    public Optional<Center> findById(Integer id) {
+        return centerRepository.findById(id);
     }
 
-    public void removeSpecialistFromCenter(int centerId, int specialistId) {
-        Specialist specialist = specialistRepository.findById(specialistId)
-                .orElseThrow(() -> new RuntimeException("Spécialiste introuvable"));
-        if (!specialist.getCenter().getId().equals(centerId)) {
-            throw new RuntimeException("Ce spécialiste n'appartient pas à ce centre");
-        }
-        specialistRepository.delete(specialist);
+    public List<Specialist> findSpecialistsByCenterId(Integer id) {
+        return centerRepository.findSpecialistsByCenterId(id);
+    }
+
+    public Optional<Center> update(Integer id, Center center) {
+        return centerRepository.findById(id)
+            .map(existingCenter -> {
+                center.setId(id);
+                return centerRepository.save(center);
+            });
+    }
+
+    public boolean delete(Integer id) {
+        return centerRepository.findById(id)
+            .map(center -> {
+                centerRepository.delete(center);
+                return true;
+            })
+            .orElse(false);
     }
 }

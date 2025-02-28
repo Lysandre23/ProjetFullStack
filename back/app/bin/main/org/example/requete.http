@@ -1,20 +1,20 @@
+###
+
 GET http://localhost:8080/api/patients
 
-###
 
-GET http://localhost:8080/api/patients?lastname=humbert
 
 ###
 
-GET http://localhost:8080/api/specialists
+GET http://localhost:8080/api/specialists/1/reservations
+
+###
+
+GET http://localhost:8080/api/centers/1/specialists
 
 ###
 
 GET http://localhost:8080/api/specialists/specialty/Cardiologue
-
-###
-
-GET http://localhost:8080/api/reservations
 
 ###
 
@@ -38,70 +38,7 @@ GET http://localhost:8080/api/admins/super
 
 ###
 
-POST http://localhost:8080/api/patients
-Content-Type: application/json
-
-{
-  "firstname": "Leo",
-  "lastname": "Gueffier",
-  "email": "bgdu88@gmail.com",
-  "phone": "0123456789",
-  "birthdate": "2003-04-23T16:35:00.000+00:00"
-}
-
-###
-
-POST http://localhost:8080/api/specialists
-Content-Type: application/json
-
-{
-  "centerid": 1,
-  "name": "Joris",
-  "specialty": "Cuisinier",
-  "email": "bgdu88@gmail.com",
-  "phone": "6666666666",
-  "isadmin": true
-}
-
-###
-
-POST http://localhost:8080/api/reservations
-Content-Type: application/json
-
-{
-  "centerid": 1,
-  "specialistid": 2,
-  "patientid": 1,
-  "date": "2003-04-23T16:35:00.000+00:00"
-}
-
-###
-
-POST http://localhost:8080/api/centers
-Content-Type: application/json
-
-{
-  "name": "Centre Marine Lepen",
-  "city": "Epinal",
-  "address": "2 Rue Jean Zemmour",
-  "phone": "0123456789",
-  "email": "popo@popo.io"
-}
-
-###
-
-POST http://localhost:8080/api/admins
-Content-Type: application/json
-
-{
-  "centerid": 2,
-  "isSuperAdmin": true,
-  "name": "Jacky"
-}
-
-###
-
-DELETE http://localhost:8080/api/reservations/1
+GET http://localhost:8080/api/specialists/1/reservations
 
 ###
 
@@ -115,3 +52,65 @@ Content-Type: application/json
   "phone": "000000000",
   "birthdate": "2003-04-23T16:35:00.000+00:00"
 }
+
+###
+
+###
+
+POST http://localhost:8080/api/centers
+Content-Type: application/json
+
+{
+  "name": "Centre Zidane",
+  "city": "Epinal",
+  "address": "2 Rue Jean Lamour",
+  "phone": "0123456789",
+  "email": "popo@popo.io"
+}
+
+###
+
+POST http://localhost:8080/api/centers/1/specialist
+Content-Type: application/json
+
+{
+  "name": "Alexandre",
+  "specialty": "Chasseur",
+  "email": "bgdu88@gmail.com",
+  "phone": "6666666666"
+}
+
+###
+
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "0123456789",
+  "birthdate": "1990-01-01T00:00:00.000+00:00"
+}
+
+###
+
+POST http://localhost:8080/api/specialists/1/reservations?patientId=1
+Content-Type: application/json
+
+{
+  "date": "2024-03-20T10:00:00",
+  "done": false
+}
+
+###
+
+GET http://localhost:8080/api/reservations/1/specialist
+
+###
+
+GET http://localhost:8080/api/patients/1/reservations
+
+###
+
+PUT http://localhost:8080/api/specialists/1/promote/admin

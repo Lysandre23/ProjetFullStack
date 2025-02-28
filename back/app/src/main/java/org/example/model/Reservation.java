@@ -1,10 +1,6 @@
 package org.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -13,30 +9,35 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer centerid;
-    private Integer specialistid;
-    private Integer patientid;
+    @ManyToOne
+    @JoinColumn(name = "specialist_id")
+    private Specialist specialist;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
     private Date date;
+    private boolean done;
 
     public Reservation() {}
 
-    public Reservation(Integer id, Integer centerid, Integer specialistid, Integer patientid, Date date) {
+    public Reservation(Integer id, Specialist specialist, Patient patient, Date date, boolean done) {
         this.id = id;
-        this.centerid = centerid;
-        this.specialistid = specialistid;
-        this.patientid = patientid;
+        this.specialist = specialist;
+        this.patient = patient;
         this.date = date;
+        this.done = done;
     }
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public Integer getCenterid() { return centerid; }
-    public void setCenterid(Integer centerid) { this.centerid = centerid; }
-    public Integer getSpecialistid() { return specialistid; }
-    public void setSpecialistid(Integer specialistid) { this.specialistid = specialistid; }
-    public Integer getPatientid() { return patientid; }
-    public void setPatientid(Integer patientid) { this.patientid = patientid; }
+    public Specialist getSpecialist() { return specialist; }
+    public void setSpecialist(Specialist specialist) { this.specialist = specialist; }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
+    public boolean isDone() { return done; }
+    public void setDone(boolean done) { this.done = done; }
 }

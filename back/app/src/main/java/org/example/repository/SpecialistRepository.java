@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SpecialistRepository extends JpaRepository<Specialist, Integer> {
     public List<Specialist> findBySpecialty(String specialty);
+    public List<Specialist> findByIsAdminTrue();
+    public List<Specialist> findByIsSuperAdminTrue();
 }
