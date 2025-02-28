@@ -38,11 +38,9 @@ class SpecialistRestControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clean up the repositories in correct order (due to foreign key constraints)
         specialistRepository.deleteAll();
         centerRepository.deleteAll();
 
-        // Create and save test center first
         testCenter = new Center();
         testCenter.setName("Test Center");
         testCenter.setCity("Test City");
@@ -50,10 +48,8 @@ class SpecialistRestControllerTest {
         testCenter.setPhone("0123456789");
         testCenter.setEmail("test@center.com");
         
-        // Save the center and update the reference
         testCenter = centerRepository.save(testCenter);
 
-        // Now create and save the specialist with the saved center
         testSpecialist = new Specialist();
         testSpecialist.setName("Dr. Test");
         testSpecialist.setSpecialty("Cardiology");

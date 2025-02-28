@@ -46,12 +46,10 @@ class ReservationRestControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clean up the repositories in correct order (due to foreign key constraints)
         reservationRepository.deleteAll();
         specialistRepository.deleteAll();
         patientRepository.deleteAll();
 
-        // Create and save test patient
         testPatient = new Patient();
         testPatient.setFirstname("John");
         testPatient.setLastname("Doe");
@@ -59,7 +57,6 @@ class ReservationRestControllerTest {
         testPatient.setPhone("0123456789");
         testPatient = patientRepository.save(testPatient);
 
-        // Create and save test specialist
         testSpecialist = new Specialist();
         testSpecialist.setName("Dr. Smith");
         testSpecialist.setSpecialty("Cardiology");
@@ -67,7 +64,6 @@ class ReservationRestControllerTest {
         testSpecialist.setPhone("9876543210");
         testSpecialist = specialistRepository.save(testSpecialist);
 
-        // Create and save test reservation
         testReservation = new Reservation();
         testReservation.setDate(new Date());
         testReservation.setPatient(testPatient);
@@ -111,7 +107,6 @@ class ReservationRestControllerTest {
         mockMvc.perform(delete("/api/reservations/{id}", testReservation.getId()))
                 .andExpect(status().isOk());
 
-        // Verify the reservation was deleted
         mockMvc.perform(get("/api/reservations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -126,7 +121,6 @@ class ReservationRestControllerTest {
     @Test
     void shouldReturn400WhenCreatingInvalidReservation() throws Exception {
         Reservation invalidReservation = new Reservation();
-        // Don't set required fields
 
         mockMvc.perform(post("/api/reservations")
                 .contentType(MediaType.APPLICATION_JSON)
