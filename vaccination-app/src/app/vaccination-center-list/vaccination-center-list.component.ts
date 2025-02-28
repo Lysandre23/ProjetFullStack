@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -8,21 +7,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { VaccinationService } from '../services/vaccination.service';
+import { VaccinationCenter } from '../model/vaccination-center.model';
 
-// Définition des interfaces
-export interface VaccinationCenter {
-  id: number;
-  address: string;
-  city: string;
-  email: string;
-  name: string;
-  phone: string;
-}
-
+// Définition de l'interface Doctor
 export interface Doctor {
   id: number;
   name: string;
-  centerId: number; // Clé étrangère vers le centre
+  centerId: number;
 }
 
 @Component({
@@ -39,14 +31,14 @@ export interface Doctor {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VaccinationCenterListComponent implements OnInit {
-  // Liste des centres de vaccination
+  // Centres statiques
   centers: VaccinationCenter[] = [
-    { id: 1, address: "Rue du pont",  city: "Nancy" , email: "email@popo.io", name: "Hopital Central 1", phone: "0123456789"},
-    { id: 2, address: "Rue du pont", city: "Paris", email: "email@popo.io", name: "Hopital Central 2", phone: "0123456789"},
-    { id: 3, address: "Rue du pont", city: "Dijon" , email: "email@popo.io", name: "Hopital Central 3", phone: "0123456789"}
+    { id: 1, address: "Rue du pont",  city: "Nancy", email: "email@popo.io", name: "Hopital Central 1", phone: "0123456789" },
+    { id: 2, address: "Rue du pont", city: "Paris", email: "email@popo.io", name: "Hopital Central 2", phone: "0123456789" },
+    { id: 3, address: "Rue du pont", city: "Dijon", email: "email@popo.io", name: "Hopital Central 3", phone: "0123456789" }
   ];
 
-  // Liste des médecins associés aux centres
+  filteredCenters: VaccinationCenter[] = [];
   doctors: Doctor[] = [
     { id: 1, name: "Dr. Dupont", centerId: 1 },
     { id: 2, name: "Dr. Martin", centerId: 1 },
@@ -56,8 +48,6 @@ export class VaccinationCenterListComponent implements OnInit {
     { id: 6, name: "Dr. Leclerc", centerId: 3 }
   ];
 
-  // Variables de sélection
-  filteredCenters: VaccinationCenter[] = [];
   searchTerm: string = '';
   selectedCenter?: VaccinationCenter;
   selectedDoctors: Doctor[] = [];
@@ -65,20 +55,43 @@ export class VaccinationCenterListComponent implements OnInit {
   selectedDate: Date | null = null;
   appointmentConfirmed = false;
 
+  constructor(private vaccinationService: VaccinationService) {}
+
   ngOnInit(): void {
-    this.filteredCenters = []; // Aucun centre affiché au début
+    this.loadCenters();
+  }
+
+  // Charger les centres depuis l'API et les fusionner avec les centres statiques
+  loadCenters(): void {
+    this.vaccinationService.getAllCenters().subscribe({
+      next: (data) => {
+        // Fusionner les centres statiques et ceux de la base de données
+        const mergedCenters = [...this.centers, ...data];
+
+        // Supprimer les doublons basés sur l'ID
+        this.centers = mergedCenters.filter((center, index, self) =>
+          index === self.findIndex((c) => c.id === center.id)
+        );
+
+        // Mettre à jour la liste filtrée
+        this.filteredCenters = this.centers;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des centres:', err);
+      }
+    });
   }
 
   // Filtrer les centres en fonction de la recherche
   filterCenters(): void {
     if (this.searchTerm.trim() === '') {
-      this.filteredCenters = [];
+      this.filteredCenters = this.centers;
     } else {
       this.filteredCenters = this.centers.filter(center =>
         center.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         center.address.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        center.city.toLowerCase().includes(this.searchTerm.toLowerCase())||
-        center.email.toLowerCase().includes(this.searchTerm.toLowerCase())||
+        center.city.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        center.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         center.phone.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
@@ -95,7 +108,7 @@ export class VaccinationCenterListComponent implements OnInit {
       this.selectedDoctors = this.doctors.filter(doc => doc.centerId === center.id);
       this.selectedDoctor = undefined;
     }
-    this.appointmentConfirmed = false; // Réinitialiser la confirmation
+    this.appointmentConfirmed = false;
   }
 
   // Valider le rendez-vous

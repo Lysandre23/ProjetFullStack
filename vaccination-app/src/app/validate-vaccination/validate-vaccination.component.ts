@@ -41,7 +41,6 @@ export class ValidateVaccinationComponent implements OnInit {
       person.email.toLowerCase().includes(term)
     );
   }
-  
 
   onValidate(id: number): void {
     const person = this.persons.find(p => p.id === id);
