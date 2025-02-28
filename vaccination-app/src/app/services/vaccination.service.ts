@@ -8,7 +8,7 @@ import { VaccinationCenter } from '../model/vaccination-center.model';
   providedIn: 'root'
 })
 export class VaccinationService {
-  private apiUrl = '/api/centers'; // URL de base pour les centres de vaccination
+  private apiUrl = '/api/centers'; // URL relative pour utiliser le proxy
 
   constructor(private http: HttpClient) {}
 

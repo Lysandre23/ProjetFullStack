@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 import { VaccinationService } from '../services/vaccination.service';
 import { VaccinationCenter } from '../model/vaccination-center.model';
 
@@ -24,21 +25,17 @@ export interface Doctor {
   imports: [
     NgFor, CommonModule, NgIf, FormsModule, 
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
-    MatNativeDateModule, MatSelectModule, MatOptionModule
+    MatNativeDateModule, MatSelectModule, MatOptionModule,
+    MatButtonModule
   ],
   templateUrl: './vaccination-center-list.component.html',
-  styleUrls: ['./vaccination-center-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./vaccination-center-list.component.css']
 })
 export class VaccinationCenterListComponent implements OnInit {
-  // Centres statiques
-  centers: VaccinationCenter[] = [
-    { id: 1, address: "Rue du pont",  city: "Nancy", email: "email@popo.io", name: "Hopital Central 1", phone: "0123456789" },
-    { id: 2, address: "Rue du pont", city: "Paris", email: "email@popo.io", name: "Hopital Central 2", phone: "0123456789" },
-    { id: 3, address: "Rue du pont", city: "Dijon", email: "email@popo.io", name: "Hopital Central 3", phone: "0123456789" }
-  ];
-
+  centers: VaccinationCenter[] = [];
   filteredCenters: VaccinationCenter[] = [];
+  isLoading = false;
+  error: string | null = null;
   doctors: Doctor[] = [
     { id: 1, name: "Dr. Dupont", centerId: 1 },
     { id: 2, name: "Dr. Martin", centerId: 1 },
@@ -55,29 +52,34 @@ export class VaccinationCenterListComponent implements OnInit {
   selectedDate: Date | null = null;
   appointmentConfirmed = false;
 
-  constructor(private vaccinationService: VaccinationService) {}
+  constructor(
+    private vaccinationService: VaccinationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadCenters();
   }
 
-  // Charger les centres depuis l'API et les fusionner avec les centres statiques
+  // Charger les centres depuis l'API
   loadCenters(): void {
+    this.isLoading = true;
+    this.error = null;
+    this.cdr.detectChanges();
+    
     this.vaccinationService.getAllCenters().subscribe({
       next: (data) => {
-        // Fusionner les centres statiques et ceux de la base de données
-        const mergedCenters = [...this.centers, ...data];
-
-        // Supprimer les doublons basés sur l'ID
-        this.centers = mergedCenters.filter((center, index, self) =>
-          index === self.findIndex((c) => c.id === center.id)
-        );
-
-        // Mettre à jour la liste filtrée
+        this.centers = data;
         this.filteredCenters = this.centers;
+        this.isLoading = false;
+        console.log('Centers loaded:', this.centers); // Debug log
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Erreur lors du chargement des centres:', err);
+        this.error = 'Erreur lors du chargement des centres';
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
