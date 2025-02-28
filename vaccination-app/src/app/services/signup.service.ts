@@ -12,6 +12,24 @@ export interface SignupRequest {
   phone?: string;
 }
 
+interface PatientSignupData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  birthdate: string;
+  phone: string;
+}
+
+interface SpecialistSignupData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  centerId: number;
+  specialty: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,14 +38,12 @@ export class SignupService {
 
   constructor(private http: HttpClient) {}
 
-  signupPatient(data: SignupRequest): Observable<any> {
-    console.log('Sending signup request to:', `${this.baseUrl}/patient/signup`);
-    console.log('Request data:', JSON.stringify(data, null, 2));
-    return this.http.post(`${this.baseUrl}/patient/signup`, data).pipe(
-      tap({
-        error: (error) => console.error('Signup error:', error),
-        next: (response) => console.log('Signup response:', response)
-      })
-    );
+  signupPatient(data: PatientSignupData): Observable<any> {
+    console.log('Sending signup request:', data);
+    return this.http.post(`${this.baseUrl}/patient/signup`, data);
+  }
+
+  signupSpecialist(data: SpecialistSignupData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/specialist/signup`, data);
   }
 } 

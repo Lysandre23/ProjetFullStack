@@ -38,7 +38,7 @@ GET http://localhost:8080/api/admins/super
 
 ###
 
-GET http://localhost:8080/api/specialists/1/reservations
+GET http://localhost:8080/api/specialists/2/reservations
 
 ###
 
@@ -46,8 +46,8 @@ POST http://localhost:8080/api/centers
 Content-Type: application/json
 
 {
-  "name": "Centre Zidane",
-  "city": "Epinal",
+  "name": "Centre Joris Martin",
+  "city": "Nancy",
   "address": "2 Rue Jean Lamour",
   "phone": "0123456789",
   "email": "popo@popo.io"
@@ -122,3 +122,11 @@ GET http://localhost:8080/api/patients/1/reservations
 ###
 
 PUT http://localhost:8080/api/specialists/1/promote/admin
+
+###
+
+GET http://localhost:8080/api/specialists/admin/2
+
+###
+
+GET http://localhost:8080/api/specialists/superadmin/2

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common'; // Nécessaire pour *ngIf et autres directives Angular
 
@@ -13,14 +13,26 @@ import { CommonModule } from '@angular/common'; // Nécessaire pour *ngIf et aut
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
-  role: string | null = null;
-
-  constructor(public authService: AuthService) { // Rendre authService public pour le template
-    this.role = this.authService.getRole(); // Obtenez le rôle actuel
-  }
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {}
 
   logout(): void {
+    localStorage.clear(); // Clear all data from localStorage
     this.authService.logout();
-    // Redirection vers la page de connexion ou autre traitement
+    this.router.navigate(['/login']);
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isMedecin(): boolean {
+    return this.authService.isMedecin();
+  }
+
+  isPatient(): boolean {
+    return this.authService.isPatient();
   }
 }

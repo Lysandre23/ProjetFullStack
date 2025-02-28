@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { VaccinationService } from '../services/vaccination.service';
 import { VaccinationCenter } from '../model/vaccination-center.model';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../auth.service';
+import { ReservationService } from '../services/reservation.service';
 
 // Définition de l'interface Doctor
 export interface Doctor {
@@ -51,6 +53,8 @@ export class VaccinationCenterListComponent implements OnInit {
   constructor(
     private vaccinationService: VaccinationService,
     private apiService: ApiService,
+    private authService: AuthService,
+    private reservationService: ReservationService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -134,38 +138,36 @@ export class VaccinationCenterListComponent implements OnInit {
   }
 
   // Valider le rendez-vous
-  validateAppointment(): void {
-    if (this.selectedCenter && this.selectedDoctor && this.selectedDate) {
-      this.isCreatingReservation = true;
-      const patientId = this.apiService.getUserId(); // Récupère l'ID du patient connecté
-
-      const reservation = {
-        date: this.selectedDate,
-        specialist: {
-          id: this.selectedDoctor.id
-        },
-        patient: {
-          id: patientId
-        }
-      };
-
-      this.vaccinationService.createReservation(reservation).subscribe({
-        next: (response) => {
-          console.log('Réservation créée:', response);
-          this.appointmentConfirmed = true;
-          this.isCreatingReservation = false;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Erreur lors de la création de la réservation:', error);
-          this.error = 'Erreur lors de la création de la réservation';
-          this.isCreatingReservation = false;
-          this.appointmentConfirmed = false;
-          this.cdr.detectChanges();
-        }
-      });
-    } else {
-      alert("Veuillez sélectionner un centre, un médecin et une date avant de valider.");
+  validateAppointment() {
+    if (!this.selectedCenter || !this.selectedDoctor || !this.selectedDate) {
+      this.error = 'Veuillez sélectionner un centre, un médecin et une date';
+      return;
     }
+
+    this.isCreatingReservation = true;
+    const userId = this.authService.getUserId();
+    
+    if (!userId) {
+      this.error = 'Utilisateur non connecté';
+      this.isCreatingReservation = false;
+      return;
+    }
+
+    this.reservationService.createReservation(
+      this.selectedDoctor.id,
+      userId,
+      this.selectedDate
+    ).subscribe({
+      next: () => {
+        this.isCreatingReservation = false;
+        this.appointmentConfirmed = true;
+        // Optionally, reset the form or redirect
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création de la réservation:', error);
+        this.error = 'Erreur lors de la création de la réservation';
+        this.isCreatingReservation = false;
+      }
+    });
   }
 }

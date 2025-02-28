@@ -1,95 +1,130 @@
-<div class="inscription-container">
-    <h2>Inscription</h2>
-  
-    <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="lastname">Nom</label>
-        <input 
-          id="lastname" 
-          type="text" 
-          formControlName="lastname"
-          [class.invalid]="inscriptionForm.get('lastname')?.invalid && inscriptionForm.get('lastname')?.touched"
-          [disabled]="isLoading"
-        >
-        <div class="error-hint" *ngIf="inscriptionForm.get('lastname')?.invalid && inscriptionForm.get('lastname')?.touched">
-          Nom requis
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="firstname">Prénom</label>
-        <input 
-          id="firstname" 
-          type="text" 
-          formControlName="firstname"
-          [class.invalid]="inscriptionForm.get('firstname')?.invalid && inscriptionForm.get('firstname')?.touched"
-          [disabled]="isLoading"
-        >
-        <div class="error-hint" *ngIf="inscriptionForm.get('firstname')?.invalid && inscriptionForm.get('firstname')?.touched">
-          Prénom requis
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          id="email" 
-          type="email" 
-          formControlName="email"
-          [class.invalid]="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched"
-          [disabled]="isLoading"
-        >
-        <div class="error-hint" *ngIf="inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched">
-          Email invalide
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input 
-          id="password" 
-          type="password" 
-          formControlName="password"
-          [class.invalid]="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched"
-          [disabled]="isLoading"
-        >
-        <div class="error-hint" *ngIf="inscriptionForm.get('password')?.invalid && inscriptionForm.get('password')?.touched">
-          Mot de passe requis (6 caractères minimum)
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="birthdate">Date de naissance</label>
-        <input 
-          id="birthdate" 
-          type="date" 
-          formControlName="birthdate"
-          [class.invalid]="inscriptionForm.get('birthdate')?.invalid && inscriptionForm.get('birthdate')?.touched"
-          [disabled]="isLoading"
-        >
-        <div class="error-hint" *ngIf="inscriptionForm.get('birthdate')?.invalid && inscriptionForm.get('birthdate')?.touched">
-          Date de naissance requise
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="phone">Téléphone (optionnel)</label>
-        <input 
-          id="phone" 
-          type="tel" 
-          formControlName="phone"
-          [disabled]="isLoading"
-        >
-      </div>
-  
-      <div *ngIf="error" class="error-message">
-        {{ error }}
-      </div>
-  
-      <button type="submit" [disabled]="inscriptionForm.invalid || isLoading">
-        <span *ngIf="!isLoading">S'inscrire</span>
-        <span *ngIf="isLoading">Inscription en cours...</span>
-      </button>
-    </form>
+<div class="inscription-container" *ngIf="!isAuthenticated">
+  <h2>Inscription</h2>
+
+  <mat-tab-group (selectedTabChange)="toggleForm($event)" mat-stretch-tabs="false" mat-align-tabs="center">
+    <!-- Inscription Patient -->
+    <mat-tab label="Patient">
+      <form [formGroup]="inscriptionPatientForm" (ngSubmit)="onSubmitPatient()">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom</mat-label>
+          <input matInput id="nom" type="text" formControlName="nom">
+          <mat-error *ngIf="inscriptionPatientForm.get('nom')?.invalid && inscriptionPatientForm.get('nom')?.touched">
+            Nom requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Prénom</mat-label>
+          <input matInput id="prenom" type="text" formControlName="prenom">
+          <mat-error *ngIf="inscriptionPatientForm.get('prenom')?.invalid && inscriptionPatientForm.get('prenom')?.touched">
+            Prénom requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput id="email" type="email" formControlName="email">
+          <mat-error *ngIf="inscriptionPatientForm.get('email')?.invalid && inscriptionPatientForm.get('email')?.touched">
+            Email invalide
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput id="password" type="password" formControlName="password">
+          <mat-error *ngIf="inscriptionPatientForm.get('password')?.invalid && inscriptionPatientForm.get('password')?.touched">
+            Mot de passe requis (6 caractères minimum)
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date de naissance</mat-label>
+          <input matInput id="dateNaissance" type="date" formControlName="dateNaissance">
+          <mat-error *ngIf="inscriptionPatientForm.get('dateNaissance')?.invalid && inscriptionPatientForm.get('dateNaissance')?.touched">
+            Date de naissance requise
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="inscriptionPatientForm.invalid || isLoading">
+          S'inscrire
+        </button>
+      </form>
+    </mat-tab>
+
+    <!-- Inscription Médecin -->
+    <mat-tab label="Médecin">
+      <form [formGroup]="inscriptionMedecinForm" (ngSubmit)="onSubmitMedecin()">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom</mat-label>
+          <input matInput id="nomMedecin" type="text" formControlName="nom">
+          <mat-error *ngIf="inscriptionMedecinForm.get('nom')?.invalid && inscriptionMedecinForm.get('nom')?.touched">
+            Nom requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Prénom</mat-label>
+          <input matInput id="prenomMedecin" type="text" formControlName="prenom">
+          <mat-error *ngIf="inscriptionMedecinForm.get('prenom')?.invalid && inscriptionMedecinForm.get('prenom')?.touched">
+            Prénom requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput id="emailMedecin" type="email" formControlName="email">
+          <mat-error *ngIf="inscriptionMedecinForm.get('email')?.invalid && inscriptionMedecinForm.get('email')?.touched">
+            Email invalide
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput id="passwordMedecin" type="password" formControlName="password">
+          <mat-error *ngIf="inscriptionMedecinForm.get('password')?.invalid && inscriptionMedecinForm.get('password')?.touched">
+            Mot de passe requis (6 caractères minimum)
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Spécialité</mat-label>
+          <mat-select formControlName="specialty">
+            <mat-option *ngFor="let specialty of specialties" [value]="specialty">
+              {{ specialty }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="inscriptionMedecinForm.get('specialty')?.invalid && inscriptionMedecinForm.get('specialty')?.touched">
+            Spécialité requise
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Centre de vaccination</mat-label>
+          <mat-select formControlName="centerId">
+            <mat-option>Sélectionnez un centre</mat-option>
+            <mat-option *ngFor="let center of centers" [value]="center.id">
+              {{ center.name }} - {{ center.city }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="inscriptionMedecinForm.get('centerId')?.invalid && inscriptionMedecinForm.get('centerId')?.touched">
+            Centre requis
+          </mat-error>
+          <mat-hint *ngIf="loading">Chargement des centres...</mat-hint>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!inscriptionMedecinForm.valid || loading">
+          S'inscrire
+        </button>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
   </div>
-  
+</div>
+
+<div *ngIf="isAuthenticated" class="inscription-container">
+  <h2>Vous êtes déjà connecté</h2>
+  <p>Vous ne pouvez pas créer un nouveau compte tant que vous êtes connecté.</p>
+</div>

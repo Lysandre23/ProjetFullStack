@@ -11,94 +11,70 @@
 
   <!-- Main content when data is loaded -->
   <ng-container *ngIf="!isLoading && !error">
-    <!-- Barre de recherche -->
-    <div class="search-bar">
-      <input
-        type="text"
-        placeholder="Rechercher un centre..."
-        [(ngModel)]="searchTerm"
-        (input)="filterCenters()"
-      />
-    </div>
-
-    <!-- Message if no centers -->
-    <div *ngIf="centers.length === 0" class="no-results">
-      Aucun centre disponible
-    </div>
-
-    <!-- Liste des résultats -->
-    <div class="results" *ngIf="filteredCenters.length > 0">
-      <button *ngFor="let center of filteredCenters" (click)="select(center)">
-        {{ center.name }} - {{ center.address }}, {{ center.city }}
-      </button>
-    </div>
-
-    <!-- Centre sélectionné -->
-    <div *ngIf="selectedCenter" class="selected-center">
-      <h3>Centre sélectionné :</h3>
-      <p><strong>Nom :</strong> {{ selectedCenter.name }}</p>
-      <p><strong>Adresse :</strong> {{ selectedCenter.address }}</p>
-      <p><strong>Ville :</strong> {{ selectedCenter.city }}</p>
-      <p><strong>Email :</strong> {{ selectedCenter.email }}</p>
-      <p><strong>Téléphone :</strong> {{ selectedCenter.phone }}</p>
-
-      <!-- Loading state for doctors -->
-      <div *ngIf="isDoctorsLoading" class="loading">
-        Chargement des médecins...
-      </div>
-
-      <!-- Error state for doctors -->
-      <div *ngIf="doctorsError" class="error">
-        {{ doctorsError }}
-      </div>
-
-      <!-- Sélection du médecin -->
-      <mat-form-field appearance="fill" *ngIf="!isDoctorsLoading && !doctorsError && selectedDoctors.length > 0">
-        <mat-label>Choisissez un médecin</mat-label>
-        <mat-select [(ngModel)]="selectedDoctor">
-          <mat-option *ngFor="let doctor of selectedDoctors" [value]="doctor">
-            {{ doctor.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Message if no doctors available -->
-      <p *ngIf="!isDoctorsLoading && !doctorsError && selectedDoctors.length === 0" class="no-results">
-        Aucun médecin disponible pour ce centre
-      </p>
-
-      <!-- Sélection de la date -->
+    <!-- Search and Centers List -->
+    <div class="search-container">
       <mat-form-field>
-        <mat-label>Choisir une date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <input matInput [(ngModel)]="searchTerm" (input)="filterCenters()" placeholder="Rechercher un centre...">
       </mat-form-field>
+    </div>
 
-      <!-- Résumé du choix -->
-      <p *ngIf="selectedCenter && selectedDoctor && selectedDate">
-        Vous avez choisi le centre <strong>{{ selectedCenter.name }}</strong> avec le médecin 
-        <strong>{{ selectedDoctor.name }}</strong> à la date du 
-        <strong>{{ selectedDate | date: 'longDate' }}</strong>.
-      </p>
+    <div class="centers-list">
+      <div *ngFor="let center of filteredCenters" 
+           [ngClass]="{'selected': selectedCenter?.id === center.id}"
+           (click)="select(center)"
+           class="center-item">
+        <h3>{{ center.name }}</h3>
+        <p>{{ center.address }}, {{ center.city }}</p>
+        <p>{{ center.phone }} - {{ center.email }}</p>
+      </div>
+    </div>
 
-      <!-- État de création de la réservation -->
-      <div *ngIf="isCreatingReservation" class="loading">
-        Création de la réservation en cours...
+    <!-- Selected Center Details -->
+    <div *ngIf="selectedCenter" class="appointment-section">
+      <h2>Prendre rendez-vous à {{ selectedCenter.name }}</h2>
+      
+      <!-- Specialists Selection -->
+      <div class="selection-row">
+        <p class="specialists-count" *ngIf="selectedDoctors.length > 0">
+          {{ selectedDoctors.length }} spécialiste(s) disponible(s)
+        </p>
+        <mat-form-field class="full-width">
+          <mat-label>Spécialiste</mat-label>
+          <mat-select [(ngModel)]="selectedDoctor">
+            <mat-option>Aucun</mat-option>
+            <mat-option *ngFor="let doctor of selectedDoctors" [value]="doctor">
+              {{ doctor.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="isDoctorsLoading" class="loading-text">Chargement des spécialistes...</div>
+        <div *ngIf="doctorsError" class="error-text">{{ doctorsError }}</div>
       </div>
 
-      <!-- Bouton de validation -->
-      <button mat-raised-button 
-              color="primary" 
-              (click)="validateAppointment()"
-              [disabled]="isCreatingReservation">
-        Valider
-      </button>
+      <!-- Date Selection -->
+      <div class="selection-row">
+        <mat-form-field class="full-width">
+          <mat-label>Date du rendez-vous</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
 
-      <!-- Affichage du message après validation -->
-      <p *ngIf="appointmentConfirmed" style="color: green; font-weight: bold; margin-top: 10px;">
-        Rendez-vous pris !
-      </p>
+      <!-- Validation Button -->
+      <div class="button-container">
+        <button mat-raised-button color="primary" 
+                (click)="validateAppointment()" 
+                [disabled]="!selectedDoctor || !selectedDate || isCreatingReservation">
+          Valider le rendez-vous
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+      <div *ngIf="appointmentConfirmed" class="success-message">
+        Rendez-vous confirmé !
+      </div>
     </div>
   </ng-container>
 </div>

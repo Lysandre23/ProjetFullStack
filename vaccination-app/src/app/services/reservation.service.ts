@@ -33,19 +33,23 @@ export interface Reservation {
   providedIn: 'root'
 })
 export class ReservationService {
-  private baseUrl = '/api/reservations';
+  private baseUrl = '/api';
 
   constructor(private http: HttpClient) {}
 
   getReservationsByPatient(patientId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`/api/patients/${patientId}/reservations`);
+    return this.http.get<Reservation[]>(`${this.baseUrl}/patients/${patientId}/reservations`);
+  }
+
+  createReservation(specialistId: number, patientId: number, date: Date): Observable<Reservation> {
+    return this.http.post<Reservation>(`${this.baseUrl}/specialists/${specialistId}/reservations?patientId=${patientId}`, { date });
   }
 
   deleteReservation(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/reservations/${id}`);
   }
 
   markReservationAsDone(id: number): Observable<Reservation> {
-    return this.http.put<Reservation>(`${this.baseUrl}/${id}/done`, {});
+    return this.http.put<Reservation>(`${this.baseUrl}/reservations/${id}/done`, {});
   }
 } 

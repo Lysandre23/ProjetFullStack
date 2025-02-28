@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/specialists")
@@ -116,5 +117,23 @@ public class SpecialistRestController {
     public ResponseEntity<?> demoteFromSuperAdmin(@PathVariable Long id) {
         service.demoteFromSuperAdmin(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<Boolean> isAdmin(@PathVariable Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent()) {
+            return ResponseEntity.ok(specialist.get().isAdmin());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/superadmin/{id}")
+    public ResponseEntity<Boolean> isSuperAdmin(@PathVariable Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent()) {
+            return ResponseEntity.ok(specialist.get().isSuperAdmin());
+        }
+        return ResponseEntity.notFound().build();
     }
 }
