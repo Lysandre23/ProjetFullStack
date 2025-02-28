@@ -1,0 +1,63 @@
+<div class="center-edit-container">
+  <h2>Modifier le centre de vaccination</h2>
+  
+  <div *ngIf="isLoading" class="loading-message">
+    Chargement du centre...
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="centerForm" (ngSubmit)="onSubmit()" class="center-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom du centre</mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="centerForm.get('name')?.hasError('required')">
+        Le nom est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Adresse</mat-label>
+      <input matInput formControlName="address" required>
+      <mat-error *ngIf="centerForm.get('address')?.hasError('required')">
+        L'adresse est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ville</mat-label>
+      <input matInput formControlName="city" required>
+      <mat-error *ngIf="centerForm.get('city')?.hasError('required')">
+        La ville est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone" required>
+      <mat-error *ngIf="centerForm.get('phone')?.hasError('required')">
+        Le téléphone est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required type="email">
+      <mat-error *ngIf="centerForm.get('email')?.hasError('required')">
+        L'email est requis
+      </mat-error>
+      <mat-error *ngIf="centerForm.get('email')?.hasError('email')">
+        Format d'email invalide
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-button type="button" (click)="goBack()">Annuler</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!centerForm.valid || isLoading">
+        {{ isLoading ? 'Modification en cours...' : 'Modifier le centre' }}
+      </button>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+  </form>
+</div> 

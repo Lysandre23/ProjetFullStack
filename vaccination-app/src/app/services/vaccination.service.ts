@@ -31,7 +31,16 @@ export class VaccinationService {
   getAllCenters(): Observable<VaccinationCenter[]> {
     return this.http.get<VaccinationCenter[]>(this.apiUrl).pipe(
       catchError(error => {
-        console.error('Erreur lors de la récupération des centres:', error);
+        console.error('Error fetching centers:', error);
+        throw error;
+      })
+    );
+  }
+
+  getCenterById(id: number): Observable<VaccinationCenter> {
+    return this.http.get<VaccinationCenter>(`${this.apiUrl}/${id}`).pipe(
+      catchError(error => {
+        console.error('Error fetching center:', error);
         throw error;
       })
     );
@@ -92,6 +101,33 @@ export class VaccinationService {
     return this.http.put<Reservation>(`${this.reservationUrl}/${reservationId}/done`, {}).pipe(
       catchError(error => {
         console.error('Erreur lors du marquage de la réservation comme effectuée:', error);
+        throw error;
+      })
+    );
+  }
+
+  createCenter(centerData: VaccinationCenter): Observable<VaccinationCenter> {
+    return this.http.post<VaccinationCenter>(this.apiUrl, centerData).pipe(
+      catchError(error => {
+        console.error('Error creating center:', error);
+        throw error;
+      })
+    );
+  }
+
+  updateCenter(id: number, centerData: VaccinationCenter): Observable<VaccinationCenter> {
+    return this.http.put<VaccinationCenter>(`${this.apiUrl}/${id}`, centerData).pipe(
+      catchError(error => {
+        console.error('Error updating center:', error);
+        throw error;
+      })
+    );
+  }
+
+  deleteCenter(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(error => {
+        console.error('Error deleting center:', error);
         throw error;
       })
     );

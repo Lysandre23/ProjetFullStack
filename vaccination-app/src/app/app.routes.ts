@@ -13,7 +13,9 @@ import { ManageCentersComponent } from './manage-centers/manage-centers.componen
 import { HttpClientModule } from '@angular/common/http';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { InscriptionComponent } from './inscription/inscription.component';
-
+import { CenterCreationComponent } from './center-creation/center-creation.component';
+import { CenterEditComponent } from './center-edit/center-edit.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirection par défaut
@@ -30,5 +32,7 @@ export const routes: Routes = [
   { path: 'validate-vaccination', component: ValidateVaccinationComponent },
   { path: 'reservations', component: ReservationsComponent },
   { path: 'manage-doctors/edit/:id', component: EditDoctorComponent },
+  { path: 'create-center', component: CenterCreationComponent, canActivate: [authGuard] },
+  { path: 'edit-center/:id', component: CenterEditComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' } // Redirection en cas de chemin non reconnu
 ];

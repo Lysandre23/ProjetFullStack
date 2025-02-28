@@ -1,31 +1,49 @@
 <div class="manage-centers-container">
-    <h1>Gestion des Centres de Vaccination</h1>
-  
-    <button class="create-button" (click)="onCreate()">Créer un nouveau centre</button>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nom</th>
-          <th>Adresse</th>
-          <th>Code Postal</th>
-          <th>Ville</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let center of centers">
-          <td>{{ center.id }}</td>
-          <td>{{ center.name }}</td>
-          <td>{{ center.address }}</td>
-          <td>{{ center.postalCode }}</td>
-          <td>{{ center.city }}</td>
-          <td>
-            <button class="edit-button" (click)="onEdit(center)">Modifier</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="header">
+    <h2>Gestion des centres de vaccination</h2>
+    <button mat-raised-button color="primary" (click)="createNewCenter()">
+      Créer un nouveau centre
+    </button>
   </div>
+
+  <div *ngIf="isLoading" class="loading-message">
+    Chargement des centres...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <table *ngIf="!isLoading && !error && centers.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Adresse</th>
+        <th>Ville</th>
+        <th>Téléphone</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let center of centers">
+        <td>{{ center.id }}</td>
+        <td>{{ center.name }}</td>
+        <td>{{ center.address }}</td>
+        <td>{{ center.city }}</td>
+        <td>{{ center.phone }}</td>
+        <td>{{ center.email }}</td>
+        <td>
+          <button mat-button color="primary" (click)="onEdit(center)">Modifier</button>
+          <button mat-button color="warn" (click)="onDelete(center)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!isLoading && !error && centers.length === 0" class="no-data-message">
+    Aucun centre trouvé
+  </div>
+</div>
   
