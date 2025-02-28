@@ -6,7 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    @Query("select s from Specialist s where s.id = :specialistid")
-    Specialist findSpecialist(@Param("specialistid") Integer specialistid);
+    @Query("select r.specialist from Reservation r where r.id = :reservationId")
+    Specialist findSpecialist(@Param("reservationId") Integer reservationId);
+
+    List<Reservation> findByPatientId(Long patientId);
+    List<Reservation> findBySpecialistId(Long specialistId);
 }

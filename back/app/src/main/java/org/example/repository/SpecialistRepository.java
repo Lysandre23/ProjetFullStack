@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SpecialistRepository extends JpaRepository<Specialist, Integer> {
+public interface SpecialistRepository extends JpaRepository<Specialist, Long> {
     public List<Specialist> findBySpecialty(String specialty);
-    public List<Specialist> findByIsAdminTrue();
-    public List<Specialist> findByIsSuperAdminTrue();
+    public List<Specialist> findByAdminTrue();
+    public List<Specialist> findBySuperAdminTrue();
 }

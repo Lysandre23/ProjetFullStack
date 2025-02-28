@@ -37,7 +37,7 @@ class CenterServiceTest {
     @BeforeEach
     void setUp() {
         testCenter = new Center();
-        testCenter.setId(1);
+        testCenter.setId(1L);
         testCenter.setName("Test Medical Center");
         testCenter.setCity("Test City");
         testCenter.setAddress("123 Test Street");
@@ -87,23 +87,23 @@ class CenterServiceTest {
 
     @Test
     void shouldFindCenterById() {
-        when(centerRepository.findById(1)).thenReturn(Optional.of(testCenter));
+        when(centerRepository.findById(1L)).thenReturn(Optional.of(testCenter));
 
-        Optional<Center> found = centerService.findById(1);
+        Optional<Center> found = centerService.findById(1L);
 
         assertThat(found).isPresent();
         assertThat(found.get().getName()).isEqualTo("Test Medical Center");
-        verify(centerRepository).findById(1);
+        verify(centerRepository).findById(1L);
     }
 
     @Test
     void shouldFindSpecialistsByCenterId() {
-        when(centerRepository.findSpecialistsByCenterId(1)).thenReturn(Arrays.asList(testSpecialist));
+        when(centerRepository.findSpecialistsByCenterId(1L)).thenReturn(Arrays.asList(testSpecialist));
 
-        List<Specialist> specialists = centerService.findSpecialistsByCenterId(1);
+        List<Specialist> specialists = centerService.findSpecialistsByCenterId(1L);
 
         assertThat(specialists).hasSize(1);
         assertThat(specialists.get(0).getName()).isEqualTo("Dr. Test");
-        verify(centerRepository).findSpecialistsByCenterId(1);
+        verify(centerRepository).findSpecialistsByCenterId(1L);
     }
 } 

@@ -40,13 +40,13 @@ public class SpecialistRestController {
     }
 
     @GetMapping("/{id}/reservations")
-    public List<Reservation> getSpecialistReservations(@PathVariable("id") Integer id) {
+    public List<Reservation> getSpecialistReservations(@PathVariable("id") Long id) {
         return service.getReservationsBySpecialistId(id);
     }
 
     @PostMapping("/{id}/reservations")
     public ResponseEntity<Reservation> createReservation(
-            @PathVariable("id") Integer specialistId,
+            @PathVariable("id") Long specialistId,
             @RequestParam("patientId") Long patientId,
             @RequestBody Reservation reservation) throws URISyntaxException, PatientNotFoundException {
         
@@ -70,8 +70,18 @@ public class SpecialistRestController {
 
     @PostMapping("")
     public ResponseEntity<Specialist> createSpecialist(@RequestBody Specialist specialist) throws URISyntaxException {
-        service.create(specialist);
-        return ResponseEntity.created(new URI("specialists/" + specialist.getId())).build();
+        // Ensure admin flags are properly initialized if not set
+        if (specialist.isAdmin() || specialist.isSuperAdmin()) {
+            specialist.setAdmin(true);
+            if (specialist.isSuperAdmin()) {
+                specialist.setSuperAdmin(true);
+            }
+        }
+        
+        Specialist savedSpecialist = service.create(specialist);
+        return ResponseEntity
+            .created(new URI("/api/specialists/" + savedSpecialist.getId()))
+            .body(savedSpecialist);
     }
 
     @GetMapping("/admins")
@@ -85,25 +95,25 @@ public class SpecialistRestController {
     }
 
     @PutMapping("/{id}/promote/admin")
-    public ResponseEntity<?> promoteToAdmin(@PathVariable Integer id) {
+    public ResponseEntity<?> promoteToAdmin(@PathVariable Long id) {
         service.promoteToAdmin(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/promote/superadmin")
-    public ResponseEntity<?> promoteToSuperAdmin(@PathVariable Integer id) {
+    public ResponseEntity<?> promoteToSuperAdmin(@PathVariable Long id) {
         service.promoteToSuperAdmin(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/demote/admin")
-    public ResponseEntity<?> demoteFromAdmin(@PathVariable Integer id) {
+    public ResponseEntity<?> demoteFromAdmin(@PathVariable Long id) {
         service.demoteFromAdmin(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/demote/superadmin")
-    public ResponseEntity<?> demoteFromSuperAdmin(@PathVariable Integer id) {
+    public ResponseEntity<?> demoteFromSuperAdmin(@PathVariable Long id) {
         service.demoteFromSuperAdmin(id);
         return ResponseEntity.ok().build();
     }

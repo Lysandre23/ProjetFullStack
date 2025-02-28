@@ -29,7 +29,7 @@ public class CenterRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Center> findById(@PathVariable Integer id) {
+    public ResponseEntity<Center> findById(@PathVariable Long id) {
         return centerService.findById(id)
                 .map(center -> ResponseEntity.ok().body(center))
                 .orElse(ResponseEntity.notFound().build());
@@ -52,26 +52,26 @@ public class CenterRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Center> update(@PathVariable Integer id, @RequestBody Center center) {
+    public ResponseEntity<Center> update(@PathVariable Long id, @RequestBody Center center) {
         return centerService.update(id, center)
                 .map(updatedCenter -> ResponseEntity.ok().body(updatedCenter))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         return centerService.delete(id)
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}/specialists")
-    public List<Specialist> findSpecialistsByCenterId(@PathVariable Integer id) {
+    public List<Specialist> findSpecialistsByCenterId(@PathVariable Long id) {
         return centerService.findSpecialistsByCenterId(id);
     }
 
     @PostMapping("/{id}/specialists")
-    public ResponseEntity<Specialist> addSpecialist(@PathVariable Integer id, @RequestBody Specialist specialist) throws URISyntaxException {
+    public ResponseEntity<Specialist> addSpecialist(@PathVariable Long id, @RequestBody Specialist specialist) throws URISyntaxException {
         return centerService.findById(id)
                 .map(center -> {
                     specialist.setCenter(center);

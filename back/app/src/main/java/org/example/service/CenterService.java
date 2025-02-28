@@ -31,15 +31,15 @@ public class CenterService {
         return centerRepository.findByCityLike(city);
     }
 
-    public Optional<Center> findById(Integer id) {
+    public Optional<Center> findById(Long id) {
         return centerRepository.findById(id);
     }
 
-    public List<Specialist> findSpecialistsByCenterId(Integer id) {
+    public List<Specialist> findSpecialistsByCenterId(Long id) {
         return centerRepository.findSpecialistsByCenterId(id);
     }
 
-    public Optional<Center> update(Integer id, Center center) {
+    public Optional<Center> update(Long id, Center center) {
         return centerRepository.findById(id)
             .map(existingCenter -> {
                 center.setId(id);
@@ -47,7 +47,7 @@ public class CenterService {
             });
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(Long id) {
         return centerRepository.findById(id)
             .map(center -> {
                 centerRepository.delete(center);

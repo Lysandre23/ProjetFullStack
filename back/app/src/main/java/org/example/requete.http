@@ -70,14 +70,16 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/api/centers/1/specialist
+POST http://localhost:8080/api/centers/1/specialists
 Content-Type: application/json
 
 {
   "name": "Alexandre",
   "specialty": "Chasseur",
   "email": "bgdu88@gmail.com",
-  "phone": "6666666666"
+  "phone": "6666666666",
+  "isAdmin": true,
+  "isSuperAdmin": true
 }
 
 ###

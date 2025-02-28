@@ -13,7 +13,7 @@ import java.util.List;
 public class Center {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     private String city;
     private String address;
@@ -28,7 +28,7 @@ public class Center {
         this.specialists = new ArrayList<>();
     }
 
-    public Center(Integer id, String name, String city, String address, String phone, String email, List<Specialist> specialists) {
+    public Center(Long id, String name, String city, String address, String phone, String email, List<Specialist> specialists) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -38,8 +38,8 @@ public class Center {
         this.specialists = specialists;
     }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getCity() { return city; }

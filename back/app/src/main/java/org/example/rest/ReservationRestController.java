@@ -7,7 +7,6 @@ import org.example.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,19 +23,31 @@ public class ReservationRestController {
         return reservationService.findAll();
     }
 
-    @GetMapping("/{specialistid}/specialist")
-    public Specialist findSpecialistByReservationId(@PathVariable Integer specialistid) {
-        return reservationService.findSpecialistByReservationId(specialistid);
+    @GetMapping("/{reservationId}/specialist")
+    public ResponseEntity<Specialist> findSpecialistByReservationId(@PathVariable Integer reservationId) {
+        Specialist specialist = reservationService.findSpecialistByReservationId(reservationId);
+        if (specialist == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(specialist);
     }
 
     @PostMapping("")
     public ResponseEntity<Reservation> create(@RequestBody Reservation reservation) throws URISyntaxException {
-        reservationService.create(reservation);
-        return ResponseEntity.created(new URI("api/reservations/"+reservation.getId())).build();
+        // Validate required fields
+        if (reservation.getSpecialist() == null || reservation.getPatient() == null || reservation.getDate() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        Reservation savedReservation = reservationService.create(reservation);
+        return ResponseEntity
+            .created(new URI("/api/reservations/" + savedReservation.getId()))
+            .body(savedReservation);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         reservationService.removeOne(id);
+        return ResponseEntity.ok().build();
     }
 }

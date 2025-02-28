@@ -33,7 +33,7 @@ class SpecialistServiceTest {
     @BeforeEach
     void setUp() {
         testCenter = new Center();
-        testCenter.setId(1);
+        testCenter.setId(1L);
         testCenter.setName("Test Center");
 
         testSpecialist = new Specialist();
@@ -67,54 +67,58 @@ class SpecialistServiceTest {
 
     @Test
     void shouldCreateSpecialist() {
+        testSpecialist.setAdmin(true);
+        testSpecialist.setSuperAdmin(true);
         when(specialistRepository.save(any(Specialist.class))).thenReturn(testSpecialist);
 
-        specialistService.create(testSpecialist);
+        Specialist created = specialistService.create(testSpecialist);
 
+        assertThat(created.isAdmin()).isTrue();
+        assertThat(created.isSuperAdmin()).isTrue();
         verify(specialistRepository).save(testSpecialist);
     }
 
     @Test
     void shouldFindById() {
-        when(specialistRepository.findById(1)).thenReturn(Optional.of(testSpecialist));
+        when(specialistRepository.findById(1L)).thenReturn(Optional.of(testSpecialist));
 
-        Optional<Specialist> found = specialistService.findById(1);
+        Optional<Specialist> found = specialistService.findById(1L);
 
         assertThat(found).isPresent();
         assertThat(found.get()).isEqualTo(testSpecialist);
-        verify(specialistRepository).findById(1);
+        verify(specialistRepository).findById(1L);
     }
 
     @Test
     void shouldFindAllAdmins() {
         testSpecialist.setAdmin(true);
-        when(specialistRepository.findByIsAdminTrue()).thenReturn(Arrays.asList(testSpecialist));
+        when(specialistRepository.findByAdminTrue()).thenReturn(Arrays.asList(testSpecialist));
 
         List<Specialist> admins = specialistService.findAllAdmins();
 
         assertThat(admins).hasSize(1);
         assertThat(admins.get(0).isAdmin()).isTrue();
-        verify(specialistRepository).findByIsAdminTrue();
+        verify(specialistRepository).findByAdminTrue();
     }
 
     @Test
     void shouldFindAllSuperAdmins() {
         testSpecialist.setSuperAdmin(true);
-        when(specialistRepository.findByIsSuperAdminTrue()).thenReturn(Arrays.asList(testSpecialist));
+        when(specialistRepository.findBySuperAdminTrue()).thenReturn(Arrays.asList(testSpecialist));
 
         List<Specialist> superAdmins = specialistService.findAllSuperAdmins();
 
         assertThat(superAdmins).hasSize(1);
         assertThat(superAdmins.get(0).isSuperAdmin()).isTrue();
-        verify(specialistRepository).findByIsSuperAdminTrue();
+        verify(specialistRepository).findBySuperAdminTrue();
     }
 
     @Test
     void shouldPromoteToAdmin() {
-        when(specialistRepository.findById(1)).thenReturn(Optional.of(testSpecialist));
+        when(specialistRepository.findById(1L)).thenReturn(Optional.of(testSpecialist));
         when(specialistRepository.save(any(Specialist.class))).thenReturn(testSpecialist);
 
-        specialistService.promoteToAdmin(1);
+        specialistService.promoteToAdmin(1L);
 
         assertThat(testSpecialist.isAdmin()).isTrue();
         verify(specialistRepository).save(testSpecialist);
@@ -122,10 +126,10 @@ class SpecialistServiceTest {
 
     @Test
     void shouldPromoteToSuperAdmin() {
-        when(specialistRepository.findById(1)).thenReturn(Optional.of(testSpecialist));
+        when(specialistRepository.findById(1L)).thenReturn(Optional.of(testSpecialist));
         when(specialistRepository.save(any(Specialist.class))).thenReturn(testSpecialist);
 
-        specialistService.promoteToSuperAdmin(1);
+        specialistService.promoteToSuperAdmin(1L);
 
         assertThat(testSpecialist.isSuperAdmin()).isTrue();
         assertThat(testSpecialist.isAdmin()).isTrue(); // SuperAdmin is also an admin

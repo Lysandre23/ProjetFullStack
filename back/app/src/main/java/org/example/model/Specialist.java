@@ -19,8 +19,8 @@ public class Specialist {
     @JsonIgnore
     private String password;
     private String phone;
-    private boolean isAdmin;
-    private boolean isSuperAdmin;
+    private boolean admin;
+    private boolean superAdmin;
 
     @JsonBackReference
     @ManyToOne
@@ -33,19 +33,19 @@ public class Specialist {
 
     public Specialist() {
         this.reservations = new ArrayList<>();
-        this.isAdmin = false;
-        this.isSuperAdmin = false;
+        this.admin = false;
+        this.superAdmin = false;
     }
 
-    public Specialist(String name, String specialty, String email, String password, String phone, boolean isAdmin) {
+    public Specialist(String name, String specialty, String email, String password, String phone, boolean admin, boolean superAdmin) {
         this.name = name;
         this.specialty = specialty;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.isAdmin = isAdmin;
+        this.admin = admin;
         this.reservations = new ArrayList<>();
-        this.isSuperAdmin = false;
+        this.superAdmin = superAdmin;
     }
 
     public Long getId() { return id; }
@@ -63,21 +63,21 @@ public class Specialist {
     public void setPassword(String password) { this.password = password; }
     public List<Reservation> getReservations() { return reservations; }
     public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
-    public boolean isAdmin() { return isAdmin; }
-    public void setAdmin(boolean admin) { isAdmin = admin; }
-    public boolean isSuperAdmin() { return isSuperAdmin; }
+    public boolean isAdmin() { return admin; }
+    public void setAdmin(boolean admin) { this.admin = admin; }
+    public boolean isSuperAdmin() { return superAdmin; }
     public void setSuperAdmin(boolean superAdmin) { 
-        isSuperAdmin = superAdmin;
+        this.superAdmin = superAdmin;
         if (superAdmin) {
-            this.isAdmin = true;
+            this.admin = true;
         }
     }
 
     public boolean canManageCenter(Center center) {
-        if (this.isSuperAdmin) {
+        if (this.superAdmin) {
             return true;
         }
-        if (this.isAdmin && this.center != null && center != null) {
+        if (this.admin && this.center != null && center != null) {
             return this.center.getId().equals(center.getId());
         }
         return false;
