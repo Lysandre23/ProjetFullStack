@@ -32,7 +32,7 @@ export const routes: Routes = [
   { path: 'search-person', component: SearchPersonComponent },
   { path: 'validate-vaccination', component: ValidateVaccinationComponent },
   { path: 'reservations', component: ReservationsComponent },
-  { path: 'manage-doctors/edit/:id', component: EditDoctorComponent },
+  { path: 'edit-doctor/:id', component: EditDoctorComponent },
   { path: 'create-center', component: CenterCreationComponent, canActivate: [authGuard] },
   { path: 'edit-center/:id', component: CenterEditComponent, canActivate: [authGuard] },
   { path: 'edit-patient/:id', component: PatientEditComponent, canActivate: [authGuard] },

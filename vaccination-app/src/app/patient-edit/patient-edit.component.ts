@@ -53,7 +53,7 @@ export class PatientEditComponent implements OnInit {
     this.error = null;
 
     this.patientService.getPatient(this.patientId).subscribe({
-      next: (patient) => {
+      next: (patient: Patient) => {
         // Format the date to YYYY-MM-DD for the input
         const birthdate = new Date(patient.birthdate).toISOString().split('T')[0];
         this.patientForm.patchValue({

@@ -41,6 +41,12 @@ public class SpecialistRestController {
         return service.findBySpecialty(specialty);
     }
 
+    @GetMapping("{id}")
+    public Specialist findById(@PathVariable("id") Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        return specialist.orElse(null);
+    }
+
     @GetMapping("/{id}/reservations")
     public List<Reservation> getSpecialistReservations(@PathVariable("id") Long id) {
         return service.getReservationsBySpecialistId(id);
@@ -145,5 +151,23 @@ public class SpecialistRestController {
             return ResponseEntity.ok(specialist.get().getCenter());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Specialist> updateSpecialist(@PathVariable Long id, @RequestBody Specialist specialistData) {
+        Optional<Specialist> existingSpecialist = service.findById(id);
+        if (!existingSpecialist.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Specialist specialist = existingSpecialist.get();
+        specialist.setFirstname(specialistData.getFirstname());
+        specialist.setLastname(specialistData.getLastname());
+        specialist.setEmail(specialistData.getEmail());
+        specialist.setSpecialty(specialistData.getSpecialty());
+        specialist.setPhone(specialistData.getPhone());
+        // Don't update admin/superAdmin status through this endpoint for security
+
+        Specialist updatedSpecialist = service.updateSpecialist(specialist);
+        return ResponseEntity.ok(updatedSpecialist);
     }
 }

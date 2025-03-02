@@ -38,6 +38,15 @@ export class PatientService {
     );
   }
 
+  deletePatient(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(error => {
+        console.error('Error deleting patient:', error);
+        throw error;
+      })
+    );
+  }
+
   getPatient(id: number): Observable<Patient> {
     return this.http.get<Patient>(`${this.apiUrl}/${id}`).pipe(
       catchError(error => {
@@ -47,19 +56,10 @@ export class PatientService {
     );
   }
 
-  updatePatient(id: number, patient: Patient): Observable<Patient> {
-    return this.http.put<Patient>(`${this.apiUrl}/${id}`, patient).pipe(
+  updatePatient(id: number, patientData: Patient): Observable<Patient> {
+    return this.http.put<Patient>(`${this.apiUrl}/${id}`, patientData).pipe(
       catchError(error => {
         console.error('Error updating patient:', error);
-        throw error;
-      })
-    );
-  }
-
-  deletePatient(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      catchError(error => {
-        console.error('Error deleting patient:', error);
         throw error;
       })
     );

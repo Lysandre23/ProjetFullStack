@@ -32,9 +32,9 @@
           <td>{{ admin.specialty || 'Non spécifié' }}</td>
           <td>{{ admin.center?.name || 'Non assigné' }}</td>
           <td>
-            <button mat-button color="primary" class="edit-button" (click)="onEdit(admin)">
-              Modifier
-            </button>
+            <button mat-button color="warn" (click)="admin.superAdmin ? demoteSuperAdmin(admin.id) : promoteToSuperAdmin(admin.id)">
+              {{ admin.superAdmin ? 'Demote to Admin' : 'Promote to Super Admin' }}
+          </button>
           </td>
         </tr>
       </tbody>

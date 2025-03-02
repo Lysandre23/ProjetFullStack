@@ -24,7 +24,7 @@ public class SpecialistDTO {
     public static SpecialistDTO fromSpecialist(Specialist specialist) {
         SpecialistDTO dto = new SpecialistDTO();
         dto.setId(specialist.getId());
-        dto.setName(specialist.getName());
+        dto.setName(specialist.getFirstname() + " " + specialist.getLastname());
         dto.setSpecialty(specialist.getSpecialty());
         dto.setEmail(specialist.getEmail());
         dto.setPhone(specialist.getPhone());

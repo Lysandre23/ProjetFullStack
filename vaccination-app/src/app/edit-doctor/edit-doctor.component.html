@@ -1,14 +1,26 @@
 <div class="edit-doctor-container">
     <h1>Modifier le Médecin</h1>
-    
+
     <form (ngSubmit)="onSubmit()" #editDoctorForm="ngForm">
       <div class="form-group">
-        <label for="name">Nom</label>
+        <label for="firstname">Prénom</label>
         <input
           type="text"
-          id="name"
-          [(ngModel)]="doctor.name"
-          name="name"
+          id="firstname"
+          [(ngModel)]="doctor!.firstname"
+          name="firstname"
+          required
+          placeholder="Entrez le prénom"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Nom</label>
+        <input
+          type="text"
+          id="lastname"
+          [(ngModel)]="doctor!.lastname"
+          name="lastname"
           required
           placeholder="Entrez le nom"
         />
@@ -19,7 +31,7 @@
         <input
           type="email"
           id="email"
-          [(ngModel)]="doctor.email"
+          [(ngModel)]="doctor!.email"
           name="email"
           required
           placeholder="Entrez l'email"
@@ -31,7 +43,7 @@
         <input
           type="text"
           id="specialty"
-          [(ngModel)]="doctor.specialty"
+          [(ngModel)]="doctor!.specialty"
           name="specialty"
           required
           placeholder="Entrez la spécialité"

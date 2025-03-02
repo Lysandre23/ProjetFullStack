@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Admin, AdminService, AdminWithCenter } from '../services/admin.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-manage-admins',
@@ -17,7 +19,10 @@ export class ManageAdminsComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadAdmins();
@@ -64,7 +69,44 @@ export class ManageAdminsComponent implements OnInit {
   }
 
   onEdit(admin: AdminWithCenter): void {
-    alert(`Modifier l'administrateur : ${admin.name}`);
-    // Implémentez la logique pour modifier un administrateur
+    this.router.navigate(['/edit-admin', admin.id]);
   }
+
+  demoteAdmin(adminId: number) {
+    this.isLoading = true;
+    this.error = null;
+
+    this.adminService.demoteAdmin(adminId).subscribe({
+      next: () => {
+        this.loadAdmins(); // Reload the list of admins after demotion
+      },
+      error: (error) => {
+        console.error('Error demoting admin:', error);
+        this.error = 'Erreur lors de la rétrogradation de l administrateur';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  promoteToSuperAdmin(adminId: number): void {
+    this.adminService.promoteSuperAdmin(adminId).subscribe({
+        next: () => {
+            alert('Admin promoted to super admin successfully!');
+            this.loadAdmins(); // Reload the list of admins
+        },
+        error: (error) => {
+            console.error('Error promoting admin:', error);
+            alert('Failed to promote admin.');
+        }
+    });
+}
+
+demoteSuperAdmin(adminId: number): Observable<void> {
+    return this.adminService.demoteSuperAdmin(adminId).pipe(
+        catchError(error => {
+            console.error('Error demoting super admin:', error);
+            throw error;
+        })
+    );
+}
 }

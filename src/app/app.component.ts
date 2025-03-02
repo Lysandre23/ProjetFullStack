@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
+import { PatientService } from './services/patient.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 export class AppComponent implements OnInit {
   title = 'vaccination-app';
 
+  constructor(private patientService: PatientService) {}
+
   ngOnInit() {
     window.addEventListener('beforeunload', () => {
       localStorage.removeItem('token');
@@ -20,4 +23,9 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('role');
     });
   }
-}
+
+  fetchPatient(id: string) {
+    const patient = this.patientService.getPatient(id);
+    console.log(patient);
+  }
+} 
