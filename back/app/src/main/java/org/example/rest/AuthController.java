@@ -48,7 +48,8 @@ public class AuthController {
         try {
             // Convert request to Specialist entity
             Specialist specialist = new Specialist();
-            specialist.setName(request.getName());
+            specialist.setFirstname(request.getFirstname());
+            specialist.setLastname(request.getLastname());
             specialist.setSpecialty(request.getSpecialty());
             specialist.setEmail(request.getEmail());
             specialist.setPassword(request.getPassword());

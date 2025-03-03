@@ -1,13 +1,12 @@
 <div class="manage-doctors-container">
   <h1>Gestion des Médecins</h1>
 
-  <button class="create-button" (click)="onCreate()">Ajouter un nouveau médecin</button>
-
   <table>
     <thead>
       <tr>
         <th>ID</th>
         <th>Nom</th>
+        <th>Prénom</th>
         <th>Email</th>
         <th>Spécialité</th>
         <th>Actions</th>
@@ -16,11 +15,17 @@
     <tbody>
       <tr *ngFor="let doctor of doctors">
         <td>{{ doctor.id }}</td>
-        <td>{{ doctor.name }}</td>
+        <td>{{ doctor.firstname }}</td>
+        <td>{{ doctor.lastname }}</td>
         <td>{{ doctor.email }}</td>
         <td>{{ doctor.specialty }}</td>
         <td>
-          <button class="edit-button" (click)="onEdit(doctor)">Modifier</button>
+          <button mat-button color="primary" class="edit-button" (click)="onEdit(doctor)">
+            Modifier
+          </button>
+          <button mat-button color="warn" (click)="doctor.admin ? demoteAdmin(doctor.id) : promoteToAdmin(doctor.id)">
+            {{ doctor.admin ? 'Remove admin role' : 'Add admin role' }}
+          </button>
         </td>
       </tr>
     </tbody>

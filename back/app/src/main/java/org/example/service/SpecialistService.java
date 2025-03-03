@@ -76,4 +76,8 @@ public class SpecialistService {
             specialistRepository.save(specialist);
         });
     }
+
+    public Specialist updateSpecialist(Specialist specialist) {
+        return specialistRepository.save(specialist);
+    }
 }

@@ -1,7 +1,8 @@
 package org.example.dto;
 
 public class SpecialistSignupRequest {
-    private String name;
+    private String firstname;
+    private String lastname;
     private String specialty;
     private String email;
     private String password;
@@ -11,8 +12,6 @@ public class SpecialistSignupRequest {
     private Long centerId;
 
     // Getters and Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
     public String getSpecialty() { return specialty; }
     public void setSpecialty(String specialty) { this.specialty = specialty; }
     public String getEmail() { return email; }
@@ -27,4 +26,8 @@ public class SpecialistSignupRequest {
     public void setSuperAdmin(boolean superAdmin) { this.superAdmin = superAdmin; }
     public Long getCenterId() { return centerId; }
     public void setCenterId(Long centerId) { this.centerId = centerId; }
+    public String getFirstname() { return firstname; }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
+    public String getLastname() { return lastname; }
+    public void setLastname(String lastname) { this.lastname = lastname; }
 } 

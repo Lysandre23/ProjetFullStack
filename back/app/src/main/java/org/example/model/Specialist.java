@@ -14,7 +14,8 @@ public class Specialist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String firstname;
+    private String lastname;
     private String specialty;
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -38,8 +39,9 @@ public class Specialist {
         this.superAdmin = false;
     }
 
-    public Specialist(String name, String specialty, String email, String password, String phone, boolean admin, boolean superAdmin) {
-        this.name = name;
+    public Specialist(String firstname, String lastname, String specialty, String email, String password, String phone, boolean admin, boolean superAdmin) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.specialty = specialty;
         this.email = email;
         this.password = password;
@@ -50,8 +52,11 @@ public class Specialist {
     }
 
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) { this.id = id; }
+    public String getFirstname() { return firstname; }
+    public void setFirstname(String firstname) { this.firstname = firstname; }
+    public String getLastname() { return lastname; }
+    public void setLastname(String lastname) { this.lastname = lastname; }
     public String getSpecialty() { return specialty; }
     public void setSpecialty(String specialty) { this.specialty = specialty; }
     public String getEmail() { return email; }

@@ -1,20 +1,46 @@
 <div class="manage-doctors-container">
-  <h2>Mes Réservations</h2>
-  <table> 
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Lieu</th>
-        <th>Médecin</th>
-      </tr>
-    </thead>
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-state">
+    Chargement des réservations...
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error" class="error-state">
+    {{ error }}
+  </div>
+
+  <!-- No reservations state -->
+  <div *ngIf="!isLoading && !error && reservations.length === 0" class="empty-state">
+    Vous n'avez aucune réservation.
+  </div>
+
+  <!-- Reservations list -->
+  <div *ngIf="!isLoading && !error && reservations.length > 0" class="reservations-list">
+    <h2>Vos réservations</h2>
     
-    <tbody>
-      <tr *ngFor="let res of reservations">
-        <td>{{ res.date }}</td>
-        <td>{{ res.lieu }}</td>
-        <td>{{ res.medecin }}</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="reservation-card" *ngFor="let reservation of reservations">
+      <div class="reservation-header">
+        <h3>Rendez-vous du {{ reservation.date | date:'dd/MM/yyyy' }}</h3>
+        <span [class.done]="reservation.done" class="status">
+          {{ reservation.done ? 'Effectué' : 'À venir' }}
+        </span>
+      </div>
+      
+      <div class="reservation-details">
+        <p><strong>Médecin :</strong> {{ reservation.specialist.name }}</p>
+        <p><strong>Spécialité :</strong> {{ reservation.specialist.specialty }}</p>
+        <p><strong>Contact :</strong> {{ reservation.specialist.email }}</p>
+      </div>
+      
+      <div class="reservation-actions">
+        <button 
+          mat-raised-button 
+          color="warn" 
+          (click)="deleteReservation(reservation.id)"
+          *ngIf="!reservation.done">
+          Annuler
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

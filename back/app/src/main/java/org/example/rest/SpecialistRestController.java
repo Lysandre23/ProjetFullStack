@@ -5,6 +5,7 @@ import org.example.exception.PatientNotFoundException;
 import org.example.model.Patient;
 import org.example.model.Reservation;
 import org.example.model.Specialist;
+import org.example.model.Center;
 import org.example.service.PatientService;
 import org.example.service.ReservationService;
 import org.example.service.SpecialistService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/specialists")
@@ -37,6 +39,12 @@ public class SpecialistRestController {
     @GetMapping("specialty/{specialty}")
     public List<Specialist> findBySpecialty(@PathVariable("specialty") String specialty) {
         return service.findBySpecialty(specialty);
+    }
+
+    @GetMapping("{id}")
+    public Specialist findById(@PathVariable("id") Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        return specialist.orElse(null);
     }
 
     @GetMapping("/{id}/reservations")
@@ -116,5 +124,50 @@ public class SpecialistRestController {
     public ResponseEntity<?> demoteFromSuperAdmin(@PathVariable Long id) {
         service.demoteFromSuperAdmin(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<Boolean> isAdmin(@PathVariable Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent()) {
+            return ResponseEntity.ok(specialist.get().isAdmin());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/superadmin/{id}")
+    public ResponseEntity<Boolean> isSuperAdmin(@PathVariable Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent()) {
+            return ResponseEntity.ok(specialist.get().isSuperAdmin());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/center")
+    public ResponseEntity<Center> getSpecialistCenter(@PathVariable("id") Long id) {
+        Optional<Specialist> specialist = service.findById(id);
+        if (specialist.isPresent() && specialist.get().getCenter() != null) {
+            return ResponseEntity.ok(specialist.get().getCenter());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Specialist> updateSpecialist(@PathVariable Long id, @RequestBody Specialist specialistData) {
+        Optional<Specialist> existingSpecialist = service.findById(id);
+        if (!existingSpecialist.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Specialist specialist = existingSpecialist.get();
+        specialist.setFirstname(specialistData.getFirstname());
+        specialist.setLastname(specialistData.getLastname());
+        specialist.setEmail(specialistData.getEmail());
+        specialist.setSpecialty(specialistData.getSpecialty());
+        specialist.setPhone(specialistData.getPhone());
+        // Don't update admin/superAdmin status through this endpoint for security
+
+        Specialist updatedSpecialist = service.updateSpecialist(specialist);
+        return ResponseEntity.ok(updatedSpecialist);
     }
 }

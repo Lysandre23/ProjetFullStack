@@ -26,6 +26,31 @@ h1 {
   width: 300px;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.no-results {
+  color: #666;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 2rem;
+  margin: 1rem 0;
+}
+
 /* Style pour la table */
 table {
   width: 100%;
@@ -49,10 +74,38 @@ table td {
   background-color: white;
   color: black;
   padding: 0.8rem;
+  vertical-align: middle;
 }
 
 /* Bordure */
 table th,
 table td {
   border: 1px solid #ddd;
+}
+
+/* Style pour les boutons d'action */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 40px;
+}
+
+.action-buttons button {
+  min-width: 100px;
+  margin: 0;
+}
+
+/* Hover effects for buttons */
+.action-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Remove duplicate styles */
+td:last-child {
+  white-space: nowrap;
 }
