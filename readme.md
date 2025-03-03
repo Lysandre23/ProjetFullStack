@@ -67,6 +67,13 @@ Afin d'être lancé, il faut exécuter la commande `gradle run` dans ce dossier
 
 ![](/readme/schemadatabase.png?raw=true "Base de données").
 
+## <u>Premier Super Admin/Admin<u>
+
+Le premier Super Administrateur doit être créé manuellement dans la base de données.
+Une fois ce premier Super Administrateur créé, il peut ensuite ajouter d'autres Super Administrateurs ainsi que des Administrateurs.
+
+Pour les patients et les médecins, l'inscription se fait directement via l'interface utilisateur.
+
 ## <u>Tests</u>
 
 Les fichiers `rest` et `service` dans le back-end ont été testés dans différents fichiers correspondants.
