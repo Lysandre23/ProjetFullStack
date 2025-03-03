@@ -13,6 +13,8 @@ import { VaccinationCenter } from '../model/vaccination-center.model';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../auth.service';
 import { ReservationService } from '../services/reservation.service';
+import { Router } from '@angular/router';
+import { CenterService, Center } from '../services/center.service';
 
 // Définition de l'interface Doctor
 export interface Doctor {
@@ -50,6 +52,7 @@ export class VaccinationCenterListComponent implements OnInit {
   selectedDoctor?: Doctor;
   selectedDate: Date | null = null;
   appointmentConfirmed = false;
+  router: any;
 
   constructor(
     private vaccinationService: VaccinationService,
@@ -162,7 +165,7 @@ export class VaccinationCenterListComponent implements OnInit {
       next: () => {
         this.isCreatingReservation = false;
         this.appointmentConfirmed = true;
-        // Optionally, reset the form or redirect
+        this.router.navigate(['/reservations']);
       },
       error: (error) => {
         console.error('Erreur lors de la création de la réservation:', error);

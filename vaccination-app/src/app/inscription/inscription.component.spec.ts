@@ -21,3 +21,6 @@ describe('InscriptionComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+
