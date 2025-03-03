@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inscription',
@@ -26,6 +27,7 @@ export class InscriptionComponent implements OnInit {
     { id: 2, nom: 'Clinique Lyon Sud' },
     { id: 3, nom: 'Hôpital de Marseille' }
   ];
+  router: any;
 
   constructor(private fb: FormBuilder) {}
 
@@ -51,14 +53,14 @@ export class InscriptionComponent implements OnInit {
   onSubmitPatient() {
     if (this.inscriptionPatientForm.valid) {
       console.log('Inscription patient:', this.inscriptionPatientForm.value);
-      // Ajouter la logique pour envoyer les données au backend
+      this.router.navigate(['/login']);
     }
   }
 
   onSubmitMedecin() {
     if (this.inscriptionMedecinForm.valid) {
       console.log('Inscription médecin:', this.inscriptionMedecinForm.value);
-      // Ajouter la logique pour envoyer les données au backend
+      this.router.navigate(['/login']);
     }
   }
 }
