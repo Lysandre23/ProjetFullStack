@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService, Specialist } from '../services/admin.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { CenterService } from '../services/center.service';
 
 @Component({
   selector: 'app-manage-doctors',
@@ -15,7 +17,7 @@ export class ManageDoctorsComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
 
-  constructor(private adminService: AdminService, private router: Router) {}
+  constructor(private adminService: AdminService, private router: Router, public authService: AuthService, private centerService: CenterService) {}
 
   ngOnInit() {
     this.loadDoctors();
@@ -25,17 +27,43 @@ export class ManageDoctorsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.adminService.getAllSpecialists().subscribe({
-      next: (doctors) => {
-        this.doctors = doctors;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading doctors:', error);
-        this.error = 'Erreur lors du chargement des médecins';
-        this.isLoading = false;
+    const userId = this.authService.getUserId();
+    if (this.authService.isSuperAdmin()) {
+      this.adminService.getAllSpecialists().subscribe({
+        next: (doctors) => {
+          this.doctors = doctors;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading doctors:', error);
+          this.error = 'Erreur lors du chargement des médecins';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      if (userId !== null) {
+        this.centerService.getCenterBySpecialist(userId).subscribe({
+            next: (center) => {
+                this.centerService.getSpecialistsByCenter(center.id).subscribe({
+                    next: (doctors) => {
+                        this.doctors = doctors;
+                        this.isLoading = false;
+                    },
+                    error: (error) => {
+                        console.error('Error loading doctors:', error);
+                        this.error = 'Erreur lors du chargement des médecins';
+                        this.isLoading = false;
+                    }
+                });
+            },
+            error: (error) => {
+                console.error('Error loading center:', error);
+                this.isLoading = false;
+            }
+        });
       }
-    });
+    }
+    
   }
 
   onEdit(doctor: Specialist): void {

@@ -5,7 +5,8 @@ import { catchError } from 'rxjs/operators';
 
 export interface Admin {
   id: number;
-  name: string;
+  firstname: string;
+  lastname: string;
   specialty: string;
   email: string;
   phone: string | null;

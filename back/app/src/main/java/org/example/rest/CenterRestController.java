@@ -2,6 +2,7 @@ package org.example.rest;
 
 import jakarta.transaction.Transactional;
 import org.example.model.Center;
+import org.example.model.Reservation;
 import org.example.model.Specialist;
 import org.example.repository.SpecialistRepository;
 import org.example.service.CenterService;
@@ -33,6 +34,21 @@ public class CenterRestController {
         return centerService.findById(id)
                 .map(center -> ResponseEntity.ok().body(center))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<Reservation>> findReservations(@PathVariable Long id) {
+        Center center = centerService.findById(id).orElse(null);
+        if (center == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Reservation> reservations = new ArrayList<>();
+        for (Specialist specialist : specialistRepository.findAll()) {
+            if (specialist.getCenter().equals(center)) {
+                reservations.addAll(specialist.getReservations());
+            }
+        }
+        return ResponseEntity.ok(reservations);
     }
 
     @GetMapping("/city/{city}")

@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 import { ReservationService, Reservation } from '../services/reservation.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-reservations',
@@ -16,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     RouterModule,
     CommonModule,
-    HttpClientModule
   ],
   styleUrls: ['./reservations.component.css']
 })

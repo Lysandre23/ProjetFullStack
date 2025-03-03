@@ -87,6 +87,14 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
+          <mat-label>Téléphone</mat-label>
+          <input matInput id="phoneMedecin" type="tel" formControlName="phone">
+          <mat-error *ngIf="inscriptionMedecinForm.get('phone')?.invalid && inscriptionMedecinForm.get('phone')?.touched">
+            Numéro de téléphone invalide
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
           <mat-label>Spécialité</mat-label>
           <mat-select formControlName="specialty">
             <mat-option *ngFor="let specialty of specialties" [value]="specialty">

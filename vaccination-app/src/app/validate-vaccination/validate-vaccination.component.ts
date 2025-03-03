@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../services/api.service';
+import { ReservationService, Reservation } from '../services/reservation.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-validate-vaccination',
@@ -13,15 +15,18 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./validate-vaccination.component.css'],
 })
 export class ValidateVaccinationComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'email', 'age', 'status', 'actions'];
+  displayedColumns: string[] = ['firstname', 'lastname', 'date', 'done','actions'];
   persons: any[] = [];
   filteredPersons: any[] = [];
   searchTerm: string = '';
+  reservations: Reservation[] = [];
+  isLoading = false;
+  error: string | null = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private reservationService: ReservationService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.fetchPersons();
+    this.loadReservations();
   }
 
   fetchPersons(): void {
@@ -34,6 +39,29 @@ export class ValidateVaccinationComponent implements OnInit {
     });
   }
 
+  loadReservations() {
+    const userId = this.authService.getUserId();
+    if (!userId) {
+      this.error = 'Utilisateur non connecté';
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+
+    this.reservationService.getReservationsBySpecialist(userId).subscribe({
+      next: (reservations) => {
+        this.reservations = reservations;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des réservations:', error);
+        this.error = 'Erreur lors du chargement des réservations';
+        this.isLoading = false;
+      }
+    });
+  }
+
   onSearch(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredPersons = this.persons.filter(person => 
@@ -43,24 +71,14 @@ export class ValidateVaccinationComponent implements OnInit {
   }
 
   onValidate(id: number): void {
-    const person = this.persons.find(p => p.id === id);
-    if (person) {
-      const updatedPerson = { ...person, status: 'Vaccinée' };
-      this.apiService.updatePatient(id, updatedPerson).subscribe(() => {
-        alert(`${person.name} a été marqué(e) comme Vaccinée.`);
-        this.fetchPersons(); // Rafraîchit la liste
+      this.reservationService.markReservationAsDone(id).subscribe(() => {
+        this.loadReservations();
       });
-    }
   }
 
   onCancel(id: number): void {
-    const person = this.persons.find(p => p.id === id);
-    if (person) {
-      const updatedPerson = { ...person, status: 'Non Vaccinée' };
-      this.apiService.updatePatient(id, updatedPerson).subscribe(() => {
-        alert(`La vaccination de ${person.name} a été annulée.`);
-        this.fetchPersons(); // Rafraîchit la liste
+      this.reservationService.deleteReservation(id).subscribe(() => {
+        this.loadReservations();
       });
-    }
   }
 }

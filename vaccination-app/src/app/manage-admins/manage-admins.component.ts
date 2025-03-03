@@ -6,6 +6,7 @@ import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-manage-admins',
@@ -21,7 +22,8 @@ export class ManageAdminsComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -32,10 +34,14 @@ export class ManageAdminsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
+    const userId = this.authService.getUserId();
     this.adminService.getAllAdmins().subscribe({
       next: (admins) => {
+        // Filter out the current user
+        const filteredAdmins = admins.filter(admin => admin.id !== userId);
+        
         // Create an array of observables for fetching center information
-        const centerRequests = admins.map(admin =>
+        const centerRequests = filteredAdmins.map(admin =>
           this.adminService.getAdminCenter(admin.id).pipe(
             map(center => ({ ...admin, center })),
             catchError(() => of({ ...admin, center: undefined }))
@@ -63,11 +69,6 @@ export class ManageAdminsComponent implements OnInit {
     });
   }
 
-  onCreate(): void {
-    alert('Ajouter un nouvel administrateur');
-    // Implémentez la logique pour ajouter un administrateur
-  }
-
   onEdit(admin: AdminWithCenter): void {
     this.router.navigate(['/edit-admin', admin.id]);
   }
@@ -91,22 +92,24 @@ export class ManageAdminsComponent implements OnInit {
   promoteToSuperAdmin(adminId: number): void {
     this.adminService.promoteSuperAdmin(adminId).subscribe({
         next: () => {
-            alert('Admin promoted to super admin successfully!');
-            this.loadAdmins(); // Reload the list of admins
+            this.loadAdmins();
         },
         error: (error) => {
             console.error('Error promoting admin:', error);
             alert('Failed to promote admin.');
         }
     });
-}
+  }
 
-demoteSuperAdmin(adminId: number): Observable<void> {
-    return this.adminService.demoteSuperAdmin(adminId).pipe(
-        catchError(error => {
-            console.error('Error demoting super admin:', error);
-            throw error;
-        })
-    );
-}
+  demoteSuperAdmin(adminId: number): void {
+    this.adminService.demoteSuperAdmin(adminId).subscribe({
+        next: () => {
+            this.loadAdmins();
+        },
+        error: (error) => {
+            console.error('Error demoting admin:', error);
+            alert('Failed to demote admin.');
+        }
+    });
+  }
 }

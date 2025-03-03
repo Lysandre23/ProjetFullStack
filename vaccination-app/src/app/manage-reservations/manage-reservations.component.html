@@ -1,42 +1,24 @@
 <div class="manage-reservations-container">
-  <h1>Gestion des Réservations</h1>
-
-  <!-- Filtres -->
-  <div class="filters">
-    <label for="filter-date">Filtrer par date :</label>
-    <input type="date" id="filter-date" [(ngModel)]="filterDate" (change)="applyFilters()" />
-
-    <label for="filter-status">Filtrer par statut :</label>
-    <select id="filter-status" [(ngModel)]="filterStatus" (change)="applyFilters()">
-      <option value="">Tous</option>
-      <option value="validée">Validée</option>
-      <option value="en attente">En attente</option>
-      <option value="annulée">Annulée</option>
-    </select>
-  </div>
+  <h1>Réservations de vôtre centre</h1>
 
   <!-- Table des réservations -->
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Nom</th>
         <th>Email</th>
         <th>Date</th>
-        <th>Statut</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let reservation of filteredReservations">
-        <td>{{ reservation.id }}</td>
-        <td>{{ reservation.name }}</td>
-        <td>{{ reservation.email }}</td>
-        <td>{{ reservation.date }}</td>
-        <td>{{ reservation.status }}</td>
+        <td>{{ reservation.patient.firstname }} {{ reservation.patient.lastname }}</td>
+        <td>{{ reservation.patient.email }}</td>
+        <td>{{ reservation.date | date:'dd/MM/yyyy' }}</td>
         <td>
-          <button class="validate-button" (click)="onValidate(reservation.id)" [disabled]="reservation.status === 'validée'">Valider</button>
-          <button class="cancel-button" (click)="onCancel(reservation.id)" [disabled]="reservation.status === 'annulée'">Annuler</button>
+          <button class="validate-button" (click)="onValidate(reservation.id)">Valider</button>
+          <button class="cancel-button" (click)="deleteReservation(reservation.id)">Annuler</button>
         </td>
       </tr>
     </tbody>

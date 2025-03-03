@@ -1,6 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Import du FormsModule
+import { AuthService } from '../auth.service';
+import { Patient, ReservationService, Specialist } from '../services/reservation.service';
+import { AdminService, AdminWithCenter } from '../services/admin.service';
+import { CenterService } from '../services/center.service';
+
+interface UserData {
+    centerId: number;
+}
+
+interface Reservation {
+    id: number;
+    date: Date;
+    done: boolean;
+    patient: Patient;
+    specialist: Specialist;
+}
 
 @Component({
   selector: 'app-manage-reservations',
@@ -9,38 +25,81 @@ import { FormsModule } from '@angular/forms'; // Import du FormsModule
   templateUrl: './manage-reservations.component.html',
   styleUrls: ['./manage-reservations.component.css'],
 })
-export class ManageReservationsComponent {
-  reservations = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', date: '2025-01-25', status: 'en attente' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', date: '2025-01-26', status: 'validée' },
-    { id: 3, name: 'Sam Brown', email: 'sam@example.com', date: '2025-01-27', status: 'annulée' },
-  ];
+export class ManageReservationsComponent implements OnInit {
+  reservations: Reservation[] = [];
+  filteredReservations: Reservation[] = [];
 
-  filteredReservations = [...this.reservations];
-  filterDate: string = '';
-  filterStatus: string = '';
+  constructor(
+    private reservationService: ReservationService, 
+    private authService: AuthService,
+    private adminService: AdminService,
+    private centerService: CenterService
+  ) {}
 
-  applyFilters(): void {
-    this.filteredReservations = this.reservations.filter(reservation => {
-      const matchesDate = this.filterDate ? reservation.date === this.filterDate : true;
-      const matchesStatus = this.filterStatus ? reservation.status === this.filterStatus : true;
-      return matchesDate && matchesStatus;
-    });
+  ngOnInit() {
+    this.loadReservations();
+  }
+
+  loadReservations() {
+    const userId = this.authService.getUserId();
+    if (this.authService.isSuperAdmin()) {
+      this.reservationService.getAllReservations().subscribe({
+        next: (reservations: Reservation[]) => {
+          this.reservations = reservations;
+          this.filteredReservations = [...this.reservations];
+        },
+        error: (error: Error) => {
+          console.error('Error loading reservations:', error);
+        }
+      });
+    }else {
+      if (userId !== null) {
+        this.centerService.getCenterBySpecialist(userId).subscribe({
+            next: (center) => {
+              console.log(center);
+                this.reservationService.getReservationsByCenter(center.id).subscribe({
+                    next: (data) => {
+                        this.reservations = data;
+                        console.log(this.reservations);
+                        this.filteredReservations = [...this.reservations];
+                    },
+                    error: (error: Error) => {
+                        console.error('Error loading reservations:', error);
+                    }
+                });
+            },
+            error: (error: Error) => {
+                console.error('Error loading center data:', error);
+            }
+        });
+      }
+    }
   }
 
   onValidate(id: number): void {
     const reservation = this.reservations.find(r => r.id === id);
     if (reservation) {
-      reservation.status = 'validée';
-      this.applyFilters();
+      this.loadReservations();
     }
   }
 
   onCancel(id: number): void {
     const reservation = this.reservations.find(r => r.id === id);
     if (reservation) {
-      reservation.status = 'annulée';
-      this.applyFilters();
+      this.loadReservations();
+    }
+  }
+
+  deleteReservation(id: number) {
+    if (confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+      this.reservationService.deleteReservation(id).subscribe({
+        next: () => {
+          this.loadReservations();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression:', error);
+        }
+      });
     }
   }
 }

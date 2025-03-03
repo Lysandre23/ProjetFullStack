@@ -62,20 +62,12 @@ export class SearchPersonComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
-    this.error = null;
-
-    this.patientService.searchPatients(this.searchTerm).subscribe({
-      next: (patients) => {
-        this.filteredPatients = patients;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error searching patients:', error);
-        this.error = 'Erreur lors de la recherche';
-        this.isLoading = false;
-      }
-    });
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+    this.filteredPatients = this.patients.filter(patient => 
+      patient.firstname.toLowerCase().includes(searchTermLower) ||
+      patient.lastname.toLowerCase().includes(searchTermLower) ||
+      patient.email.toLowerCase().includes(searchTermLower)
+    );
   }
 
   onEdit(patient: Patient): void {

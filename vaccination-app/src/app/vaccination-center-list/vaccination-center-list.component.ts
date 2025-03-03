@@ -17,7 +17,8 @@ import { ReservationService } from '../services/reservation.service';
 // Définition de l'interface Doctor
 export interface Doctor {
   id: number;
-  name: string;
+  firstname: string;
+  lastname: string;
   centerId: number;
 }
 

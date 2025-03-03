@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 
 export interface Specialist {
   id: number;
-  name: string;
+  firstname: string;
+  lastname: string;
   specialty: string;
   email: string;
   phone: string;
@@ -41,6 +42,14 @@ export class ReservationService {
     return this.http.get<Reservation[]>(`${this.baseUrl}/patients/${patientId}/reservations`);
   }
 
+  getReservationsBySpecialist(specialistId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/specialists/${specialistId}/reservations`);
+  }
+
+  getReservationsByCenter(centerId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/centers/${centerId}/reservations`);
+  }
+
   createReservation(specialistId: number, patientId: number, date: Date): Observable<Reservation> {
     return this.http.post<Reservation>(`${this.baseUrl}/specialists/${specialistId}/reservations?patientId=${patientId}`, { date });
   }
@@ -51,5 +60,9 @@ export class ReservationService {
 
   markReservationAsDone(id: number): Observable<Reservation> {
     return this.http.put<Reservation>(`${this.baseUrl}/reservations/${id}/done`, {});
+  }
+
+  getAllReservations(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/reservations`);
   }
 } 

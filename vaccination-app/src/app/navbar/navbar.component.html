@@ -14,7 +14,7 @@
 
   <!-- Médecin -->
   <button mat-button *ngIf="authService.isMedecin() && !authService.isPatient()" routerLink="/search-person" class="navbar-item">Recherche d'une Personne</button>
-  <button mat-button *ngIf="authService.isMedecin() && !authService.isPatient()" routerLink="/validate-vaccination" class="navbar-item">Validation de la Vaccination</button>
+  <button mat-button *ngIf="authService.isMedecin() && !authService.isPatient()" routerLink="/validate-vaccination" class="navbar-item">Vos rendez-vous</button>
 
   <!-- Patient -->
   <button mat-button *ngIf="authService.isPatient()" routerLink="/reservations" class="navbar-item">Vos reservations</button>

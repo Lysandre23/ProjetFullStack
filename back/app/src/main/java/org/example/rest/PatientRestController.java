@@ -38,10 +38,12 @@ public class PatientRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
+        String oldPassword = patientService.findOne(id).getPassword();
         if (!patientService.existsById(id)) {
             throw new PatientNotFoundException(id);
         }
         patient.setId(id);
+        patient.setPassword(oldPassword);
         Patient updatedPatient = patientService.save(patient);
         return ResponseEntity.ok(updatedPatient);
     }

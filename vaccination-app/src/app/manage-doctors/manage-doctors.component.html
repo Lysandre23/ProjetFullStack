@@ -4,9 +4,7 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nom</th>
-        <th>Prénom</th>
+        <th>Identité</th>
         <th>Email</th>
         <th>Spécialité</th>
         <th>Actions</th>
@@ -14,16 +12,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let doctor of doctors">
-        <td>{{ doctor.id }}</td>
-        <td>{{ doctor.firstname }}</td>
-        <td>{{ doctor.lastname }}</td>
+        <td>{{ doctor.firstname }} {{ doctor.lastname }}</td>
         <td>{{ doctor.email }}</td>
         <td>{{ doctor.specialty }}</td>
         <td>
           <button mat-button color="primary" class="edit-button" (click)="onEdit(doctor)">
             Modifier
           </button>
-          <button mat-button color="warn" (click)="doctor.admin ? demoteAdmin(doctor.id) : promoteToAdmin(doctor.id)">
+          <button *ngIf="authService.isSuperAdmin()" mat-button color="warn" (click)="doctor.admin ? demoteAdmin(doctor.id) : promoteToAdmin(doctor.id)">
             {{ doctor.admin ? 'Remove admin role' : 'Add admin role' }}
           </button>
         </td>

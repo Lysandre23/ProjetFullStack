@@ -83,7 +83,8 @@ export class InscriptionComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       centerId: ['', Validators.required],
-      specialty: ['', Validators.required]
+      specialty: ['', Validators.required],
+      phone: ['']
     });
 
     this.loadCenters();
@@ -153,7 +154,8 @@ export class InscriptionComponent implements OnInit {
         email: formValue.email,
         password: formValue.password,
         centerId: formValue.centerId,
-        specialty: formValue.specialty
+        specialty: formValue.specialty,
+        phone: formValue.phone || ''
       };
 
       this.signupService.signupSpecialist(signupData).subscribe({

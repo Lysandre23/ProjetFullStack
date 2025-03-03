@@ -43,7 +43,7 @@
           <mat-select [(ngModel)]="selectedDoctor">
             <mat-option>Aucun</mat-option>
             <mat-option *ngFor="let doctor of selectedDoctors" [value]="doctor">
-              {{ doctor.name }}
+              {{ doctor.firstname }} {{ doctor.lastname }}
             </mat-option>
           </mat-select>
         </mat-form-field>
